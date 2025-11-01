@@ -10,7 +10,7 @@ This documentation site is a collection of my research, projects, and findings
 in the field of cybersecurity. Here you'll find practical insights, technical 
 writeups, and security engineering concepts I've explored throughout my journey.
 
-This site focuses on the practical aspects - real-world implementations, research, 
+This site focuses on the practical aspects of real-world implementations, research, 
 and hands-on security projects.
 
 What You'll Find Here
@@ -30,9 +30,9 @@ About This Site
 This documentation is continuously updated as I explore new areas in 
 cybersecurity. Feel free to explore and learn from the content shared here.
 
-Indices and tables
-==================
+.. Indices and tables
+   ==================
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   * :ref:`genindex`
+   * :ref:`modindex`
+   * :ref:`search`
