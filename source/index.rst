@@ -3,21 +3,28 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-.. include:: main/introduction.rst
+.. include:: main/security-engineering.rst
 
 .. toctree::
    :maxdepth: 3
    :caption: Getting Started
    :hidden:
    
-   Introduction <main/introduction>
+   Introduction <main/security-engineering>
 
 .. toctree::
    :maxdepth: 3
    :caption: Contents
    :hidden:
 
-   main/projects
+   Projects <projects/projects>
+
+.. toctree::
+   :maxdepth: 3
+   :caption: Projects
+   :hidden:
+
+   Wazuh & Tracecat Integration <projects/wazuh-tracecat-integration/introduction>
 
 .. Indices and tables
    ==================
