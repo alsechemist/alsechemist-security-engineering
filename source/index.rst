@@ -20,17 +20,18 @@ What You'll Find Here
 * **Projects**: Practical security tools and implementations
 * **Knowledge Base**: Concepts, methodologies, and techniques
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents
-
-   projects
-
 About This Site
 ---------------
 
 This documentation is continuously updated as I explore new areas in 
 cybersecurity. Feel free to explore and learn from the content shared here.
+
+.. toctree::
+   :maxdepth: 3
+   :caption: Contents
+   :hidden:
+
+   projects
 
 .. Indices and tables
    ==================
