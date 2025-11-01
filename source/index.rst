@@ -10,14 +10,14 @@
    :caption: Getting Started
    :hidden:
    
-   Introduction <self>
+   Introduction <main/introduction>
 
 .. toctree::
    :maxdepth: 3
    :caption: Contents
    :hidden:
 
-   projects
+   main/projects
 
 .. Indices and tables
    ==================
