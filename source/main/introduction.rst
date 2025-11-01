@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 Welcome to Security Engineering's documentation!
-================================================
+------------------------------------------------
 
 This documentation site is a collection of my research, projects, and findings 
 in the field of cybersecurity. Here you'll find practical insights, technical 
