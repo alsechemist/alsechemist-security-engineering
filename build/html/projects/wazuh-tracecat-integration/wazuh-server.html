@@ -96,13 +96,55 @@
              
   <section id="wazuh-server">
 <h1>Wazuh Server<a class="headerlink" href="#wazuh-server" title="Link to this heading"></a></h1>
-<p><strong>Wazuh Indexer API:</strong> At first lets start with configuring Wazuh Indexer API.
-You will find the configuration file at /etc/wazuh-indexer/opensearch.yml of your Wazuh Server.
-It’s a very simple configuration, we only need to change one parameter. By default, the network.host parameter is set to 127.0.0.1,
-which means the API is only accessible within the localhost itself. Tracecat won’t be able to access the API if it’s localhost only,
+<p><strong>Wazuh Indexer API:</strong> At first lets start with configuring Wazuh Indexer API. You will find the configuration file at <code class="docutils literal notranslate"><span class="pre">/etc/wazuh-indexer/opensearch.yml</span></code> of your Wazuh Server.
+It’s a very simple configuration, we only need to change one parameter. By default, the <code class="docutils literal notranslate"><span class="pre">network.host</span></code> parameter is set to <strong>127.0.0.1</strong>,
+which means the API is only accessible within the <code class="docutils literal notranslate"><span class="pre">localhost</span></code> itself. Tracecat won’t be able to access the API if it’s <code class="docutils literal notranslate"><span class="pre">localhost</span></code> only,
 for that it is recommended to set the parameter to,</p>
 <div class="highlight-xml notranslate"><div class="highlight"><pre><span></span>network.host:<span class="w"> </span>&quot;0.0.0.0&quot;
 </pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If you want, you can set the parameter to your desired IP address, but you might face some issues while logging in, which you probably have to deal it in your own way.
+That’s why it is recommended to set the parameter to be able to be accessible from every network interface of local machine.
+If you have more than 2 network interfaces, have it your way of configuring it through about how you would like to give access.</p>
+</div>
+<p><strong>Wazuh Active Response:</strong> Now lets configure Wazuh’s Active Response at your Wazuh Server. To get started it’s already available on <a class="reference external" href="https://documentation.wazuh.com/current/user-manual/capabilities/active-response/ar-use-cases/blocking-ssh-brute-force.html">Wazuh’s Offical Documentation</a> site.
+Wazuh has already pretty much configured their active response for their Linux and Windows endpoint.
+An extensive documentation and community support can be found as well.
+But here we are going to focus more on <strong>macOS</strong> endpoints as a bit of configuration is need in order for the active response to work properly.</p>
+<p><strong>Configuring Active Response for macOS Devices at Wazuh Manager:</strong> Go to your Wazuh Server, you can make changes at your manager node both via Wazuh Web GUI and
+by finding the configuration file at <code class="docutils literal notranslate"><span class="pre">/var/ossec/etc/ossec.conf</span></code>, make sure you have <code class="docutils literal notranslate"><span class="pre">sudo</span></code> privileges before accessing through terminal.
+But it more recommended that you access via the Web GUI as it’s more easily manageable and accessible. Follow <code class="docutils literal notranslate"><span class="pre">Server</span> <span class="pre">management</span> <span class="pre">→</span> <span class="pre">Settings</span> <span class="pre">→</span> <span class="pre">Edit</span> <span class="pre">configuration</span></code>.
+There you have to look out for something like <code class="docutils literal notranslate"><span class="pre">&lt;!--</span> <span class="pre">Active</span> <span class="pre">response</span> <span class="pre">--&gt;</span></code>, in that specific section you will notice various active response scripts as shown in the below image:</p>
+<img alt="Wazuh Server Configuration File Active Response Settings" class="align-center" src="../../_images/wazuh-server-img-1.png" />
+<div style="height:25px;"></div><p>Since Wazuh leverages their active response scripts based on their respective OS, for example, <code class="docutils literal notranslate"><span class="pre">firewall-drop</span></code> for Linux endpoints, <code class="docutils literal notranslate"><span class="pre">netsh</span></code> for
+windows endpoints. Similarly, for macOS endpoints, there is a specific script called <code class="docutils literal notranslate"><span class="pre">pf</span></code>, which is a active response script for
+channeling <strong>Packet Filter</strong> as default stateful kernel level firewall used in almost every macOS devices.
+You can look into more details of <a class="reference external" href="https://documentation.wazuh.com/current/user-manual/capabilities/active-response/default-active-response-scripts.html">Wazuh Active Response Scripts</a>
+via clicking on the hyperlink. These are all available at your Linux, Windows and macOS endpoints.</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;command&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>pf<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;executable&gt;</span>pf<span class="nt">&lt;/executable&gt;</span>
+<span class="w">    </span><span class="nt">&lt;timeout_allowed&gt;</span>yes<span class="nt">&lt;/timeout_allowed&gt;</span>
+<span class="nt">&lt;/command&gt;</span>
+</pre></div>
+</div>
+<p>Copy and paste the above code block under that section. And this will enable the <code class="docutils literal notranslate"><span class="pre">pf</span></code> active response script.</p>
+<p>Moving forward, find <cite>&lt;!– Active Response Rules –&gt;</cite> just below and paste the below code block.</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;active-response&gt;</span>
+<span class="w">    </span><span class="nt">&lt;disabled&gt;</span>no<span class="nt">&lt;/disabled&gt;</span>
+<span class="w">    </span><span class="nt">&lt;command&gt;</span>pf<span class="nt">&lt;/command&gt;</span>
+<span class="w">    </span><span class="nt">&lt;location&gt;</span>local<span class="nt">&lt;/location&gt;</span>
+<span class="w">    </span><span class="nt">&lt;timeout&gt;</span>180<span class="nt">&lt;/timeout&gt;</span>
+<span class="nt">&lt;/active-response&gt;</span>
+</pre></div>
+</div>
+<p>This will execute the active response script.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Make sure the above code are under <cite>&lt;ossec_config&gt; * &lt;/ossec_config&gt;</cite> block. You can also put under a separate <strong>ossec_config</strong> block at
+the last of the configuration file for tracing and managing it a bit more conveniently.</p>
 </div>
 </section>
 
