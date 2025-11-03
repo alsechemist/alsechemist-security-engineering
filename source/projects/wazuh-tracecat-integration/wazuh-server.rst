@@ -50,7 +50,7 @@ via clicking on the hyperlink. These are all available at your Linux, Windows an
 
 Copy and paste the above code block under that section. And this will enable the ``pf`` active response script.
 
-Moving forward, find `<!-- Active Response Rules -->` just below and paste the below code block.
+Moving forward, find ``<!-- Active Response Rules -->`` just below and paste the below code block.
 
 .. code-block:: xml
 
