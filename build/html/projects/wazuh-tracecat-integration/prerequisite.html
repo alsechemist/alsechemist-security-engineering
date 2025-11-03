@@ -108,7 +108,7 @@ section of Wazuh’s Official Documentation Page.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">WAZUH_WUI_PASSWORD</span></code>: Fill the parameter with the same password of your <strong>wazuh-wui</strong> user.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">WAZUH_WUI_USERNAME</span></code>: Fill this parameter with the same name of your <strong>wazuh-wui</strong>, which is <strong>wazuh-wui</strong> itself by default.</p></li>
 </ol>
-<img alt="Tracecat Server Credential setup" class="align-center" src="../../_images/tracecat-server-credential-1.png" />
+<img alt="Tracecat Server Credential - Wazuh WUI User's Credential Setup" class="align-center" src="../../_images/tracecat-server-credential-1.png" />
 <p><strong>Setting up the Credentials for Wazuh Indexer API Server:</strong> The user <strong>wazuh-wui</strong> is not authorized to access the Wazuh Indexers.
 That’s why we will be needing a user who has access to it. The right and most easy choice would be a <strong>Wazuh Admin</strong> itself.
 Add the credentials in the same way. For the below parameters, the naming convention and order are not required to be the exact since
@@ -117,6 +117,15 @@ they are optional and are being added on demand.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">WAZUH_INDEXER_USERNAME</span></code>: Fill the parameter with the same username of your Wazuh Admin user.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">WAZUH_INDEXER_PASSWORD</span></code>: Fill this parameter with the same password of your Wazuh Admin.</p></li>
 </ol>
+<img alt="Tracecat Server Credential - Wazuh Indexer User's Credential Setup" class="align-center" src="../../_images/tracecat-server-credential-2.png" />
+<div style="height:25px;"></div><div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Follow the <a class="reference external" href="https://documentation.wazuh.com/current/quickstart.html">Quick Start</a> hyperlink to know,
+how to fetch the credentials of <strong>wazuh-wui</strong> and other users in details. Otherwise, you might need to change the password of that users
+in order to have it again. Besides, If you change the <strong>wazuh-wui</strong> password, you must update it in the Wazuh dashboard and
+if you change the <strong>admin</strong> password, you must update it in Filebeat and the Wazuh server.
+Follow Wazuh’s <a class="reference external" href="https://documentation.wazuh.com/current/user-manual/user-administration/password-management.html">Password Management</a> guide to know more.</p>
+</div>
 </section>
 
 
