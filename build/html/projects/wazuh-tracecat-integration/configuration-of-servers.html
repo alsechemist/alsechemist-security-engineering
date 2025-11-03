@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>What is Tracecat? &mdash; Security Engineering 1.0 documentation</title>
+  <title>Configurations of Servers &mdash; Security Engineering 1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=86f27845" />
 
@@ -18,8 +18,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="The Power of Integration" href="the-power-of-integration.html" />
-    <link rel="prev" title="What is Wazuh?" href="what-is-wazuh.html" /> 
+    <link rel="next" title="Wazuh Server" href="wazuh-server.html" />
+    <link rel="prev" title="Architecture" href="architecture.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -53,12 +53,15 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="introduction.html">Wazuh &amp; Tracecat Integration</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="what-is-wazuh.html">What is Wazuh?</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">What is Tracecat?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="what-is-tracecat.html">What is Tracecat?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="the-power-of-integration.html">The Power of Integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="what-we-will-learn.html">What We’ll Learn?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="scope-of-engagement.html">Scope of Engagement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="architecture.html">Architecture</a></li>
-<li class="toctree-l2"><a class="reference internal" href="configuration-of-servers.html">Configurations of Servers</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Configurations of Servers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="wazuh-server.html">Wazuh Server</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -78,9 +81,9 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="introduction.html">Introduction</a></li>
-      <li class="breadcrumb-item active">What is Tracecat?</li>
+      <li class="breadcrumb-item active">Configurations of Servers</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/projects/wazuh-tracecat-integration/what-is-tracecat.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/projects/wazuh-tracecat-integration/configuration-of-servers.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -88,24 +91,25 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="what-is-tracecat">
-<h1>What is Tracecat?<a class="headerlink" href="#what-is-tracecat" title="Link to this heading"></a></h1>
-<p>Tracecat represents the next generation of Security Orchestration, Automation, and Response (SOAR) platforms.
-While traditional SOAR solutions often require extensive customization and complex licensing,
-Tracecat provides an intuitive, workflow-driven approach to security automation that democratizes advanced threat response capabilities.
-Imagine Tracecat as an intelligent conductor orchestrating a symphony of security tools.
-It excels at connecting disparate security systems, creating automated workflows that can investigate alerts,
-enrich threat intelligence, and execute complex response procedures without human intervention.
-Tracecat’s strength lies in its ability to standardize and streamline security operations,
-reducing the mean time to response and ensuring consistent handling of security incidents.</p>
-<img alt="Tracecat Logo" class="align-center" src="../../_images/tracecat-logo.svg" /><div style="height:50px;"></div></section>
+  <section id="configurations-of-servers">
+<h1>Configurations of Servers<a class="headerlink" href="#configurations-of-servers" title="Link to this heading"></a></h1>
+<p>Now let’s get started with the main work. We will be working with <strong>2 servers</strong> and <strong>1 specific agent</strong>.
+They are as follows:</p>
+<ul class="simple">
+<li><p><strong>Wazuh Server</strong></p></li>
+<li><p><strong>Wazuh Agent</strong> – <em>(macOS Endpoint)</em></p></li>
+<li><p><strong>Tracecat Server</strong></p></li>
+</ul>
+<div class="toctree-wrapper compound">
+</div>
+</section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="what-is-wazuh.html" class="btn btn-neutral float-left" title="What is Wazuh?" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="the-power-of-integration.html" class="btn btn-neutral float-right" title="The Power of Integration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="architecture.html" class="btn btn-neutral float-left" title="Architecture" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="wazuh-server.html" class="btn btn-neutral float-right" title="Wazuh Server" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

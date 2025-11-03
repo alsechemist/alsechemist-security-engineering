@@ -15,6 +15,6 @@ This feature transforms Wazuh from a passive monitoring tool into an active defe
 When suspicious activity is detected, Active Response can immediately execute predefined actions such as blocking 
 IP addresses, disabling user accounts, or isolating compromised systems.
 
-.. image:: ../../assets/images/wazuh-logo.png
+.. image:: ../../assets/images/wazuh-tracecat-integration/wazuh-logo.png
    :alt: Wazuh Logo
    :align: center

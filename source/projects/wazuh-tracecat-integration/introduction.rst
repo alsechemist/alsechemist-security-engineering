@@ -6,15 +6,13 @@ This integration brings together two powerful open-source platforms that complem
 Wazuh for comprehensive security monitoring and Tracecat for intelligent security orchestration.
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Projects
+   :maxdepth: 3
    :hidden:
 
    ../../projects/wazuh-tracecat-integration/what-is-wazuh
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Projects
-   :hidden:
-
    ../../projects/wazuh-tracecat-integration/what-is-tracecat
+   ../../projects/wazuh-tracecat-integration/the-power-of-integration
+   ../../projects/wazuh-tracecat-integration/what-we-will-learn
+   ../../projects/wazuh-tracecat-integration/scope-of-engagement
+   ../../projects/wazuh-tracecat-integration/architecture
+   ../../projects/wazuh-tracecat-integration/configuration-of-servers
