@@ -14,4 +14,11 @@ And this code block under ``<ossec_config> * </ossec_config>``, if it's not pres
         <location>/var/ossec/logs/active-responses.log</location>
     </localfile>
 
+Save and ``restart`` the **Wazuh Agent** via the command below on your macOS machine.
+
+.. code-block:: bash
+
+    sudo /Library/Ossec/bin/ossec-control restart
+
+
 Now, the Wazuh Agent will read logs from the ``active-responses.log``.

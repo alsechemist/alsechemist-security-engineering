@@ -122,6 +122,10 @@ for that it is recommended to set the parameter to,</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">network.host</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;0.0.0.0&quot;</span>
 </pre></div>
 </div>
+<p>and <code class="docutils literal notranslate"><span class="pre">restart</span></code> the <strong>Wazuh Indexer</strong>,</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>wazuh-indexer
+</pre></div>
+</div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>If you want, you can set the parameter to your desired IP address, but you might face some issues while logging in, which you probably have to deal it in your own way.
@@ -131,7 +135,7 @@ If you have more than 2 network interfaces, have it your way of configuring it t
 </section>
 <section id="wazuh-active-response">
 <h2>Wazuh Active Response<a class="headerlink" href="#wazuh-active-response" title="Link to this heading"></a></h2>
-<p>Now lets configure Wazuh’s Active Response at your Wazuh Server. To get started it’s already available on <a class="reference external" href="https://documentation.wazuh.com/current/user-manual/capabilities/active-response/ar-use-cases/blocking-ssh-brute-force.html">Wazuh’s Offical Documentation</a> site.
+<p>Now let’s configure Wazuh’s Active Response at your Wazuh Server. To get started it’s already available on <a class="reference external" href="https://documentation.wazuh.com/current/user-manual/capabilities/active-response/ar-use-cases/blocking-ssh-brute-force.html">Wazuh’s Offical Documentation</a> site.
 Wazuh has already pretty much configured their active response for their Linux and Windows endpoint.
 An extensive documentation and community support can be found as well.
 But here we are going to focus more on <strong>macOS</strong> endpoints as a bit of configuration is need in order for the active response to work properly.</p>
@@ -144,7 +148,7 @@ But it more recommended that you access via the Web GUI as it’s more easily ma
 There you have to look out for something like <code class="docutils literal notranslate"><span class="pre">&lt;!--</span> <span class="pre">Active</span> <span class="pre">response</span> <span class="pre">--&gt;</span></code>, in that specific section you will notice various active response scripts as shown in the below image:</p>
 <img alt="Wazuh Server Configuration File Active Response Settings" class="align-center" src="../../_images/wazuh-server-img-1.png" />
 <div style="height:25px;"></div><p>Since Wazuh leverages their active response scripts based on their respective OS, for example, <code class="docutils literal notranslate"><span class="pre">firewall-drop</span></code> for Linux endpoints, <code class="docutils literal notranslate"><span class="pre">netsh</span></code> for
-windows endpoints. Similarly, for macOS endpoints, there is a specific script called <code class="docutils literal notranslate"><span class="pre">pf</span></code>, which is a active response script for
+windows endpoints. Similarly, for macOS endpoints, there is a specific script called <code class="docutils literal notranslate"><span class="pre">pf</span></code>, which is an active response script for
 channeling <strong>Packet Filter</strong> as default stateful kernel level firewall used in almost every macOS devices.
 You can look into more details of <a class="reference external" href="https://documentation.wazuh.com/current/user-manual/capabilities/active-response/default-active-response-scripts.html">Wazuh Active Response Scripts</a>
 via clicking on the hyperlink. These are all available at your Linux, Windows and macOS endpoints.</p>
@@ -166,6 +170,7 @@ via clicking on the hyperlink. These are all available at your Linux, Windows an
 </pre></div>
 </div>
 <p>This will execute the active response script.</p>
+<p>Last, but the least, don’t forget to save and <code class="docutils literal notranslate"><span class="pre">restart</span></code> your Wazuh Manager.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Make sure the above code are under <code class="docutils literal notranslate"><span class="pre">&lt;ossec_config&gt;</span> <span class="pre">*</span> <span class="pre">&lt;/ossec_config&gt;</span></code> block. You can also put under a separate <strong>ossec_config</strong> block at

@@ -26,4 +26,5 @@ We will find the ``Status`` → **Completed**. You can also verify deeper by dig
    ../../projects/wazuh-tracecat-integration/testing-linux-agents
    ../../projects/wazuh-tracecat-integration/testing-windows-agents
    ../../projects/wazuh-tracecat-integration/testing-macos-agents
+..   ../../projects/wazuh-tracecat-integration/validation
 

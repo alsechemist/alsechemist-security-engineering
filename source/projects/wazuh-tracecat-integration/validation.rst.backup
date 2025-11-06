@@ -1,0 +1,38 @@
+Validation
+==========
+
+In this page will see and validate if a malicious attacker or IP is actually blocked.
+
+Linux Agents
+------------
+
+To check **Wazuh Active Response -** ``firewall-drop`` script has actually blocked a malicious IP. We need to check ``iptables`` rules list,
+as the script leverages ``iptables`` to do its job. Copy and past the command below in your Linux Agent and make sure you have ``sudo`` privileges.
+
+.. code-block:: bash
+
+    sudo iptables -L
+
+You should see ``iptables`` blocked the malicious IP.
+
+.. image:: ../../assets/images/wazuh-tracecat-integration/validation-1.png
+   :alt: Validating malicious IP getting Blocked for Linux Agents
+   :align: center
+
+Windows Agents
+--------------
+
+To check **Wazuh Active Response -** ``netsh`` script has actually blocked a malicious IP. We need to check ``netsh`` rules list, or
+we can check **Windows Defender Firewall** rules through the ``Advanced Settings``. Copy and past the command below in your Windows Agent and make sure you have ``administrative`` privileges.
+
+.. code-block:: bash
+
+    sudo iptables -L
+
+You should see ``iptables`` blocked the malicious IP.
+
+.. image:: ../../assets/images/wazuh-tracecat-integration/validation-1.png
+   :alt: Validating malicious IP getting Blocked for Linux Agents
+   :align: center
+
+

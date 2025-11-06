@@ -18,6 +18,12 @@ for that it is recommended to set the parameter to,
 
     network.host: "0.0.0.0"
 
+and ``restart`` the **Wazuh Indexer**,
+
+.. code-block:: bash
+
+    sudo systemctl restart wazuh-indexer
+
 .. Warning::
 
     If you want, you can set the parameter to your desired IP address, but you might face some issues while logging in, which you probably have to deal it in your own way. 
@@ -27,7 +33,7 @@ for that it is recommended to set the parameter to,
 Wazuh Active Response
 ---------------------
 
-Now lets configure Wazuh's Active Response at your Wazuh Server. To get started it's already available on `Wazuh's Offical Documentation <https://documentation.wazuh.com/current/user-manual/capabilities/active-response/ar-use-cases/blocking-ssh-brute-force.html>`_ site. 
+Now let's configure Wazuh's Active Response at your Wazuh Server. To get started it's already available on `Wazuh's Offical Documentation <https://documentation.wazuh.com/current/user-manual/capabilities/active-response/ar-use-cases/blocking-ssh-brute-force.html>`_ site. 
 Wazuh has already pretty much configured their active response for their Linux and Windows endpoint.
 An extensive documentation and community support can be found as well. 
 But here we are going to focus more on **macOS** endpoints as a bit of configuration is need in order for the active response to work properly.
@@ -49,7 +55,7 @@ There you have to look out for something like ``<!-- Active response -->``, in t
    <div style="height:25px;"></div>
 
 Since Wazuh leverages their active response scripts based on their respective OS, for example, ``firewall-drop`` for Linux endpoints, ``netsh`` for
-windows endpoints. Similarly, for macOS endpoints, there is a specific script called ``pf``, which is a active response script for
+windows endpoints. Similarly, for macOS endpoints, there is a specific script called ``pf``, which is an active response script for
 channeling **Packet Filter** as default stateful kernel level firewall used in almost every macOS devices.
 You can look into more details of `Wazuh Active Response Scripts <https://documentation.wazuh.com/current/user-manual/capabilities/active-response/default-active-response-scripts.html>`_
 via clicking on the hyperlink. These are all available at your Linux, Windows and macOS endpoints.
@@ -76,6 +82,8 @@ Moving forward, find ``<!-- Active Response Rules -->`` just below and paste the
     </active-response>
 
 This will execute the active response script.
+
+Last, but the least, don't forget to save and ``restart`` your Wazuh Manager.
 
 .. note::
 

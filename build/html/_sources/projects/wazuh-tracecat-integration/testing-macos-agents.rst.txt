@@ -10,7 +10,7 @@ Copy and paste the below command on your attacking machine.
 
 .. code-block:: bash
 
-   sudo hydra -t 4 -l [username] -P [path/to/wordlist] [ip-of-linux-machine] rdp -v -I
+   sudo hydra -t 4 -l [username] -P [path/to/wordlist] [ip-of-linux-machine] ssh -v -I
 
 An image has been attached below for demonstration.
 

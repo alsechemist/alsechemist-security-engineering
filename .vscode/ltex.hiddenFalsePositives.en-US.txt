@@ -1,0 +1,1 @@
+{"rule":"EN_A_VS_AN","sentence":"^\\QIn this page will see and validate if an malicious attacker or ip is actually blocked.\\E$"}
