@@ -33,8 +33,9 @@
 
           
           
-          <a href="../../index.html" class="icon icon-home">
-            Security Engineering
+          <a href="../../index.html">
+            
+              <img src="../../_static/alsechemist-logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -71,6 +72,7 @@
 <li class="toctree-l3"><a class="reference internal" href="conditional-executions-of-the-active-response-components.html">Conditional Executions of The Active Response Components</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Automated Runs</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#setting-up-scheduled-runs">Setting Up Scheduled Runs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#inspection-of-scheduled-runs">Inspection of Scheduled Runs</a></li>
 </ul>
 </li>
 </ul>
@@ -99,7 +101,6 @@
           <li class="breadcrumb-item"><a href="configuration-of-servers.html">Configurations of Servers</a></li>
       <li class="breadcrumb-item active">Automated Runs</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/projects/wazuh-tracecat-integration/automated-runs.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -116,12 +117,21 @@ Like any other SOAR Tracecat also, has its feature of scheduled workflow runs, w
 specified period of time.</p>
 <section id="setting-up-scheduled-runs">
 <h2>Setting Up Scheduled Runs<a class="headerlink" href="#setting-up-scheduled-runs" title="Link to this heading"></a></h2>
-<p>In order to set up workflow scheduled runs, hit the <code class="docutils literal notranslate"><span class="pre">Trigger</span></code> component, and you will find it <code class="docutils literal notranslate"><span class="pre">Schedules</span></code> Tab at the last.</p>
+<p>In order to set up workflow scheduled runs, hit the <code class="docutils literal notranslate"><span class="pre">Trigger</span></code> component, and you will find a <code class="docutils literal notranslate"><span class="pre">Schedules</span></code> Tab at the last.</p>
 <img alt="Showcasing Where Schedules Module is" class="align-center" src="../../_images/automated-runs-1.png" />
 <div style="height:25px;"></div><p>Next, <code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">Schedule`</span></code> and before actually setting it up you will find that, it’s divided into <code class="docutils literal notranslate"><span class="pre">Years</span></code>, <code class="docutils literal notranslate"><span class="pre">Months</span></code>, <code class="docutils literal notranslate"><span class="pre">Days</span></code>, <code class="docutils literal notranslate"><span class="pre">Hours</span></code>, <code class="docutils literal notranslate"><span class="pre">Minutes</span></code> and <code class="docutils literal notranslate"><span class="pre">Seconds</span></code>.
 Feel free to set tinker with it and set it up as you like. As for our case, I have set the timer to <code class="docutils literal notranslate"><span class="pre">30</span> <span class="pre">Seconds</span></code>,
-which means the workflow will automatically run every <code class="docutils literal notranslate"><span class="pre">30</span> <span class="pre">Seconds</span></code> period.</p>
-</section>
+which means the workflow will automatically run every <code class="docutils literal notranslate"><span class="pre">30</span> <span class="pre">Seconds</span></code> period. An image is shown below as reference,</p>
+<img alt="Showcasing Where Schedules Module is" class="align-center" src="../../_images/automated-runs-2.png" />
+<div style="height:25px;"></div><p>After creating the schedule we should be able to see a <code class="docutils literal notranslate"><span class="pre">green</span> <span class="pre">dot</span></code> has appeared, confirming the scheduled run is now active.</p>
+<img alt="Showcasing Where Schedules Module is" class="align-center" src="../../_images/automated-runs-3.png" />
+<div style="height:25px;"></div></section>
+<section id="inspection-of-scheduled-runs">
+<h2>Inspection of Scheduled Runs<a class="headerlink" href="#inspection-of-scheduled-runs" title="Link to this heading"></a></h2>
+<p>Now, we will be able to inspect all our scheduled runs, at the <code class="docutils literal notranslate"><span class="pre">Runs</span></code> Tab just beside the <code class="docutils literal notranslate"><span class="pre">Workflow</span></code> Tabs. There, we will be able to find all the
+details of each scheduled runs, component by component such as the image we can see below,</p>
+<img alt="Showcasing Where Schedules Module is" class="align-center" src="../../_images/automated-runs-4.png" />
+<div style="height:25px;"></div></section>
 </section>
 
 

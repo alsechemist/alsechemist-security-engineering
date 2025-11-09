@@ -32,8 +32,9 @@
 
           
           
-          <a href="../../index.html" class="icon icon-home">
-            Security Engineering
+          <a href="../../index.html">
+            
+              <img src="../../_static/alsechemist-logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -91,7 +92,6 @@
           <li class="breadcrumb-item"><a href="introduction.html">Introduction</a></li>
       <li class="breadcrumb-item active">Conclusion</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/projects/wazuh-tracecat-integration/conclusion.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -107,10 +107,10 @@ self-defending infrastructure capable of detecting and neutralizing threats in r
 <section id="what-we-ve-accomplished">
 <h2>What We’ve Accomplished<a class="headerlink" href="#what-we-ve-accomplished" title="Link to this heading"></a></h2>
 <p>We began by establishing the foundational connections that enable Tracecat to communicate with Wazuh’s ecosystem. By configuring authentication through
-the wazuh_wui user credentials and leveraging the tools.wazuh.get_access_token module, we created a secure bridge between the orchestration platform and
+the <code class="docutils literal notranslate"><span class="pre">wazuh_wui</span></code> user credentials and leveraging the <code class="docutils literal notranslate"><span class="pre">tools.wazuh.get_access_token</span></code> module, we created a secure bridge between the orchestration platform and
 the security monitoring infrastructure. This JWT token-based authentication ensures that every automated action is properly authorized and auditable.</p>
 <p>Building upon this foundation, we demonstrated how to query the Wazuh Indexer API using the core.http_request module to search for specific security events.
-By targeting SSH brute force attack patterns through rule IDs 5763, 60204, and 5712, we created an intelligent detection mechanism that identifies threats based on
+By targeting SSH brute force attack patterns through rule IDs <code class="docutils literal notranslate"><span class="pre">5763</span></code>, <code class="docutils literal notranslate"><span class="pre">60204</span></code>, and <code class="docutils literal notranslate"><span class="pre">5712</span></code>, we created an intelligent detection mechanism that identifies threats based on
 behavioral patterns rather than static signatures. This approach allows the system to catch sophisticated attacks that might evolve their techniques while
 maintaining core attack characteristics.</p>
 <p>The integration with Wazuh’s Active Response capability represents the culmination of our automation efforts. By connecting to the Wazuh Server API,
@@ -152,7 +152,9 @@ The automated SSH brute force blocking workflow you’ve implemented is already 
 comprehensive security automation across your entire environment.</p>
 <p>The journey toward fully automated security operations is continuous, but with Wazuh providing the eyes and ears, and Tracecat serving as the intelligent orchestrator,
 you have a powerful foundation for building security systems that can truly keep pace with modern threats.# Wazuh and Tracecat Integration Overview</p>
-</section>
+<div style="text-align:center; font-size:24px; font-weight:bold; font-style:italic; margin-top:25px;">
+     “Stay Vigilant, Stay Frosty”
+</div></section>
 </section>
 
 

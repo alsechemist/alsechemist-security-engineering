@@ -38,7 +38,7 @@ make sure you have ``administrative`` privileges.
 You should be able to see an output like this image below:
 
 .. image:: ../../assets/images/wazuh-tracecat-integration/validation-2.png
-   :alt: Validating malicious IP getting Blocked for Linux Agents
+   :alt: Validating malicious IP getting Blocked for Windows Agents via netsh Command
    :align: center
 
 .. raw:: html
@@ -49,7 +49,7 @@ Or, you can also check it via the GUI Interface by simply going to **Windows Def
 
 
 .. image:: ../../assets/images/wazuh-tracecat-integration/validation-3.png
-   :alt: Validating malicious IP getting Blocked for Linux Agents
+   :alt: Validating malicious IP getting Blocked for Windows Agents via GUI
    :align: center
 
 .. raw:: html
@@ -73,7 +73,7 @@ Copy and past the command below in your Linux Agent and make sure you have ``sud
 You should see ``pf`` blocked the malicious IP.
 
 .. image:: ../../assets/images/wazuh-tracecat-integration/validation-4.png
-   :alt: Validating malicious IP getting Blocked for Linux Agents
+   :alt: Validating malicious IP getting Blocked for macOS Agents
    :align: center
 
 .. raw:: html

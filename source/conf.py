@@ -21,13 +21,18 @@ extensions = [
 templates_path = ['_templates']
 exclude_patterns = []
 
-
-
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
+html_show_sourcelink = False
+html_logo = "_static/images/alsechemist-logo.png"
+html_theme_options = {
+    "logo_only": True,       # show logo without project name (optional)
+    "display_version": False # hide version below the logo (optional)
+}
+
 
 # -- Options for Copy Button -------------------------------------------------
 

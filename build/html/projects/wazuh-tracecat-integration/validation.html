@@ -33,8 +33,9 @@
 
           
           
-          <a href="../../index.html" class="icon icon-home">
-            Security Engineering
+          <a href="../../index.html">
+            
+              <img src="../../_static/alsechemist-logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -97,7 +98,6 @@
           <li class="breadcrumb-item"><a href="proof-of-concept.html">Proof of Concept</a></li>
       <li class="breadcrumb-item active">Validation</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/projects/wazuh-tracecat-integration/validation.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -128,9 +128,9 @@ netsh<span class="w"> </span>advfirewall<span class="w"> </span>firewall<span cl
 </pre></div>
 </div>
 <p>You should be able to see an output like this image below:</p>
-<img alt="Validating malicious IP getting Blocked for Linux Agents" class="align-center" src="../../_images/validation-2.png" />
+<img alt="Validating malicious IP getting Blocked for Windows Agents via netsh Command" class="align-center" src="../../_images/validation-2.png" />
 <div style="height:25px;"></div><p>Or, you can also check it via the GUI Interface by simply going to <strong>Windows Defender Firewall → Advanced Settings</strong> and check the <code class="docutils literal notranslate"><span class="pre">Inbound</span> <span class="pre">Rules</span></code></p>
-<img alt="Validating malicious IP getting Blocked for Linux Agents" class="align-center" src="../../_images/validation-3.png" />
+<img alt="Validating malicious IP getting Blocked for Windows Agents via GUI" class="align-center" src="../../_images/validation-3.png" />
 <div style="height:25px;"></div><p>As you can see, the exact same <strong>Wazuh Rule</strong> name is showing here as well.</p>
 </section>
 <section id="macos-agents">
@@ -143,7 +143,7 @@ sudo<span class="w"> </span>pfctl<span class="w"> </span>-t<span class="w"> </sp
 </pre></div>
 </div>
 <p>You should see <code class="docutils literal notranslate"><span class="pre">pf</span></code> blocked the malicious IP.</p>
-<img alt="Validating malicious IP getting Blocked for Linux Agents" class="align-center" src="../../_images/validation-4.png" />
+<img alt="Validating malicious IP getting Blocked for macOS Agents" class="align-center" src="../../_images/validation-4.png" />
 <div style="height:25px;"></div></section>
 </section>
 

@@ -9,11 +9,11 @@ What We've Accomplished
 -----------------------
 
 We began by establishing the foundational connections that enable Tracecat to communicate with Wazuh's ecosystem. By configuring authentication through
-the wazuh_wui user credentials and leveraging the tools.wazuh.get_access_token module, we created a secure bridge between the orchestration platform and
+the ``wazuh_wui`` user credentials and leveraging the ``tools.wazuh.get_access_token`` module, we created a secure bridge between the orchestration platform and
 the security monitoring infrastructure. This JWT token-based authentication ensures that every automated action is properly authorized and auditable.
 
 Building upon this foundation, we demonstrated how to query the Wazuh Indexer API using the core.http_request module to search for specific security events.
-By targeting SSH brute force attack patterns through rule IDs 5763, 60204, and 5712, we created an intelligent detection mechanism that identifies threats based on
+By targeting SSH brute force attack patterns through rule IDs ``5763``, ``60204``, and ``5712``, we created an intelligent detection mechanism that identifies threats based on
 behavioral patterns rather than static signatures. This approach allows the system to catch sophisticated attacks that might evolve their techniques while
 maintaining core attack characteristics.
 
@@ -65,3 +65,9 @@ comprehensive security automation across your entire environment.
 
 The journey toward fully automated security operations is continuous, but with Wazuh providing the eyes and ears, and Tracecat serving as the intelligent orchestrator,
 you have a powerful foundation for building security systems that can truly keep pace with modern threats.# Wazuh and Tracecat Integration Overview
+
+.. raw:: html
+
+   <div style="text-align:center; font-size:24px; font-weight:bold; font-style:italic; margin-top:25px;">
+        “Stay Vigilant, Stay Frosty”
+   </div>
