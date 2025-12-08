@@ -17,8 +17,9 @@
 }
 
 /* Version selector text (e.g., "latest") */
-.wy-side-nav-search .version {
-    color: #000000 !important;   /* black */
+.wy-side-nav-search div.version,
+.wy-side-nav-search div.version span {
+    color: #000000 !important;
 }
 
 /* Bottom sidebar panel */
