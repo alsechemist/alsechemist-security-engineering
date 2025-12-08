@@ -28,11 +28,13 @@ html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
 html_show_sourcelink = False
 html_logo = "_static/images/alsechemist-logo.png"
-html_theme_options = {
-    "logo_only": True,       # show logo without project name (optional)
-    "display_version": False # hide version below the logo (optional)
-}
-
+#html_theme_options = {
+#    "logo_only": True,       # show logo without project name (optional)
+#    "display_version": False # hide version below the logo (optional)
+#}
+html_css_files = [
+    'custom-styling/side-panel.css'
+]
 
 # -- Options for Copy Button -------------------------------------------------
 
