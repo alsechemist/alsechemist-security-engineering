@@ -16,10 +16,12 @@
     color: #000000 !important;   /* black */
 }
 
+/* Version selector text (e.g., "latest") */
+.wy-side-nav-search .version {
+    color: #000000 !important;   /* black */
+}
+
 /* Bottom sidebar panel */
 .wy-nav-side {
     background-color: #0f0f0f !important;   /* CHANGE THIS */
 }
-
-
-
