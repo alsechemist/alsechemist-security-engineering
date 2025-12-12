@@ -16,22 +16,6 @@
     color: #000000 !important;   /* black */
 }
 
-/* Change the text color of the main dropdown button */
-.rst-versions .rst-version {
-    color: #000000 !important;
-}
-
-/* Change the text color of links within the dropdown menu */
-.rst-versions a {
-    color: #000000 !important;
-}
-
-/* Change text color on hover for accessibility/visibility */
-.rst-versions a:hover {
-    color: #000000 !important;
-}
-
-
 /* Bottom sidebar panel */
 .wy-nav-side {
     background-color: #0f0f0f !important;   /* CHANGE THIS */
