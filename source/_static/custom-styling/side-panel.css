@@ -16,10 +16,10 @@
     color: #000000 !important;   /* black */
 }
 
-.wy-side-nav-search .rst-current-version,
-.wy-nav-side .rst-current-version {
+.rst-current-version span {
     color: #000000 !important;
 }
+
 
 /* Bottom sidebar panel */
 .wy-nav-side {
