@@ -16,7 +16,18 @@
     color: #000000 !important;   /* black */
 }
 
-.rst-current-version span {
+/* Change the text color of the main dropdown button */
+.rst-versions .rst-version {
+    color: #000000 !important;
+}
+
+/* Change the text color of links within the dropdown menu */
+.rst-versions a {
+    color: #000000 !important;
+}
+
+/* Change text color on hover for accessibility/visibility */
+.rst-versions a:hover {
     color: #000000 !important;
 }
 
