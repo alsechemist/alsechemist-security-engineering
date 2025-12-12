@@ -1,0 +1,226 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Setting Up Mod Evasive Module &mdash; Security Engineering 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom-styling/side-panel.css?v=4db843ae" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=9760a2b4"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="Generic Setup &amp; Prerequisites" href="generic-setup-and-prerquisites.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Security Engineering
+              <img src="../../_static/alsechemist-logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../main/security-engineering.html">Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../projects.html">Projects</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Projects</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../wazuh-tracecat-integration/introduction.html">Wazuh &amp; Tracecat Integration</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="introduction.html">Apache2 Server Hardening</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="generic-setup-and-prerquisites.html">Generic Setup &amp; Prerequisites</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Setting Up Mod Evasive Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#installing-the-apache2-evasive-module">Installing the apache2 evasive module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configuring-the-evasive-module">Configuring the Evasive Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#parameter-description">Parameter Description:</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#creating-the-directory-for-storing-logs-as-specified">Creating The Directory for Storing Logs as specified</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#enabling-the-evasive-module">Enabling the Evasive Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#testing-the-module">Testing the Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#checking-and-investigating-logs">Checking and Investigating Logs</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Security Engineering</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="introduction.html">Introduction</a></li>
+      <li class="breadcrumb-item active">Setting Up Mod Evasive Module</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="setting-up-mod-evasive-module">
+<h1>Setting Up Mod Evasive Module<a class="headerlink" href="#setting-up-mod-evasive-module" title="Link to this heading"></a></h1>
+<p>ModEvasive is an Apache module designed to provide evasive action against HTTP DoS (Denial of Service),
+DDoS (Distributed Denial of Service), and brute-force attacks. It works by tracking the number of requests per client and
+temporarily blocking IPs that exceed configured thresholds, helping protect web servers from overload and malicious traffic.</p>
+<section id="installing-the-apache2-evasive-module">
+<h2>Installing the apache2 evasive module<a class="headerlink" href="#installing-the-apache2-evasive-module" title="Link to this heading"></a></h2>
+<p>Run the below command to install <code class="docutils literal notranslate"><span class="pre">libapache2-mod-evasive</span></code></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>libapache2-mod-evasive
+</pre></div>
+</div>
+<p>Depending on whether we want to receive automated alerts at our email address, we would like to choose between these options.
+If we want to receive email regarding the alerts, it will create a postfix server and run its services.
+This is not recommended in a production environment, as this will create unnecessary services, if the instance is not dedicated for handling email services.
+For now, we will go with <code class="docutils literal notranslate"><span class="pre">No</span> <span class="pre">Connection</span></code></p>
+<img alt="Email Server Setup Options" class="align-center" src="../../_images/apache2-server-hardening-img-3.png" />
+<div style="height:25px;"></div></section>
+<section id="configuring-the-evasive-module">
+<h2>Configuring the Evasive Module<a class="headerlink" href="#configuring-the-evasive-module" title="Link to this heading"></a></h2>
+<p>Head over to the <code class="docutils literal notranslate"><span class="pre">/etc/apache2/mods-available/</span></code> directory and open <code class="docutils literal notranslate"><span class="pre">evasive.conf</span></code> file using your preferred text editor. I will be using vim.</p>
+<img alt="Mod Evasive Configuration File" class="align-center" src="../../_images/apache2-server-hardening-img-4.png" />
+<div style="height:25px;"></div><section id="parameter-description">
+<h3>Parameter Description:<a class="headerlink" href="#parameter-description" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>DOSHashTableSize:</strong> Increase or decrease the hash-table size according to your requirements. It is recommended to use higher values if your server is usually busy or receives a high amount of traffic.</p></li>
+<li><p><strong>DOSPageCount:</strong> The number of requests it will consider for a single page within a given timeframe.</p></li>
+<li><p><strong>DOSSiteCount:</strong> The number of requests it will consider throughout the whole site or application.</p></li>
+<li><p><strong>DOSPageInterval:</strong> The time interval (in seconds) used to check the number of requests for the same page, corresponding to DOSPageCount.</p></li>
+<li><p><strong>DOSSiteInterval:</strong> The time interval (in seconds) used to check the number of requests across the whole site, corresponding to DOSSiteCount.</p></li>
+<li><p><strong>DOSBlockingPeriod:</strong> The time period (in seconds) for which the attacker will remain blocked after exceeding the limits.</p></li>
+<li><p><strong>DOSEmailNotify:</strong> The email address where notifications will be sent when an attack is detected. (Not Required Since we didn’t set up the postfix server during the installation).</p></li>
+<li><p><strong>DOSSystemCommand:</strong> The system command to be executed when an attack is detected. (Not Required because it, the module automatically does its job, and block all incoming requests from the attacker.)</p></li>
+<li><p><strong>DOSLogDir:</strong> The directory path where the mod_evasive logs will be stored.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It’s always recommended to keep the value of the time interval to be shorter and precise than the <code class="docutils literal notranslate"><span class="pre">DOSPageCount</span></code> and <code class="docutils literal notranslate"><span class="pre">DOSSiteCount</span></code>.
+It might vary depending on scenarios, but choose what’s best for you and to avoid false positives.</p>
+</div>
+</section>
+</section>
+<section id="creating-the-directory-for-storing-logs-as-specified">
+<h2>Creating The Directory for Storing Logs as specified<a class="headerlink" href="#creating-the-directory-for-storing-logs-as-specified" title="Link to this heading"></a></h2>
+<p>It is required to manually create the log directory as specified.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>mkdir<span class="w"> </span>/var/log/mod_evasive
+</pre></div>
+</div>
+<p>Next, it is also required to change the owner of the log directory as the evasive module uses <code class="docutils literal notranslate"><span class="pre">www-data</span></code> as the specified user to write in the log directory.
+Otherwise, the logs will also not be generated. If such a problem arises, you can check in the <code class="docutils literal notranslate"><span class="pre">/var/log/syslog</span></code> file for the details.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>chown<span class="w"> </span>-R<span class="w"> </span>www-data:www-data<span class="w"> </span>/var/log/mod_evasive
+</pre></div>
+</div>
+</section>
+<section id="enabling-the-evasive-module">
+<h2>Enabling the Evasive Module<a class="headerlink" href="#enabling-the-evasive-module" title="Link to this heading"></a></h2>
+<p>Now let’s enable the evasive module, just in case if it’s disabled.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>a2enmod<span class="w"> </span>evasive
+</pre></div>
+</div>
+<p>Then restart the apache2 server to make the configurations work accordingly and effectively.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>apache2
+</pre></div>
+</div>
+</section>
+<section id="testing-the-module">
+<h2>Testing the Module<a class="headerlink" href="#testing-the-module" title="Link to this heading"></a></h2>
+<p>You will usually see a default apache2 page after sending an http request to your server/instance, with your server’s IP.</p>
+<img alt="Testing Mod Evasive Module" class="align-center" src="../../_images/apache2-server-hardening-img-5.png" />
+<div style="height:25px;"></div><div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>I would like to test it manually, as an attacker is more likely to use their custom script or any attacking tools.
+Remember, we have set a time frame of 10 seconds to consider up to 20 requests in the same page from the source at a time.
+After 20 requests within the 10 seconds time frame, it should forbid us from accessing the webpage.
+Besides, the number of requests might vary due to the value of the <code class="docutils literal notranslate"><span class="pre">hashtable</span></code> sometimes.</p>
+</div>
+<img alt="Testing Mod Evasive Module - Successful" class="align-center" src="../../_images/apache2-server-hardening-img-6.png" />
+<div style="height:25px;"></div><p>You should receive a status code of <code class="docutils literal notranslate"><span class="pre">403</span></code>, which is Forbidden, if the module is working fine and accordingly.</p>
+</section>
+<section id="checking-and-investigating-logs">
+<h2>Checking and Investigating Logs<a class="headerlink" href="#checking-and-investigating-logs" title="Link to this heading"></a></h2>
+<p>If an attack gets detected, a log should be generated in the specified directory. For us the directory is <code class="docutils literal notranslate"><span class="pre">/var/log/mod_evasive</span></code>.
+Head over there, and you will find the IP of the attacker, which means the module is blocking requests coming from this particular IP.</p>
+<img alt="Checking Mod Evasive Logs" class="align-center" src="../../_images/apache2-server-hardening-img-7.png" />
+<div style="height:25px;"></div><p>Inside the file you find a process <code class="docutils literal notranslate"><span class="pre">id</span></code> or a unique number.</p>
+<p>Besides, you can also head over to check the syslog to investigate the event.</p>
+<img alt="Checking Mod Evasive Syslog" class="align-center" src="../../_images/apache2-server-hardening-img-8.png" />
+<div style="height:25px;"></div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If an attacker IP shows up in the <code class="docutils literal notranslate"><span class="pre">mod_evasive</span></code> directory it will also be logged in the syslog file.</p>
+</div>
+<p>There we go, this concludes our apach2 server hardening using <code class="docutils literal notranslate"><span class="pre">mod_evasive</span></code> module to prevent the server from <code class="docutils literal notranslate"><span class="pre">DDoS</span></code> attack.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="generic-setup-and-prerquisites.html" class="btn btn-neutral float-left" title="Generic Setup &amp; Prerequisites" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Alsechemist.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

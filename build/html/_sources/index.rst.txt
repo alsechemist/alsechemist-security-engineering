@@ -25,6 +25,7 @@
    :hidden:
 
    Wazuh & Tracecat Integration <projects/wazuh-tracecat-integration/introduction>
+   Apache2 Server Hardening <projects/apache2-server-hardening/introduction>
 
 .. Indices and tables
    ==================
