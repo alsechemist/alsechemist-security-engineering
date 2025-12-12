@@ -16,13 +16,8 @@
     color: #000000 !important;   /* black */
 }
 
-/* Version selector button text (the "latest" you highlighted) */
-.rst-current-version {
-    color: #000000 !important;            /* text to black */
-}
-
-/* Dropdown items too (optional) */
-.rst-versions .rst-other-versions a {
+.wy-side-nav-search .rst-current-version,
+.wy-nav-side .rst-current-version {
     color: #000000 !important;
 }
 
