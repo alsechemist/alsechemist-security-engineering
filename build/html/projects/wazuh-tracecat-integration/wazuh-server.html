@@ -86,6 +86,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../apache2-server-hardening/introduction.html">Apache2 Server Hardening</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Knowledge Base</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../knowledge-base/modsecurity-log-detection_wazuh/introduction.html">Detecting ModSecurity Logs in Wazuh Using Custom Decoders and Rules</a></li>
+</ul>
 
         </div>
       </div>
@@ -140,7 +144,7 @@ If you have more than 2 network interfaces, have it your way of configuring it t
 </section>
 <section id="wazuh-active-response">
 <h2>Wazuh Active Response<a class="headerlink" href="#wazuh-active-response" title="Link to this heading"></a></h2>
-<p>Now let’s configure Wazuh’s Active Response at your Wazuh Server. To get started it’s already available on <a class="reference external" href="https://documentation.wazuh.com/current/user-manual/capabilities/active-response/ar-use-cases/blocking-ssh-brute-force.html">Wazuh’s Offical Documentation</a> site.
+<p>Now let’s configure Wazuh’s Active Response at your Wazuh Server. To get started it’s already available on <a class="reference external" href="https://documentation.wazuh.com/current/user-manual/capabilities/active-response/ar-use-cases/blocking-ssh-brute-force.html" rel="noreferrer" target="_blank">Wazuh’s Offical Documentation <svg version="1.1" width="1.0em" height="1.0em" viewBox="0 0 16 16" aria-hidden="true" style="display: inline-block; vertical-align: middle; fill: currentColor;"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2Zm6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1Z"></path></svg></a> site.
 Wazuh has already pretty much configured their active response for their Linux and Windows endpoint.
 An extensive documentation and community support can be found as well.
 But here we are going to focus more on <strong>macOS</strong> endpoints as a bit of configuration is need in order for the active response to work properly.</p>
@@ -155,7 +159,7 @@ There you have to look out for something like <code class="docutils literal notr
 <div style="height:25px;"></div><p>Since Wazuh leverages their active response scripts based on their respective OS, for example, <code class="docutils literal notranslate"><span class="pre">firewall-drop</span></code> for Linux endpoints, <code class="docutils literal notranslate"><span class="pre">netsh</span></code> for
 windows endpoints. Similarly, for macOS endpoints, there is a specific script called <code class="docutils literal notranslate"><span class="pre">pf</span></code>, which is an active response script for
 channeling <strong>Packet Filter</strong> as default stateful kernel level firewall used in almost every macOS devices.
-You can look into more details of <a class="reference external" href="https://documentation.wazuh.com/current/user-manual/capabilities/active-response/default-active-response-scripts.html">Wazuh Active Response Scripts</a>
+You can look into more details of <a class="reference external" href="https://documentation.wazuh.com/current/user-manual/capabilities/active-response/default-active-response-scripts.html" rel="noreferrer" target="_blank">Wazuh Active Response Scripts <svg version="1.1" width="1.0em" height="1.0em" viewBox="0 0 16 16" aria-hidden="true" style="display: inline-block; vertical-align: middle; fill: currentColor;"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2Zm6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1Z"></path></svg></a>
 via clicking on the hyperlink. These are all available at your Linux, Windows and macOS endpoints.</p>
 <div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;command&gt;</span>
 <span class="w">    </span><span class="nt">&lt;name&gt;</span>pf<span class="nt">&lt;/name&gt;</span>

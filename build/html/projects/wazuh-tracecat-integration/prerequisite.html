@@ -85,6 +85,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../apache2-server-hardening/introduction.html">Apache2 Server Hardening</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Knowledge Base</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../knowledge-base/modsecurity-log-detection_wazuh/introduction.html">Detecting ModSecurity Logs in Wazuh Using Custom Decoders and Rules</a></li>
+</ul>
 
         </div>
       </div>
@@ -115,12 +119,12 @@
 <h1>Prerequisite<a class="headerlink" href="#prerequisite" title="Link to this heading"></a></h1>
 <p>Before getting started, we will be requiring to set some Credentials on our Tracecat Server. On the landing page of your Tracecat Server,
 you will notice the <strong>Credentials</strong> section under Workspace. You need to add the credentials of <code class="docutils literal notranslate"><span class="pre">wazuh-wui</span></code> user and
-a user that has access to Wazuh’s Indexers (e.g. <strong>A Wazuh Admin</strong>). You can obtain it by following the <a class="reference external" href="https://documentation.wazuh.com/current/quickstart.html">Quick Start</a>
+a user that has access to Wazuh’s Indexers (e.g. <strong>A Wazuh Admin</strong>). You can obtain it by following the <a class="reference external" href="https://documentation.wazuh.com/current/quickstart.html" rel="noreferrer" target="_blank">Quick Start <svg version="1.1" width="1.0em" height="1.0em" viewBox="0 0 16 16" aria-hidden="true" style="display: inline-block; vertical-align: middle; fill: currentColor;"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2Zm6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1Z"></path></svg></a>
 section of Wazuh’s Official Documentation Page.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>Make sure that, the <code class="docutils literal notranslate"><span class="pre">Name</span></code> field is exactly as <code class="docutils literal notranslate"><span class="pre">wazuh-wui</span></code>. Tracecat follows the sequential order of its secret variables.
-You are really insisted on following their official documention regarding their <a class="reference external" href="https://docs.tracecat.com/cheatsheets/integrations">Cheatsheet for Integration</a>.
+You are really insisted on following their official documention regarding their <a class="reference external" href="https://docs.tracecat.com/cheatsheets/integrations" rel="noreferrer" target="_blank">Cheatsheet for Integration <svg version="1.1" width="1.0em" height="1.0em" viewBox="0 0 16 16" aria-hidden="true" style="display: inline-block; vertical-align: middle; fill: currentColor;"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2Zm6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1Z"></path></svg></a>.
 This will really help you out specially, when it comes to setting up secret keys as variables for various components in a sequential order for your workflows.</p>
 <p>Follow the image below,</p>
 <img alt="Tracecat Server Credential Guidance" class="align-center" src="../../_images/tracecat-server-credential-1.png" />
@@ -153,11 +157,11 @@ the naming convention and order are not required to be the exact since they are 
 <img alt="Tracecat Server Credential - Wazuh Indexer User's Credential Setup" class="align-center" src="../../_images/tracecat-server-credential-4.png" />
 <div style="height:25px;"></div><div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>Follow the <a class="reference external" href="https://documentation.wazuh.com/current/quickstart.html">Quick Start</a> hyperlink to know,
+<p>Follow the <a class="reference external" href="https://documentation.wazuh.com/current/quickstart.html" rel="noreferrer" target="_blank">Quick Start <svg version="1.1" width="1.0em" height="1.0em" viewBox="0 0 16 16" aria-hidden="true" style="display: inline-block; vertical-align: middle; fill: currentColor;"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2Zm6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1Z"></path></svg></a> hyperlink to know,
 how to fetch the credentials of <strong>wazuh-wui</strong> and other users in details. Otherwise, you might need to change the password of that users
 in order to have it again. Besides, If you change the <strong>wazuh-wui</strong> password, you must update it in the Wazuh dashboard and
 if you change the <strong>admin</strong> password, you must update it in Filebeat and the Wazuh server.
-Follow Wazuh’s <a class="reference external" href="https://documentation.wazuh.com/current/user-manual/user-administration/password-management.html">Password Management</a> guide to know more.</p>
+Follow Wazuh’s <a class="reference external" href="https://documentation.wazuh.com/current/user-manual/user-administration/password-management.html" rel="noreferrer" target="_blank">Password Management <svg version="1.1" width="1.0em" height="1.0em" viewBox="0 0 16 16" aria-hidden="true" style="display: inline-block; vertical-align: middle; fill: currentColor;"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2Zm6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1Z"></path></svg></a> guide to know more.</p>
 </div>
 </section>
 </section>

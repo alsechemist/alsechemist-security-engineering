@@ -27,6 +27,13 @@
    Wazuh & Tracecat Integration <projects/wazuh-tracecat-integration/introduction>
    Apache2 Server Hardening <projects/apache2-server-hardening/introduction>
 
+.. toctree::
+   :maxdepth: 3
+   :caption: Knowledge Base
+   :hidden:
+
+   Detecting ModSecurity Logs in Wazuh Using Custom Decoders and Rules <knowledge-base/modsecurity-log-detection_wazuh/introduction>
+
 .. Indices and tables
    ==================
 

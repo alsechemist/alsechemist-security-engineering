@@ -15,7 +15,8 @@ release = '1.0'
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
-    'sphinx_copybutton'
+    'sphinx_copybutton',
+    "sphinx_new_tab_link"
 ]
 
 templates_path = ['_templates']
@@ -41,3 +42,4 @@ html_css_files = [
 copybutton_prompt_text = r">>> |\.\.\. |\$ |# "
 copybutton_prompt_is_regexp = True
 copybutton_only_copy_prompt_lines = False
+new_tab_link_show_external_link_icon = True
