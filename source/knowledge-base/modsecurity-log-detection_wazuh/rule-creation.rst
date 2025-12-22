@@ -12,58 +12,75 @@ Below is the **full ruleset** in a single code block:
     <group name="modsecurity,waf">
 
         <!-- Exception Handling Rule -->
-        
+
         <rule id="100000" level="0">
             <decoded_as>json</decoded_as>
             <field name="transaction.producer.modsecurity">ModSecurity</field>
             <description>ModSecurity: Event Exception Handler</description>
         </rule>
-        
+
         <!-- General Rule for all types of Triggered Logs -->
-        
+
         <rule id="100001" level="10">
-            <if_sid>100000</if_sid> 
+            <if_sid>100000</if_sid>
             <field name="transaction.response.http_code">403</field>
             <description>ModSecurity: Blocked Request (Unidentified)| Inspection Required</description>
             <group>attack,pci_dss_6.5,</group>
         </rule>
-        
+
         <!-- Remote Command Execution Alert -->
-    
+
         <rule id="100002" level="12">
             <if_sid>100000</if_sid>
             <field name="transaction.messages">Remote Command Execution</field>
+            <match>"ruleId":"932160"</match>
             <description>ModSecurity: RCE Attempt Detected over URI: $(transaction.request.uri)</description>
             <mitre>
                 <id>T1059</id>
-                <id>T1190</id> 
+                <id>T1190</id>
             </mitre>
             <group>attack,lfi,pci_dss_6.5.1,</group>
         </rule>
-        
+
         <!-- Path Traversal Attack Alert -->
-        
+
         <rule id="100003" level="12">
-            <if_sid>100000</if_sid> 
+            <if_sid>100000</if_sid>
             <field name="transaction.messages">Path Traversal Attack</field>
+            <match>"ruleId":"930110"</match>
             <description>ModSecurity: Path Traversal Attack Detected over URI: $(transaction.request.uri)</description>
             <mitre>
                 <id>T1083</id>
             </mitre>
             <group>attack,lfi,pci_dss_6.5.1,mitre_t1083,</group>
         </rule>
-        
+
         <!-- SQL Injection Attack Alert -->
-        
+
         <rule id="100004" level="12">
-            <if_sid>100000</if_sid> 
+            <if_sid>100000</if_sid>
             <field name="transaction.messages">SQL Injection Attack</field>
+            <match>"ruleId":"942100"</match>
             <description>ModSecurity: SQL Injection Attack Detected over URI: $(transaction.request.uri)</description>
             <mitre>
                 <id>T1190</id>
                 <id>T1059</id>
             </mitre>
             <group>attack,sql_injection,pci_dss_6.5.1,gdpr_IV_35.7.d,</group>
+        </rule>
+
+        <!-- OS File Access Attempt Alert -->
+
+        <rule id="100005" level="12">
+            <if_sid>100002</if_sid> 
+            <field name="transaction.messages">OS File Access Attempt</field>
+            <match>"ruleId":"930120"</match>
+            <description>ModSecurity: Mutiple Attach Patterns [RCE + OS File Access Attempt] over ($(transaction.request.uri))</description>
+            <mitre>
+            <id>T1083</id>
+            <id>T1190</id>
+            </mitre>
+            <group>attack,lfi,pci_dss_6.5.1,mitre_t1083,</group>
         </rule>
 
     </group>

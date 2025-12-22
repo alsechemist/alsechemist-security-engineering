@@ -38,4 +38,5 @@ At the end of this documentation, readers will be able to:
    ../../knowledge-base/modsecurity-log-detection_wazuh/configuration-modsecutity-logs
    ../../knowledge-base/modsecurity-log-detection_wazuh/decoder-creation
    ../../knowledge-base/modsecurity-log-detection_wazuh/rule-creation
-   
+   ../../knowledge-base/modsecurity-log-detection_wazuh/modsecurity-log-ingestion
+   ../../knowledge-base/modsecurity-log-detection_wazuh/conclusion

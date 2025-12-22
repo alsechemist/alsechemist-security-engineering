@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Introduction &mdash; Security Engineering 1.0 documentation</title>
+  <title>Conclusion &mdash; Security Engineering 1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -23,8 +23,7 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Scope of Engagement" href="scope-of-engagement.html" />
-    <link rel="prev" title="Setting Up Mod Evasive Module" href="../../projects/apache2-server-hardening/mod-evasive-configuration.html" /> 
+    <link rel="prev" title="ModSecurity Log Ingestion into Wazuh" href="modsecurity-log-ingestion.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -62,13 +61,13 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Knowledge Base</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Detecting ModSecurity Logs in Wazuh Using Custom Decoders and Rules</a><ul>
+<li class="toctree-l1 current"><a class="reference internal" href="introduction.html">Detecting ModSecurity Logs in Wazuh Using Custom Decoders and Rules</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="scope-of-engagement.html">Scope of Engagement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration-modsecutity-logs.html">Configuration of ModSecurity Audit Log</a></li>
 <li class="toctree-l2"><a class="reference internal" href="decoder-creation.html">Decoder Creation - ModSecurity Audit Logs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="rule-creation.html">Custom Wazuh Rules for ModSecurity Events</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modsecurity-log-ingestion.html">ModSecurity Log Ingestion into Wazuh</a></li>
-<li class="toctree-l2"><a class="reference internal" href="conclusion.html">Conclusion</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Conclusion</a></li>
 </ul>
 </li>
 </ul>
@@ -87,7 +86,8 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Introduction</li>
+          <li class="breadcrumb-item"><a href="introduction.html">Introduction</a></li>
+      <li class="breadcrumb-item active">Conclusion</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -96,43 +96,34 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="introduction">
-<h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h1>
-<p>Modern web applications are constantly exposed to a wide range of attacks such as SQL injection, cross-site scripting (XSS), command injection, and automated scanning.
-To mitigate these threats, Web Application Firewalls (WAFs) like <strong>ModSecurity</strong> are widely deployed to inspect and block malicious HTTP traffic at the application layer.</p>
-<p>While ModSecurity is highly effective at detecting and preventing web-based attacks, its security value is significantly enhanced when its logs are centrally collected,
-parsed, and correlated within a Security Information and Event Management (SIEM) platform. <strong>Wazuh</strong>, an open-source security monitoring and threat detection platform,
-provides powerful log analysis, decoding, and alerting capabilities that make it an ideal choice for this purpose.</p>
-<p>This documentation describes the design and implementation of <strong>custom Wazuh decoders and rules</strong> to detect and analyze <strong>ModSecurity audit logs</strong>.
-The primary goal is to transform raw <code class="docutils literal notranslate"><span class="pre">JSON</span></code> ModSecurity logs into structured, meaningful security events that can be monitored, alerted on, and
-investigated by Security Operations Center (SOC) teams.</p>
-<p>By creating custom decoders, ModSecurity logs are normalized into fields such as client IP, request method, request URI, rule ID, severity, and attack category.
-Custom rules are then applied on top of these decoded fields to generate actionable alerts with appropriate severity levels inside Wazuh.</p>
-<p>This guide is intended for:</p>
+  <section id="conclusion">
+<h1>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading"></a></h1>
+<p>This documentation demonstrated a complete and practical approach to <strong>integrating ModSecurity audit logs into Wazuh</strong> for
+centralized monitoring, detection, and analysis. By leveraging <strong>ModSecurity v3</strong>, <strong>OWASP Core Rule Set (CRS) 4.21.0</strong>, and
+<strong>Wazuh’s JSON decoding and rule engine</strong>, raw web application firewall events were transformed into structured and actionable security alerts.</p>
+<p>The implementation covered the full detection lifecycle, including:</p>
 <ul class="simple">
-<li><p>SOC analysts and security engineers</p></li>
-<li><p>Blue team and defensive security practitioners</p></li>
-<li><p>Wazuh administrators and integrators</p></li>
-<li><p>Anyone looking to improve visibility into web application attacks using ModSecurity and Wazuh</p></li>
+<li><p>Configuring ModSecurity to generate <strong>JSON-formatted audit logs</strong></p></li>
+<li><p>Designing a <strong>custom JSON-based decoder</strong> for reliable log normalization</p></li>
+<li><p>Creating <strong>custom Wazuh rules</strong> to detect common web attacks such as SQL injection, remote command execution, and path traversal</p></li>
+<li><p>Ingesting audit logs into Wazuh using the <strong>agent log collection mechanism</strong></p></li>
+<li><p>Validating log ingestion by <strong>actively triggering ModSecurity alerts</strong></p></li>
 </ul>
-<p>At the end of this documentation, readers will be able to:</p>
-<ul class="simple">
-<li><p>Understand the structure of ModSecurity audit logs</p></li>
-<li><p>Create custom Wazuh decoders for JSON-based ModSecurity logs</p></li>
-<li><p>Develop detection rules for web application attacks</p></li>
-<li><p>Validate and test decoders and rules using Wazuh tools</p></li>
-<li><p>Integrate ModSecurity alerts into a centralized security monitoring workflow</p></li>
-</ul>
-<div class="toctree-wrapper compound">
-</div>
+<p>This approach provides Security Operations Centers (SOCs) with improved visibility into web application attacks while maintaining flexibility for
+rule tuning and expansion. The modular design of the decoders and rules allows security teams to gradually extend detection coverage without
+disrupting existing monitoring workflows.</p>
+<p>While the current ruleset establishes a foundational detection framework, it also serves as a starting point for <strong>continuous detection engineering</strong>.
+As attack patterns evolve and new ModSecurity rules are introduced, additional Wazuh rules can be developed to enhance accuracy, reduce noise, and
+improve contextual awareness.</p>
+<p>Ultimately, integrating ModSecurity with Wazuh strengthens web application defense by bridging <strong>real-time request inspection</strong> with <strong>centralized security analytics</strong>,
+enabling faster detection, better triage, and more informed incident response.</p>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../../projects/apache2-server-hardening/mod-evasive-configuration.html" class="btn btn-neutral float-left" title="Setting Up Mod Evasive Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="scope-of-engagement.html" class="btn btn-neutral float-right" title="Scope of Engagement" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="modsecurity-log-ingestion.html" class="btn btn-neutral float-left" title="ModSecurity Log Ingestion into Wazuh" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

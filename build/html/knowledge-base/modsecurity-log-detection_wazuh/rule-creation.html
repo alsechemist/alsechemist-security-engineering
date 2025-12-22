@@ -23,6 +23,7 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="ModSecurity Log Ingestion into Wazuh" href="modsecurity-log-ingestion.html" />
     <link rel="prev" title="Decoder Creation - ModSecurity Audit Logs" href="decoder-creation.html" /> 
 </head>
 
@@ -69,6 +70,8 @@
 <li class="toctree-l3"><a class="reference internal" href="#ruleset-testing">Ruleset Testing</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="modsecurity-log-ingestion.html">ModSecurity Log Ingestion into Wazuh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conclusion.html">Conclusion</a></li>
 </ul>
 </li>
 </ul>
@@ -127,6 +130,7 @@ mapping them to relevant MITRE techniques and compliance categories.</p>
 <span class="w">    </span><span class="nt">&lt;rule</span><span class="w"> </span><span class="na">id=</span><span class="s">&quot;100002&quot;</span><span class="w"> </span><span class="na">level=</span><span class="s">&quot;12&quot;</span><span class="nt">&gt;</span>
 <span class="w">        </span><span class="nt">&lt;if_sid&gt;</span>100000<span class="nt">&lt;/if_sid&gt;</span>
 <span class="w">        </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;transaction.messages&quot;</span><span class="nt">&gt;</span>Remote<span class="w"> </span>Command<span class="w"> </span>Execution<span class="nt">&lt;/field&gt;</span>
+<span class="w">        </span><span class="nt">&lt;match&gt;</span>&quot;ruleId&quot;:&quot;932160&quot;<span class="nt">&lt;/match&gt;</span>
 <span class="w">        </span><span class="nt">&lt;description&gt;</span>ModSecurity:<span class="w"> </span>RCE<span class="w"> </span>Attempt<span class="w"> </span>Detected<span class="w"> </span>over<span class="w"> </span>URI:<span class="w"> </span>$(transaction.request.uri)<span class="nt">&lt;/description&gt;</span>
 <span class="w">        </span><span class="nt">&lt;mitre&gt;</span>
 <span class="w">            </span><span class="nt">&lt;id&gt;</span>T1059<span class="nt">&lt;/id&gt;</span>
@@ -140,6 +144,7 @@ mapping them to relevant MITRE techniques and compliance categories.</p>
 <span class="w">    </span><span class="nt">&lt;rule</span><span class="w"> </span><span class="na">id=</span><span class="s">&quot;100003&quot;</span><span class="w"> </span><span class="na">level=</span><span class="s">&quot;12&quot;</span><span class="nt">&gt;</span>
 <span class="w">        </span><span class="nt">&lt;if_sid&gt;</span>100000<span class="nt">&lt;/if_sid&gt;</span>
 <span class="w">        </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;transaction.messages&quot;</span><span class="nt">&gt;</span>Path<span class="w"> </span>Traversal<span class="w"> </span>Attack<span class="nt">&lt;/field&gt;</span>
+<span class="w">        </span><span class="nt">&lt;match&gt;</span>&quot;ruleId&quot;:&quot;930110&quot;<span class="nt">&lt;/match&gt;</span>
 <span class="w">        </span><span class="nt">&lt;description&gt;</span>ModSecurity:<span class="w"> </span>Path<span class="w"> </span>Traversal<span class="w"> </span>Attack<span class="w"> </span>Detected<span class="w"> </span>over<span class="w"> </span>URI:<span class="w"> </span>$(transaction.request.uri)<span class="nt">&lt;/description&gt;</span>
 <span class="w">        </span><span class="nt">&lt;mitre&gt;</span>
 <span class="w">            </span><span class="nt">&lt;id&gt;</span>T1083<span class="nt">&lt;/id&gt;</span>
@@ -152,12 +157,27 @@ mapping them to relevant MITRE techniques and compliance categories.</p>
 <span class="w">    </span><span class="nt">&lt;rule</span><span class="w"> </span><span class="na">id=</span><span class="s">&quot;100004&quot;</span><span class="w"> </span><span class="na">level=</span><span class="s">&quot;12&quot;</span><span class="nt">&gt;</span>
 <span class="w">        </span><span class="nt">&lt;if_sid&gt;</span>100000<span class="nt">&lt;/if_sid&gt;</span>
 <span class="w">        </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;transaction.messages&quot;</span><span class="nt">&gt;</span>SQL<span class="w"> </span>Injection<span class="w"> </span>Attack<span class="nt">&lt;/field&gt;</span>
+<span class="w">        </span><span class="nt">&lt;match&gt;</span>&quot;ruleId&quot;:&quot;942100&quot;<span class="nt">&lt;/match&gt;</span>
 <span class="w">        </span><span class="nt">&lt;description&gt;</span>ModSecurity:<span class="w"> </span>SQL<span class="w"> </span>Injection<span class="w"> </span>Attack<span class="w"> </span>Detected<span class="w"> </span>over<span class="w"> </span>URI:<span class="w"> </span>$(transaction.request.uri)<span class="nt">&lt;/description&gt;</span>
 <span class="w">        </span><span class="nt">&lt;mitre&gt;</span>
 <span class="w">            </span><span class="nt">&lt;id&gt;</span>T1190<span class="nt">&lt;/id&gt;</span>
 <span class="w">            </span><span class="nt">&lt;id&gt;</span>T1059<span class="nt">&lt;/id&gt;</span>
 <span class="w">        </span><span class="nt">&lt;/mitre&gt;</span>
 <span class="w">        </span><span class="nt">&lt;group&gt;</span>attack,sql_injection,pci_dss_6.5.1,gdpr_IV_35.7.d,<span class="nt">&lt;/group&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/rule&gt;</span>
+
+<span class="w">    </span><span class="cm">&lt;!-- OS File Access Attempt Alert --&gt;</span>
+
+<span class="w">    </span><span class="nt">&lt;rule</span><span class="w"> </span><span class="na">id=</span><span class="s">&quot;100005&quot;</span><span class="w"> </span><span class="na">level=</span><span class="s">&quot;12&quot;</span><span class="nt">&gt;</span>
+<span class="w">        </span><span class="nt">&lt;if_sid&gt;</span>100002<span class="nt">&lt;/if_sid&gt;</span>
+<span class="w">        </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;transaction.messages&quot;</span><span class="nt">&gt;</span>OS<span class="w"> </span>File<span class="w"> </span>Access<span class="w"> </span>Attempt<span class="nt">&lt;/field&gt;</span>
+<span class="w">        </span><span class="nt">&lt;match&gt;</span>&quot;ruleId&quot;:&quot;930120&quot;<span class="nt">&lt;/match&gt;</span>
+<span class="w">        </span><span class="nt">&lt;description&gt;</span>ModSecurity:<span class="w"> </span>Mutiple<span class="w"> </span>Attach<span class="w"> </span>Patterns<span class="w"> </span>[RCE<span class="w"> </span>+<span class="w"> </span>OS<span class="w"> </span>File<span class="w"> </span>Access<span class="w"> </span>Attempt]<span class="w"> </span>over<span class="w"> </span>($(transaction.request.uri))<span class="nt">&lt;/description&gt;</span>
+<span class="w">        </span><span class="nt">&lt;mitre&gt;</span>
+<span class="w">        </span><span class="nt">&lt;id&gt;</span>T1083<span class="nt">&lt;/id&gt;</span>
+<span class="w">        </span><span class="nt">&lt;id&gt;</span>T1190<span class="nt">&lt;/id&gt;</span>
+<span class="w">        </span><span class="nt">&lt;/mitre&gt;</span>
+<span class="w">        </span><span class="nt">&lt;group&gt;</span>attack,lfi,pci_dss_6.5.1,mitre_t1083,<span class="nt">&lt;/group&gt;</span>
 <span class="w">    </span><span class="nt">&lt;/rule&gt;</span>
 
 <span class="nt">&lt;/group&gt;</span>
@@ -189,6 +209,7 @@ which mean that the rule will be trigger spacially if it sees that, the logs are
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="decoder-creation.html" class="btn btn-neutral float-left" title="Decoder Creation - ModSecurity Audit Logs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="modsecurity-log-ingestion.html" class="btn btn-neutral float-right" title="ModSecurity Log Ingestion into Wazuh" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

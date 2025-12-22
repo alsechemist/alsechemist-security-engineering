@@ -1,0 +1,222 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ModSecurity Log Ingestion into Wazuh &mdash; Security Engineering 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom-styling/side-panel.css?v=ee721427" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=9760a2b4"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Conclusion" href="conclusion.html" />
+    <link rel="prev" title="Custom Wazuh Rules for ModSecurity Events" href="rule-creation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Security Engineering
+              <img src="../../_static/alsechemist-logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../main/security-engineering.html">Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../projects/projects.html">Projects</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Projects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../projects/wazuh-tracecat-integration/introduction.html">Wazuh &amp; Tracecat Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../projects/apache2-server-hardening/introduction.html">Apache2 Server Hardening</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Knowledge Base</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="introduction.html">Detecting ModSecurity Logs in Wazuh Using Custom Decoders and Rules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="scope-of-engagement.html">Scope of Engagement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration-modsecutity-logs.html">Configuration of ModSecurity Audit Log</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decoder-creation.html">Decoder Creation - ModSecurity Audit Logs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rule-creation.html">Custom Wazuh Rules for ModSecurity Events</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">ModSecurity Log Ingestion into Wazuh</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#wazuh-log-collection-configuration">Wazuh Log Collection Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#validating-log-ingestion">Validating Log Ingestion</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sql-injection-test">SQL Injection Test</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#path-traversal-test">Path Traversal Test</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#file-access-attempt-test">File Access Attempt Test</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rce-test">RCE Test</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="conclusion.html">Conclusion</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Security Engineering</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="introduction.html">Introduction</a></li>
+      <li class="breadcrumb-item active">ModSecurity Log Ingestion into Wazuh</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="modsecurity-log-ingestion-into-wazuh">
+<h1>ModSecurity Log Ingestion into Wazuh<a class="headerlink" href="#modsecurity-log-ingestion-into-wazuh" title="Link to this heading"></a></h1>
+<p>This section explains how <strong>ModSecurity JSON-formatted audit logs</strong> are ingested into <strong>Wazuh</strong> using the Wazuh agent log collection mechanism.
+Proper log ingestion is a prerequisite for successful decoding, rule matching, and alert generation.</p>
+<section id="wazuh-log-collection-configuration">
+<h2>Wazuh Log Collection Configuration<a class="headerlink" href="#wazuh-log-collection-configuration" title="Link to this heading"></a></h2>
+<p>Wazuh collects local log files through the <code class="docutils literal notranslate"><span class="pre">localfile</span></code> configuration block defined in the agent configuration file.</p>
+<p>The following configuration is used to ingest ModSecurity audit logs:</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;localfile&gt;</span>
+<span class="w">    </span><span class="nt">&lt;log_format&gt;</span>json<span class="nt">&lt;/log_format&gt;</span>
+<span class="w">    </span><span class="nt">&lt;location&gt;</span>/var/log/modsec_audit.log<span class="nt">&lt;/location&gt;</span>
+<span class="nt">&lt;/localfile&gt;</span>
+</pre></div>
+</div>
+<p>This configuration instructs the Wazuh agent to monitor the ModSecurity audit log file and process each entry as a JSON event.</p>
+<p>After updating the Wazuh agent configuration, restart the agent service:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>wazuh-agent
+</pre></div>
+</div>
+</section>
+<section id="validating-log-ingestion">
+<h2>Validating Log Ingestion<a class="headerlink" href="#validating-log-ingestion" title="Link to this heading"></a></h2>
+<p>To validate that ModSecurity audit logs are correctly ingested into Wazuh, it is recommended to <strong>actively trigger a ModSecurity rule</strong> and
+observe the resulting alert inside Wazuh. This confirms that the entire pipeline—from log generation to alerting—is functioning as expected.</p>
+<p>A simple way to trigger a ModSecurity alert is by simulating a common web attack, such as <strong>SQL Injection, Path Traversal, File Access Attempt, RCE</strong>.</p>
+<section id="sql-injection-test">
+<h3>SQL Injection Test<a class="headerlink" href="#sql-injection-test" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span><span class="s2">&quot;http://&lt;target-host&gt;/?id=1&#39; OR &#39;1&#39;=&#39;1&quot;</span>
+</pre></div>
+</div>
+<p>This request is designed to match OWASP CRS SQL Injection detection rules and should result in a ModSecurity audit log entry.</p>
+</section>
+<section id="path-traversal-test">
+<h3>Path Traversal Test<a class="headerlink" href="#path-traversal-test" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span><span class="s2">&quot;http://&lt;target-host&gt;/?id=../../../etc&quot;</span>
+
+../../../etc
+</pre></div>
+</div>
+<p>This request is designed to match OWASP CRS Path Traversal detection rules and should result in a ModSecurity audit log entry.</p>
+</section>
+<section id="file-access-attempt-test">
+<h3>File Access Attempt Test<a class="headerlink" href="#file-access-attempt-test" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span><span class="s2">&quot;http://&lt;target-host&gt;/?id=....//....//....//etc/passwd&quot;</span>
+</pre></div>
+</div>
+<p>This request is designed to match OWASP CRS File Access Attempt detection rules and should result in a ModSecurity audit log entry.</p>
+</section>
+<section id="rce-test">
+<h3>RCE Test<a class="headerlink" href="#rce-test" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span><span class="s2">&quot;http://&lt;target-host&gt;/?exec=/bin/bash&quot;</span>
+</pre></div>
+</div>
+<p>This request is designed to match OWASP CRS RCE detection rules and should result in a ModSecurity audit log entry.</p>
+<p>Try these examples, and event logs should appear in the threat hunting section.</p>
+<img alt="Modsecurity Logs Appearing in Wazuh Event Section" class="align-center" src="../../_images/modsecurity-log-ingestion-1.png" />
+<div style="height:25px;"></div><p>Through deeper log inspection, Modsecurity brings vast range and variety of fields to indept analysis</p>
+<img alt="Modsecurity Logs Appearing in Wazuh Event Section" class="align-center" src="../../_images/modsecurity-log-ingestion-2.png" />
+<div style="height:25px;"></div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Ongoing Rule Development</strong></p>
+<p>This documentation presents a <strong>baseline implementation</strong> for detecting and analyzing ModSecurity events in Wazuh using custom decoders and rules.
+Additional ModSecurity detection rules will be <strong>added and refined over time</strong> to improve coverage, accuracy, and attack visibility.</p>
+<p>The current ruleset is intentionally kept minimal to demonstrate the <strong>core detection logic</strong>, rule inheritance model, and analysis workflow for ModSecurity audit logs within Wazuh.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p><strong>Community Contribution Encouraged</strong></p>
+<p>Security analysts and engineers are encouraged to <strong>actively contribute</strong> to ModSecurity log detection engineering by:</p>
+<ul class="simple">
+<li><p>Adding new detection rules for additional OWASP CRS categories (e.g., XSS, RFI, protocol &amp; API abuse, SSRF, CSRF)</p></li>
+<li><p>Enhancing severity classification and contextual enrichment</p></li>
+<li><p>Improving MITRE ATT&amp;CK mappings and compliance tagging</p></li>
+<li><p>Identifying new attack patterns from real-world ModSecurity events</p></li>
+</ul>
+<p>Collaborative rule development strengthens detection capabilities and enables faster identification of emerging web application threats across diverse environments.</p>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="rule-creation.html" class="btn btn-neutral float-left" title="Custom Wazuh Rules for ModSecurity Events" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="conclusion.html" class="btn btn-neutral float-right" title="Conclusion" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Alsechemist.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

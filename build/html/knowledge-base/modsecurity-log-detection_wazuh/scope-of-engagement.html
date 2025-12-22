@@ -71,6 +71,8 @@
 <li class="toctree-l2"><a class="reference internal" href="configuration-modsecutity-logs.html">Configuration of ModSecurity Audit Log</a></li>
 <li class="toctree-l2"><a class="reference internal" href="decoder-creation.html">Decoder Creation - ModSecurity Audit Logs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="rule-creation.html">Custom Wazuh Rules for ModSecurity Events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modsecurity-log-ingestion.html">ModSecurity Log Ingestion into Wazuh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conclusion.html">Conclusion</a></li>
 </ul>
 </li>
 </ul>
@@ -106,29 +108,39 @@
 <h2>Technology Stack<a class="headerlink" href="#technology-stack" title="Link to this heading"></a></h2>
 <p>The following technologies and versions are used throughout this implementation:</p>
 <ul>
-<li><p><strong>ModSecurity v3 (libmodsecurity):</strong> The latest stable <strong>libmodsecurity</strong> engine is used as the Web Application Firewall (WAF) core. This engine operates independently of the web server and is integrated using official connectors.</p></li>
+<li><p><strong>Ubuntu Server</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Version: 24.04 LTS</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>ModSecurity v3 (libmodsecurity):</strong> The latest stable <strong>libmodsecurity</strong> engine is used as the Web Application Firewall (WAF) core. This engine operates independently of the web server and is integrated using official connectors.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Version: 3.x.x</p></li>
+</ul>
+</div></blockquote>
+</li>
 <li><p><strong>Web Server Connectors:</strong> ModSecurity v3 is deployed using supported connectors for:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>Apache HTTP Server</p></li>
-<li><p>NGINX</p></li>
+<li><p>Apache HTTP Server (latest)</p></li>
+<li><p>NGINX (latest)</p></li>
 </ul>
 </div></blockquote>
 </li>
 <li><p><strong>OWASP Core Rule Set (CRS)</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><p>Version: <strong>4.21.0</strong></p></li>
-<li><p>Provides standardized detection rules for common web application attacks including SQL injection, XSS, command injection, and protocol violations.</p></li>
+<li><p>Version: <strong>4.x.x</strong></p></li>
 </ul>
 </div></blockquote>
 </li>
 <li><p><strong>Wazuh SIEM</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><p>Version: <strong>4.14</strong></p></li>
-<li><p>Custom decoders are developed to parse JSON-formatted ModSecurity audit logs.</p></li>
-<li><p>Custom rules are applied to generate alerts based on decoded fields.</p></li>
+<li><p>Version: <strong>4.x</strong></p></li>
 </ul>
 </div></blockquote>
 </li>

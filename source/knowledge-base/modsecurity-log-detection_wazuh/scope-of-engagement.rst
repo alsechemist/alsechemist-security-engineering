@@ -8,23 +8,26 @@ Technology Stack
 
 The following technologies and versions are used throughout this implementation:
 
+- **Ubuntu Server**
+
+    - Version: 24.04 LTS
+
 - **ModSecurity v3 (libmodsecurity):** The latest stable **libmodsecurity** engine is used as the Web Application Firewall (WAF) core. This engine operates independently of the web server and is integrated using official connectors.
+
+    - Version: 3.x.x
 
 - **Web Server Connectors:** ModSecurity v3 is deployed using supported connectors for:
 
-    - Apache HTTP Server
-    - NGINX
+    - Apache HTTP Server (latest)
+    - NGINX (latest)
 
 - **OWASP Core Rule Set (CRS)**
 
-    - Version: **4.21.0**
-    - Provides standardized detection rules for common web application attacks including SQL injection, XSS, command injection, and protocol violations.
+    - Version: **4.x.x**
 
 - **Wazuh SIEM**
 
-    - Version: **4.14**
-    - Custom decoders are developed to parse JSON-formatted ModSecurity audit logs.
-    - Custom rules are applied to generate alerts based on decoded fields.
+    - Version: **4.x**
 
 Operational Assumptions
 -----------------------
