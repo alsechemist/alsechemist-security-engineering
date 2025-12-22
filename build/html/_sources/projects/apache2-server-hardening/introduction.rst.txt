@@ -1,5 +1,5 @@
-Introduction
-============
+Introduction - Apache2 Server Hardening
+=======================================
 
 Apache2 server hardening is crucial for securing web applications against common threats. 
 On Ubuntu 24.04 LTS, leveraging modules like Mod Evasive, Mod GeoIP, and ModSecurity (WAF) enhances protection. 

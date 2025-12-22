@@ -26,6 +26,7 @@
 
    Wazuh & Tracecat Integration <projects/wazuh-tracecat-integration/introduction>
    Apache2 Server Hardening <projects/apache2-server-hardening/introduction>
+   Nginx Server Hardening <projects/nginx-server-hardening/introduction>
 
 .. toctree::
    :maxdepth: 3

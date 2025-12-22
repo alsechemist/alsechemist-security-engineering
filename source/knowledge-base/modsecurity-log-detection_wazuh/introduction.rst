@@ -1,5 +1,5 @@
-Introduction
-============
+Introduction - Detecting ModSecurity Logs in Wazuh Using Custom Decoders and Rules
+==================================================================================
 
 Modern web applications are constantly exposed to a wide range of attacks such as SQL injection, cross-site scripting (XSS), command injection, and automated scanning.
 To mitigate these threats, Web Application Firewalls (WAFs) like **ModSecurity** are widely deployed to inspect and block malicious HTTP traffic at the application layer.
