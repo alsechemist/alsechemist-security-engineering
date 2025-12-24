@@ -10,6 +10,8 @@
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sphinxcontrib-images\LightBox2\lightbox2\dist\css\lightbox.min.css?v=6e7d0de0" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sphinxcontrib-images\LightBox2\lightbox2-customize\pointer.css?v=c97663ff" />
       <link rel="stylesheet" type="text/css" href="../../_static/custom-styling/side-panel.css?v=1d19113b" />
 
   
@@ -20,6 +22,8 @@
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../../_static/copybutton.js?v=9760a2b4"></script>
+      <script src="../../_static/sphinxcontrib-images\LightBox2\lightbox2\dist\js\lightbox-plus-jquery.min.js?v=f0ca4bb6"></script>
+      <script src="../../_static/sphinxcontrib-images\LightBox2\lightbox2-customize\jquery-noconflict.js?v=12818e64"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -92,7 +96,11 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Knowledge Base</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../knowledge-base/modsecurity-log-detection_wazuh/introduction.html">Detecting ModSecurity Logs in Wazuh Using Custom Decoders and Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../knowledge-base/manipulation-json-decoders-wazuh.html">Understanding Wazuh JSON Decoders</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Research</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../research/modsecurity-log-detection-wazuh/introduction.html">Detecting ModSecurity Logs in Wazuh Using Custom Decoders and Rules</a></li>
 </ul>
 
         </div>
@@ -134,8 +142,18 @@ explain what we are trying to achieve by setting the parameters.</p>
 </pre></div>
 </div>
 <p>The below code just sends a https request to the Wazuh Server API. At backend, the component does its job to fetch the JWT Token.</p>
-<img alt="Tracecat Server, Wazuh JWT Token Configuration" class="align-center" src="../../_images/tracecat-server-workflow-contifiguration-1.png" />
-<div style="height:25px;"></div></section>
+<a class=""
+               data-lightbox="group-2e29525f-1eb6-4606-b44c-610f8dd36ed4"
+               href="../../_images/tracecat-server-workflow-contifiguration-11.png"
+               title=""
+               data-title=""
+               
+               ><img src="../../_images/tracecat-server-workflow-contifiguration-11.png"
+                     class="align-center"
+                     width="100%"
+                     height="auto"
+                     alt="Tracecat Server, Wazuh JWT Token Configuration"/>
+                </a><div style="height:25px;"></div></section>
 <section id="core-http-request-wazuh-indexer-logs">
 <h2>core.http_request (Wazuh_Indexer_Logs)<a class="headerlink" href="#core-http-request-wazuh-indexer-logs" title="Link to this heading"></a></h2>
 <p>Go to the YAML tab. Copy and paste the below code block:</p>
@@ -170,8 +188,18 @@ explain what we are trying to achieve by setting the parameters.</p>
 <p>The above code contacts the Wazuh Indexer API Server with the required Wazuh Indexer credentials that we have set earlier and
 sends a search request to provide data or logs based on <code class="docutils literal notranslate"><span class="pre">rule.id</span> <span class="pre">5763,</span> <span class="pre">60204,</span> <span class="pre">5712</span></code> from the last 1 minute.
 And, It will so up to 10 unique sets of data if available. You can set the time, and size according to your convenience.</p>
-<img alt="Tracecat Server, Wazuh Indexer Configuration" class="align-center" src="../../_images/tracecat-server-workflow-contifiguration-2.png" />
-<div style="height:25px;"></div></section>
+<a class=""
+               data-lightbox="group-6ce1f156-acf0-4a3a-83f5-2e0e473c3569"
+               href="../../_images/tracecat-server-workflow-contifiguration-21.png"
+               title=""
+               data-title=""
+               
+               ><img src="../../_images/tracecat-server-workflow-contifiguration-21.png"
+                     class="align-center"
+                     width="100%"
+                     height="auto"
+                     alt="Tracecat Server, Wazuh Indexer Configuration"/>
+                </a><div style="height:25px;"></div></section>
 <section id="core-http-request-wazuh-server-logs">
 <h2>core.http_request (Wazuh_Server_Logs)<a class="headerlink" href="#core-http-request-wazuh-server-logs" title="Link to this heading"></a></h2>
 <dl class="simple">
@@ -189,8 +217,18 @@ to know how you can utilize it to the fullest. Go to the <code class="docutils l
 </pre></div>
 </div>
 <p>The above code contacts the <strong>Wazuh Server API</strong> with collected JWT Token for fetching the list of available agent data on your wazuh server.</p>
-<img alt="Tracecat Server, Wazuh Server API Configuration" class="align-center" src="../../_images/tracecat-server-workflow-contifiguration-3.png" />
-<div style="height:25px;"></div></section>
+<a class=""
+               data-lightbox="group-8b3987bb-a161-45d0-a331-92ee869c92ae"
+               href="../../_images/tracecat-server-workflow-contifiguration-31.png"
+               title=""
+               data-title=""
+               
+               ><img src="../../_images/tracecat-server-workflow-contifiguration-31.png"
+                     class="align-center"
+                     width="100%"
+                     height="auto"
+                     alt="Tracecat Server, Wazuh Server API Configuration"/>
+                </a><div style="height:25px;"></div></section>
 <section id="core-http-request-active-response-for-linux">
 <h2>core.http_request (Active Response for Linux)<a class="headerlink" href="#core-http-request-active-response-for-linux" title="Link to this heading"></a></h2>
 <p>Go to the YAML tab. Copy and paste the below code block:</p>
@@ -220,8 +258,18 @@ to know how you can utilize it to the fullest. Go to the <code class="docutils l
 linux agents. The script has additional arguments such as <code class="docutils literal notranslate"><span class="pre">-</span> <span class="pre">add,</span> <span class="pre">-</span> <span class="pre">delete,</span> <span class="pre">-</span> <span class="pre">[time]</span></code> for blocking the malicious IP for a specific time and more,
 based on the <code class="docutils literal notranslate"><span class="pre">rule.id</span> <span class="pre">5763</span></code> and its level of severity. You can also set the list of Linux agents you want the script to run on dynamically or
 statically based on the <code class="docutils literal notranslate"><span class="pre">agent.id</span></code> found on your wazuh server.</p>
-<img alt="Tracecat Server, Wazuh Active Response Configuration for Linux Agents" class="align-center" src="../../_images/tracecat-server-workflow-contifiguration-4.png" />
-<div style="height:25px;"></div></section>
+<a class=""
+               data-lightbox="group-664fc36e-a77e-4698-90fa-8aad088d077b"
+               href="../../_images/tracecat-server-workflow-contifiguration-41.png"
+               title=""
+               data-title=""
+               
+               ><img src="../../_images/tracecat-server-workflow-contifiguration-41.png"
+                     class="align-center"
+                     width="100%"
+                     height="auto"
+                     alt="Tracecat Server, Wazuh Active Response Configuration for Linux Agents"/>
+                </a><div style="height:25px;"></div></section>
 <section id="core-http-request-active-response-for-windows">
 <h2>core.http_request (Active Response for Windows)<a class="headerlink" href="#core-http-request-active-response-for-windows" title="Link to this heading"></a></h2>
 <p>Go to the YAML tab. Copy and paste the below code block:</p>
@@ -250,8 +298,18 @@ statically based on the <code class="docutils literal notranslate"><span class="
 the <code class="docutils literal notranslate"><span class="pre">netsh</span></code> script on <code class="docutils literal notranslate"><span class="pre">windows</span></code> agents. The script has additional arguments such as <code class="docutils literal notranslate"><span class="pre">-</span> <span class="pre">add,</span> <span class="pre">-</span> <span class="pre">delete,</span> <span class="pre">-</span> <span class="pre">[time]</span></code> for
 blocking the malicious IP for a specific time and more based on the <code class="docutils literal notranslate"><span class="pre">rule.id</span> <span class="pre">60204</span></code> and its level of severity.
 You can also set the list of windows agents you want the script to run on dynamically or statically based on the <code class="docutils literal notranslate"><span class="pre">agent.id</span></code> found on your wazuh server.</p>
-<img alt="Tracecat Server, Wazuh Active Response Configuration for Windows Agents" class="align-center" src="../../_images/tracecat-server-workflow-contifiguration-5.png" />
-<div style="height:25px;"></div></section>
+<a class=""
+               data-lightbox="group-5f8b68b3-e5a6-4c05-98ca-70d5fa7c254d"
+               href="../../_images/tracecat-server-workflow-contifiguration-51.png"
+               title=""
+               data-title=""
+               
+               ><img src="../../_images/tracecat-server-workflow-contifiguration-51.png"
+                     class="align-center"
+                     width="100%"
+                     height="auto"
+                     alt="Tracecat Server, Wazuh Active Response Configuration for Windows Agents"/>
+                </a><div style="height:25px;"></div></section>
 <section id="core-http-request-active-response-for-macos">
 <h2>core.http_request (Active Response for macOS)<a class="headerlink" href="#core-http-request-active-response-for-macos" title="Link to this heading"></a></h2>
 <p>Go to the YAML tab. Copy and paste the below code block:</p>
@@ -281,8 +339,18 @@ the <code class="docutils literal notranslate"><span class="pre">pf</span></code
 blocking the malicious IP for a specific time and more based on the <code class="docutils literal notranslate"><span class="pre">rule.id</span> <span class="pre">5712</span></code> and
 its level of severity. You can also set the list of macOS agents you want the script to
 run on dynamically or statically based on the <code class="docutils literal notranslate"><span class="pre">agent.id</span></code> found on your wazuh server.</p>
-<img alt="Tracecat Server, Wazuh Active Response Configuration for macOS Agents" class="align-center" src="../../_images/tracecat-server-workflow-contifiguration-6.png" />
-<div style="height:25px;"></div><div class="admonition tip">
+<a class=""
+               data-lightbox="group-aa0d7885-c7c9-409c-87cc-914b3b1d898b"
+               href="../../_images/tracecat-server-workflow-contifiguration-61.png"
+               title=""
+               data-title=""
+               
+               ><img src="../../_images/tracecat-server-workflow-contifiguration-61.png"
+                     class="align-center"
+                     width="100%"
+                     height="auto"
+                     alt="Tracecat Server, Wazuh Active Response Configuration for macOS Agents"/>
+                </a><div style="height:25px;"></div><div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>Replace the <code class="docutils literal notranslate"><span class="pre">[Wazuh_Sever_IP]</span></code> with your actual Wazuh Sever IP. The default port for the Wazuh Server API is 55000 and the default port for the Wazuh Indexer API is 9200.</p>
 </div>
@@ -293,8 +361,18 @@ hese are basically <strong>JSON_PATHS</strong> found under the <strong>Results</
 Just copy the data or parameter value you need and paste it user <code class="docutils literal notranslate"><span class="pre">${{</span> <span class="pre">[JSON_PATH]</span> <span class="pre">}}</span></code> replacing <code class="docutils literal notranslate"><span class="pre">[JSON_PATH]</span></code>.
 This is helpful if you want the parameters of your <code class="docutils literal notranslate"><span class="pre">YAML</span></code> configuration to be defined dynamically.
 An image has been attached for your reference.</p>
-<img alt="Tracecat Server JSON Path Reference" class="align-center" src="../../_images/tracecat-server-workflow-contifiguration-7.png" />
-</div>
+<a class=""
+               data-lightbox="group-ccb64edd-05ed-44de-a868-1ae6c20f8d5e"
+               href="../../_images/tracecat-server-workflow-contifiguration-71.png"
+               title=""
+               data-title=""
+               
+               ><img src="../../_images/tracecat-server-workflow-contifiguration-71.png"
+                     class="align-center"
+                     width="100%"
+                     height="auto"
+                     alt="Tracecat Server JSON Path Reference"/>
+                </a></div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>The JSON paths in the above code blocks are just like variables named after the naming convention of the Title given to each component.

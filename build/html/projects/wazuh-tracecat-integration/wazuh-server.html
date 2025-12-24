@@ -10,6 +10,8 @@
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sphinxcontrib-images\LightBox2\lightbox2\dist\css\lightbox.min.css?v=6e7d0de0" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sphinxcontrib-images\LightBox2\lightbox2-customize\pointer.css?v=c97663ff" />
       <link rel="stylesheet" type="text/css" href="../../_static/custom-styling/side-panel.css?v=1d19113b" />
 
   
@@ -20,6 +22,8 @@
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../../_static/copybutton.js?v=9760a2b4"></script>
+      <script src="../../_static/sphinxcontrib-images\LightBox2\lightbox2\dist\js\lightbox-plus-jquery.min.js?v=f0ca4bb6"></script>
+      <script src="../../_static/sphinxcontrib-images\LightBox2\lightbox2-customize\jquery-noconflict.js?v=12818e64"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -89,7 +93,11 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Knowledge Base</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../knowledge-base/modsecurity-log-detection_wazuh/introduction.html">Detecting ModSecurity Logs in Wazuh Using Custom Decoders and Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../knowledge-base/manipulation-json-decoders-wazuh.html">Understanding Wazuh JSON Decoders</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Research</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../research/modsecurity-log-detection-wazuh/introduction.html">Detecting ModSecurity Logs in Wazuh Using Custom Decoders and Rules</a></li>
 </ul>
 
         </div>
@@ -156,8 +164,18 @@ But here we are going to focus more on <strong>macOS</strong> endpoints as a bit
 by finding the configuration file at <code class="docutils literal notranslate"><span class="pre">/var/ossec/etc/ossec.conf</span></code>, make sure you have <code class="docutils literal notranslate"><span class="pre">sudo</span></code> privileges before accessing through terminal.
 But it more recommended that you access via the Web GUI as it’s more easily manageable and accessible. Follow <code class="docutils literal notranslate"><span class="pre">Server</span> <span class="pre">management</span> <span class="pre">→</span> <span class="pre">Settings</span> <span class="pre">→</span> <span class="pre">Edit</span> <span class="pre">configuration</span></code>.
 There you have to look out for something like <code class="docutils literal notranslate"><span class="pre">&lt;!--</span> <span class="pre">Active</span> <span class="pre">response</span> <span class="pre">--&gt;</span></code>, in that specific section you will notice various active response scripts as shown in the below image:</p>
-<img alt="Wazuh Server Configuration File Active Response Settings" class="align-center" src="../../_images/wazuh-server-img-1.png" />
-<div style="height:25px;"></div><p>Since Wazuh leverages their active response scripts based on their respective OS, for example, <code class="docutils literal notranslate"><span class="pre">firewall-drop</span></code> for Linux endpoints, <code class="docutils literal notranslate"><span class="pre">netsh</span></code> for
+<a class=""
+               data-lightbox="group-786cd561-f537-4efc-95ff-2d4faf37fe75"
+               href="../../_images/wazuh-server-img-11.png"
+               title=""
+               data-title=""
+               
+               ><img src="../../_images/wazuh-server-img-11.png"
+                     class="align-center"
+                     width="100%"
+                     height="auto"
+                     alt="Wazuh Server Configuration File Active Response Settings"/>
+                </a><div style="height:25px;"></div><p>Since Wazuh leverages their active response scripts based on their respective OS, for example, <code class="docutils literal notranslate"><span class="pre">firewall-drop</span></code> for Linux endpoints, <code class="docutils literal notranslate"><span class="pre">netsh</span></code> for
 windows endpoints. Similarly, for macOS endpoints, there is a specific script called <code class="docutils literal notranslate"><span class="pre">pf</span></code>, which is an active response script for
 channeling <strong>Packet Filter</strong> as default stateful kernel level firewall used in almost every macOS devices.
 You can look into more details of <a class="reference external" href="https://documentation.wazuh.com/current/user-manual/capabilities/active-response/default-active-response-scripts.html" rel="noreferrer" target="_blank">Wazuh Active Response Scripts <svg version="1.1" width="1.0em" height="1.0em" viewBox="0 0 16 16" aria-hidden="true" style="display: inline-block; vertical-align: middle; fill: currentColor;"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2Zm6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1Z"></path></svg></a>

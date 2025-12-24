@@ -33,7 +33,17 @@
    :caption: Knowledge Base
    :hidden:
 
-   Detecting ModSecurity Logs in Wazuh Using Custom Decoders and Rules <knowledge-base/modsecurity-log-detection_wazuh/introduction>
+   Understanding Wazuh JSON Decoders </knowledge-base/manipulation-json-decoders-wazuh.rst>
+
+.. toctree::
+   :maxdepth: 3
+   :caption: Research
+   :hidden:
+
+   Detecting ModSecurity Logs in Wazuh Using Custom Decoders and Rules <research/modsecurity-log-detection-wazuh/introduction>
+
+
+
 
 .. Indices and tables
    ==================

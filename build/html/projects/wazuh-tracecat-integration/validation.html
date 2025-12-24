@@ -10,6 +10,8 @@
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sphinxcontrib-images\LightBox2\lightbox2\dist\css\lightbox.min.css?v=6e7d0de0" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sphinxcontrib-images\LightBox2\lightbox2-customize\pointer.css?v=c97663ff" />
       <link rel="stylesheet" type="text/css" href="../../_static/custom-styling/side-panel.css?v=1d19113b" />
 
   
@@ -20,6 +22,8 @@
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../../_static/copybutton.js?v=9760a2b4"></script>
+      <script src="../../_static/sphinxcontrib-images\LightBox2\lightbox2\dist\js\lightbox-plus-jquery.min.js?v=f0ca4bb6"></script>
+      <script src="../../_static/sphinxcontrib-images\LightBox2\lightbox2-customize\jquery-noconflict.js?v=12818e64"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -85,7 +89,11 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Knowledge Base</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../knowledge-base/modsecurity-log-detection_wazuh/introduction.html">Detecting ModSecurity Logs in Wazuh Using Custom Decoders and Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../knowledge-base/manipulation-json-decoders-wazuh.html">Understanding Wazuh JSON Decoders</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Research</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../research/modsecurity-log-detection-wazuh/introduction.html">Detecting ModSecurity Logs in Wazuh Using Custom Decoders and Rules</a></li>
 </ul>
 
         </div>
@@ -124,8 +132,18 @@ as the script leverages <code class="docutils literal notranslate"><span class="
 </pre></div>
 </div>
 <p>You should see <code class="docutils literal notranslate"><span class="pre">iptables</span></code> blocked the malicious IP.</p>
-<img alt="Validating malicious IP getting Blocked for Linux Agents" class="align-center" src="../../_images/validation-1.png" />
-<div style="height:25px;"></div></section>
+<a class=""
+               data-lightbox="group-6d1fca1f-3c24-41bb-9357-e1a18533c182"
+               href="../../_images/validation-11.png"
+               title=""
+               data-title=""
+               
+               ><img src="../../_images/validation-11.png"
+                     class="align-center"
+                     width="100%"
+                     height="auto"
+                     alt="Validating malicious IP getting Blocked for Linux Agents"/>
+                </a><div style="height:25px;"></div></section>
 <section id="windows-agents">
 <h2>Windows Agents<a class="headerlink" href="#windows-agents" title="Link to this heading"></a></h2>
 <p>To check <strong>Wazuh Active Response -</strong> <code class="docutils literal notranslate"><span class="pre">netsh</span></code> script has actually blocked a malicious IP. We need to check <code class="docutils literal notranslate"><span class="pre">netsh</span></code> rules list, or
@@ -136,10 +154,30 @@ netsh<span class="w"> </span>advfirewall<span class="w"> </span>firewall<span cl
 </pre></div>
 </div>
 <p>You should be able to see an output like this image below:</p>
-<img alt="Validating malicious IP getting Blocked for Windows Agents via netsh Command" class="align-center" src="../../_images/validation-2.png" />
-<div style="height:25px;"></div><p>Or, you can also check it via the GUI Interface by simply going to <strong>Windows Defender Firewall → Advanced Settings</strong> and check the <code class="docutils literal notranslate"><span class="pre">Inbound</span> <span class="pre">Rules</span></code></p>
-<img alt="Validating malicious IP getting Blocked for Windows Agents via GUI" class="align-center" src="../../_images/validation-3.png" />
-<div style="height:25px;"></div><p>As you can see, the exact same <strong>Wazuh Rule</strong> name is showing here as well.</p>
+<a class=""
+               data-lightbox="group-3eb897fa-5dde-48af-a84a-05be7693e3b1"
+               href="../../_images/validation-21.png"
+               title=""
+               data-title=""
+               
+               ><img src="../../_images/validation-21.png"
+                     class="align-center"
+                     width="100%"
+                     height="auto"
+                     alt="Validating malicious IP getting Blocked for Windows Agents via netsh Command"/>
+                </a><div style="height:25px;"></div><p>Or, you can also check it via the GUI Interface by simply going to <strong>Windows Defender Firewall → Advanced Settings</strong> and check the <code class="docutils literal notranslate"><span class="pre">Inbound</span> <span class="pre">Rules</span></code></p>
+<a class=""
+               data-lightbox="group-c6bbadd6-f2f4-4d1f-be34-65b2fd45f513"
+               href="../../_images/validation-31.png"
+               title=""
+               data-title=""
+               
+               ><img src="../../_images/validation-31.png"
+                     class="align-center"
+                     width="100%"
+                     height="auto"
+                     alt="Validating malicious IP getting Blocked for Windows Agents via GUI"/>
+                </a><div style="height:25px;"></div><p>As you can see, the exact same <strong>Wazuh Rule</strong> name is showing here as well.</p>
 </section>
 <section id="macos-agents">
 <h2>macOS Agents<a class="headerlink" href="#macos-agents" title="Link to this heading"></a></h2>
@@ -151,8 +189,18 @@ sudo<span class="w"> </span>pfctl<span class="w"> </span>-t<span class="w"> </sp
 </pre></div>
 </div>
 <p>You should see <code class="docutils literal notranslate"><span class="pre">pf</span></code> blocked the malicious IP.</p>
-<img alt="Validating malicious IP getting Blocked for macOS Agents" class="align-center" src="../../_images/validation-4.png" />
-<div style="height:25px;"></div></section>
+<a class=""
+               data-lightbox="group-40df1036-b897-4931-90bd-8fc72f324b64"
+               href="../../_images/validation-41.png"
+               title=""
+               data-title=""
+               
+               ><img src="../../_images/validation-41.png"
+                     class="align-center"
+                     width="100%"
+                     height="auto"
+                     alt="Validating malicious IP getting Blocked for macOS Agents"/>
+                </a><div style="height:25px;"></div></section>
 </section>
 
 

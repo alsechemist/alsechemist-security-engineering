@@ -1,0 +1,200 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scope of Engagement &mdash; Security Engineering 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sphinxcontrib-images\LightBox2\lightbox2\dist\css\lightbox.min.css?v=6e7d0de0" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sphinxcontrib-images\LightBox2\lightbox2-customize\pointer.css?v=c97663ff" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom-styling/side-panel.css?v=1d19113b" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=9760a2b4"></script>
+      <script src="../../_static/sphinxcontrib-images\LightBox2\lightbox2\dist\js\lightbox-plus-jquery.min.js?v=f0ca4bb6"></script>
+      <script src="../../_static/sphinxcontrib-images\LightBox2\lightbox2-customize\jquery-noconflict.js?v=12818e64"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Configuration of ModSecurity Audit Log" href="configuration-modsecutity-logs.html" />
+    <link rel="prev" title="Introduction - Detecting ModSecurity Logs in Wazuh Using Custom Decoders and Rules" href="introduction.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Security Engineering
+              <img src="../../_static/alsechemist-logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../main/security-engineering.html">Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../projects/projects.html">Projects</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Projects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../projects/wazuh-tracecat-integration/introduction.html">Wazuh &amp; Tracecat Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../projects/apache2-server-hardening/introduction.html">Apache2 Server Hardening</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../projects/nginx-server-hardening/introduction.html">Nginx Server Hardening</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Knowledge Base</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../knowledge-base/manipulation-json-decoders-wazuh.html">Understanding Wazuh JSON Decoders</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Research</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="introduction.html">Detecting ModSecurity Logs in Wazuh Using Custom Decoders and Rules</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Scope of Engagement</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#technology-stack">Technology Stack</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#operational-assumptions">Operational Assumptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="configuration-modsecutity-logs.html">Configuration of ModSecurity Audit Log</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decoder-creation.html">Decoder Creation - ModSecurity Audit Logs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rule-creation.html">Rule Creation - Generating ModSecurity Alerts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modsecurity-log-ingestion.html">ModSecurity Log Ingestion into Wazuh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conclusion.html">Conclusion</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Security Engineering</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="introduction.html">Introduction - Detecting ModSecurity Logs in Wazuh Using Custom Decoders and Rules</a></li>
+      <li class="breadcrumb-item active">Scope of Engagement</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="scope-of-engagement">
+<h1>Scope of Engagement<a class="headerlink" href="#scope-of-engagement" title="Link to this heading"></a></h1>
+<p>The scope of this implementation is intentionally defined to ensure clarity, reproducibility, and alignment with real-world Security Operations Center (SOC) workflows.</p>
+<section id="technology-stack">
+<h2>Technology Stack<a class="headerlink" href="#technology-stack" title="Link to this heading"></a></h2>
+<p>The following technologies and versions are used throughout this implementation:</p>
+<ul>
+<li><p><strong>Ubuntu Server</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Version: 24.04 LTS</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>ModSecurity (libmodsecurity):</strong> The latest stable <strong>libmodsecurity</strong> engine is used as the Web Application Firewall (WAF) core. This engine operates independently of the web server and is integrated using official connectors.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Version: 3.x.x</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>Web Server Connectors:</strong> ModSecurity v3 is deployed using supported connectors for:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Apache HTTP Server (latest)</p></li>
+<li><p>NGINX (latest)</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>OWASP Core Rule Set (CRS)</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Version: <strong>4.x.x</strong></p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>Wazuh SIEM</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Version: <strong>4.x</strong></p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</section>
+<section id="operational-assumptions">
+<h2>Operational Assumptions<a class="headerlink" href="#operational-assumptions" title="Link to this heading"></a></h2>
+<p>This documentation assumes that:</p>
+<ul class="simple">
+<li><p>ModSecurity v3 is already installed and correctly integrated with the web server</p></li>
+<li><p>OWASP CRS v4.21.0 is enabled and operational</p></li>
+<li><p>The Wazuh manager and agent are properly deployed</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="introduction.html" class="btn btn-neutral float-left" title="Introduction - Detecting ModSecurity Logs in Wazuh Using Custom Decoders and Rules" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="configuration-modsecutity-logs.html" class="btn btn-neutral float-right" title="Configuration of ModSecurity Audit Log" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Alsechemist.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

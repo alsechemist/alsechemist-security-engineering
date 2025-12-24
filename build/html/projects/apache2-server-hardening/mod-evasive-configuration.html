@@ -10,6 +10,8 @@
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sphinxcontrib-images\LightBox2\lightbox2\dist\css\lightbox.min.css?v=6e7d0de0" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sphinxcontrib-images\LightBox2\lightbox2-customize\pointer.css?v=c97663ff" />
       <link rel="stylesheet" type="text/css" href="../../_static/custom-styling/side-panel.css?v=1d19113b" />
 
   
@@ -20,6 +22,8 @@
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../../_static/copybutton.js?v=9760a2b4"></script>
+      <script src="../../_static/sphinxcontrib-images\LightBox2\lightbox2\dist\js\lightbox-plus-jquery.min.js?v=f0ca4bb6"></script>
+      <script src="../../_static/sphinxcontrib-images\LightBox2\lightbox2-customize\jquery-noconflict.js?v=12818e64"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -78,7 +82,11 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Knowledge Base</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../knowledge-base/modsecurity-log-detection_wazuh/introduction.html">Detecting ModSecurity Logs in Wazuh Using Custom Decoders and Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../knowledge-base/manipulation-json-decoders-wazuh.html">Understanding Wazuh JSON Decoders</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Research</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../research/modsecurity-log-detection-wazuh/introduction.html">Detecting ModSecurity Logs in Wazuh Using Custom Decoders and Rules</a></li>
 </ul>
 
         </div>
@@ -120,13 +128,33 @@ temporarily blocking IPs that exceed configured thresholds, helping protect web 
 If we want to receive email regarding the alerts, it will create a postfix server and run its services.
 This is not recommended in a production environment, as this will create unnecessary services, if the instance is not dedicated for handling email services.
 For now, we will go with <code class="docutils literal notranslate"><span class="pre">No</span> <span class="pre">Connection</span></code></p>
-<img alt="Email Server Setup Options" class="align-center" src="../../_images/apache2-server-hardening-img-3.png" />
-<div style="height:25px;"></div></section>
+<a class=""
+               data-lightbox="group-15e71960-16dc-4b08-8372-bf99b5c4489e"
+               href="../../_images/apache2-server-hardening-img-31.png"
+               title=""
+               data-title=""
+               
+               ><img src="../../_images/apache2-server-hardening-img-31.png"
+                     class="align-center"
+                     width="100%"
+                     height="auto"
+                     alt="Email Server Setup Options"/>
+                </a><div style="height:25px;"></div></section>
 <section id="configuring-the-evasive-module">
 <h2>Configuring the Evasive Module<a class="headerlink" href="#configuring-the-evasive-module" title="Link to this heading"></a></h2>
 <p>Head over to the <code class="docutils literal notranslate"><span class="pre">/etc/apache2/mods-available/</span></code> directory and open <code class="docutils literal notranslate"><span class="pre">evasive.conf</span></code> file using your preferred text editor. I will be using vim.</p>
-<img alt="Mod Evasive Configuration File" class="align-center" src="../../_images/apache2-server-hardening-img-4.png" />
-<div style="height:25px;"></div><section id="parameter-description">
+<a class=""
+               data-lightbox="group-998eb9d4-8e8c-43c7-a622-943ef3f305fd"
+               href="../../_images/apache2-server-hardening-img-41.png"
+               title=""
+               data-title=""
+               
+               ><img src="../../_images/apache2-server-hardening-img-41.png"
+                     class="align-center"
+                     width="100%"
+                     height="auto"
+                     alt="Mod Evasive Configuration File"/>
+                </a><div style="height:25px;"></div><section id="parameter-description">
 <h3>Parameter Description:<a class="headerlink" href="#parameter-description" title="Link to this heading"></a></h3>
 <ul class="simple">
 <li><p><strong>DOSHashTableSize:</strong> Increase or decrease the hash-table size according to your requirements. It is recommended to use higher values if your server is usually busy or receives a high amount of traffic.</p></li>
@@ -172,26 +200,66 @@ Otherwise, the logs will also not be generated. If such a problem arises, you ca
 <section id="testing-the-module">
 <h2>Testing the Module<a class="headerlink" href="#testing-the-module" title="Link to this heading"></a></h2>
 <p>You will usually see a default apache2 page after sending an http request to your server/instance, with your server’s IP.</p>
-<img alt="Testing Mod Evasive Module" class="align-center" src="../../_images/apache2-server-hardening-img-5.png" />
-<div style="height:25px;"></div><div class="admonition tip">
+<a class=""
+               data-lightbox="group-6bafd49f-4d16-4cc3-9af8-3885975f2350"
+               href="../../_images/apache2-server-hardening-img-51.png"
+               title=""
+               data-title=""
+               
+               ><img src="../../_images/apache2-server-hardening-img-51.png"
+                     class="align-center"
+                     width="100%"
+                     height="auto"
+                     alt="Testing Mod Evasive Module"/>
+                </a><div style="height:25px;"></div><div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>I would like to test it manually, as an attacker is more likely to use their custom script or any attacking tools.
 Remember, we have set a time frame of 10 seconds to consider up to 20 requests in the same page from the source at a time.
 After 20 requests within the 10 seconds time frame, it should forbid us from accessing the webpage.
 Besides, the number of requests might vary due to the value of the <code class="docutils literal notranslate"><span class="pre">hashtable</span></code> sometimes.</p>
 </div>
-<img alt="Testing Mod Evasive Module - Successful" class="align-center" src="../../_images/apache2-server-hardening-img-6.png" />
-<div style="height:25px;"></div><p>You should receive a status code of <code class="docutils literal notranslate"><span class="pre">403</span></code>, which is Forbidden, if the module is working fine and accordingly.</p>
+<a class=""
+               data-lightbox="group-fc6ba398-8ebe-4b9d-9022-26f2164c07df"
+               href="../../_images/apache2-server-hardening-img-61.png"
+               title=""
+               data-title=""
+               
+               ><img src="../../_images/apache2-server-hardening-img-61.png"
+                     class="align-center"
+                     width="100%"
+                     height="auto"
+                     alt="Testing Mod Evasive Module - Successful"/>
+                </a><div style="height:25px;"></div><p>You should receive a status code of <code class="docutils literal notranslate"><span class="pre">403</span></code>, which is Forbidden, if the module is working fine and accordingly.</p>
 </section>
 <section id="checking-and-investigating-logs">
 <h2>Checking and Investigating Logs<a class="headerlink" href="#checking-and-investigating-logs" title="Link to this heading"></a></h2>
 <p>If an attack gets detected, a log should be generated in the specified directory. For us the directory is <code class="docutils literal notranslate"><span class="pre">/var/log/mod_evasive</span></code>.
 Head over there, and you will find the IP of the attacker, which means the module is blocking requests coming from this particular IP.</p>
-<img alt="Checking Mod Evasive Logs" class="align-center" src="../../_images/apache2-server-hardening-img-7.png" />
-<div style="height:25px;"></div><p>Inside the file you find a process <code class="docutils literal notranslate"><span class="pre">id</span></code> or a unique number.</p>
+<a class=""
+               data-lightbox="group-d4aa9891-561d-4b5a-8268-c1da9c728e76"
+               href="../../_images/apache2-server-hardening-img-71.png"
+               title=""
+               data-title=""
+               
+               ><img src="../../_images/apache2-server-hardening-img-71.png"
+                     class="align-center"
+                     width="100%"
+                     height="auto"
+                     alt="Checking Mod Evasive Logs"/>
+                </a><div style="height:25px;"></div><p>Inside the file you find a process <code class="docutils literal notranslate"><span class="pre">id</span></code> or a unique number.</p>
 <p>Besides, you can also head over to check the syslog to investigate the event.</p>
-<img alt="Checking Mod Evasive Syslog" class="align-center" src="../../_images/apache2-server-hardening-img-8.png" />
-<div style="height:25px;"></div><div class="admonition note">
+<a class=""
+               data-lightbox="group-dbfed503-2253-4538-bd9e-51e47d0c9c86"
+               href="../../_images/apache2-server-hardening-img-81.png"
+               title=""
+               data-title=""
+               
+               ><img src="../../_images/apache2-server-hardening-img-81.png"
+                     class="align-center"
+                     width="100%"
+                     height="auto"
+                     alt="Checking Mod Evasive Syslog"/>
+                </a><div style="height:25px;"></div><div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>If an attacker IP shows up in the <code class="docutils literal notranslate"><span class="pre">mod_evasive</span></code> directory it will also be logged in the syslog file.</p>
 </div>

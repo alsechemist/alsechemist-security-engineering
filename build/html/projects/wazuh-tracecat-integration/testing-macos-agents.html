@@ -10,6 +10,8 @@
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sphinxcontrib-images\LightBox2\lightbox2\dist\css\lightbox.min.css?v=6e7d0de0" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sphinxcontrib-images\LightBox2\lightbox2-customize\pointer.css?v=c97663ff" />
       <link rel="stylesheet" type="text/css" href="../../_static/custom-styling/side-panel.css?v=1d19113b" />
 
   
@@ -20,6 +22,8 @@
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../../_static/copybutton.js?v=9760a2b4"></script>
+      <script src="../../_static/sphinxcontrib-images\LightBox2\lightbox2\dist\js\lightbox-plus-jquery.min.js?v=f0ca4bb6"></script>
+      <script src="../../_static/sphinxcontrib-images\LightBox2\lightbox2-customize\jquery-noconflict.js?v=12818e64"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -80,7 +84,11 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Knowledge Base</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../knowledge-base/modsecurity-log-detection_wazuh/introduction.html">Detecting ModSecurity Logs in Wazuh Using Custom Decoders and Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../knowledge-base/manipulation-json-decoders-wazuh.html">Understanding Wazuh JSON Decoders</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Research</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../research/modsecurity-log-detection-wazuh/introduction.html">Detecting ModSecurity Logs in Wazuh Using Custom Decoders and Rules</a></li>
 </ul>
 
         </div>
@@ -120,19 +128,79 @@ You can skip the <code class="docutils literal notranslate"><span class="pre">-I
 </pre></div>
 </div>
 <p>An image has been attached below for demonstration.</p>
-<img alt="Tracecat Workflow Run, Testing macOS Agents" class="align-center" src="../../_images/tracecat-proof-of-concept-14.png" />
-<div style="height:25px;"></div><p>Now back to our Wazuh Dashboard, we should be seeing the related logs are being generated.</p>
-<img alt="Tracecat Workflow Run, Checking Wazuh Dashboard for macOS Agent Test Case" class="align-center" src="../../_images/tracecat-proof-of-concept-15.png" />
-<div style="height:25px;"></div><p>Now run the workflow that we have created on Tracecat</p>
-<img alt="Tracecat Workflow Run, macOS Agent Test Case Successfully Ran" class="align-center" src="../../_images/tracecat-proof-of-concept-16.png" />
-<div style="height:25px;"></div><p>You should notice that, the active response component executed. Checking the result section will show further details.</p>
-<img alt="Tracecat Workflow Run, macOS Agent Test Case Result Inspection" class="align-center" src="../../_images/tracecat-proof-of-concept-17.png" />
-<div style="height:25px;"></div><p>Checking back on our Wazuh Dashboard, we should notice that an event appeared showing <code class="docutils literal notranslate"><span class="pre">AActive</span> <span class="pre">response:</span> <span class="pre">active-response/bin/pf</span> <span class="pre">-</span> <span class="pre">add</span></code> on that
+<a class=""
+               data-lightbox="group-2ec8332e-7e30-4794-a727-40dc8f8e4d07"
+               href="../../_images/tracecat-proof-of-concept-141.png"
+               title=""
+               data-title=""
+               
+               ><img src="../../_images/tracecat-proof-of-concept-141.png"
+                     class="align-center"
+                     width="100%"
+                     height="auto"
+                     alt="Tracecat Workflow Run, Testing macOS Agents"/>
+                </a><div style="height:25px;"></div><p>Now back to our Wazuh Dashboard, we should be seeing the related logs are being generated.</p>
+<a class=""
+               data-lightbox="group-3d65ed75-9683-491f-b3b5-cf8000e0d07f"
+               href="../../_images/tracecat-proof-of-concept-151.png"
+               title=""
+               data-title=""
+               
+               ><img src="../../_images/tracecat-proof-of-concept-151.png"
+                     class="align-center"
+                     width="100%"
+                     height="auto"
+                     alt="Tracecat Workflow Run, Checking Wazuh Dashboard for macOS Agent Test Case"/>
+                </a><div style="height:25px;"></div><p>Now run the workflow that we have created on Tracecat</p>
+<a class=""
+               data-lightbox="group-2ee4a621-7ebd-445f-89ff-6ff3b5684875"
+               href="../../_images/tracecat-proof-of-concept-161.png"
+               title=""
+               data-title=""
+               
+               ><img src="../../_images/tracecat-proof-of-concept-161.png"
+                     class="align-center"
+                     width="100%"
+                     height="auto"
+                     alt="Tracecat Workflow Run, macOS Agent Test Case Successfully Ran"/>
+                </a><div style="height:25px;"></div><p>You should notice that, the active response component executed. Checking the result section will show further details.</p>
+<a class=""
+               data-lightbox="group-db2d1cbf-4d3d-4f4c-906e-987bcd14d1ac"
+               href="../../_images/tracecat-proof-of-concept-171.png"
+               title=""
+               data-title=""
+               
+               ><img src="../../_images/tracecat-proof-of-concept-171.png"
+                     class="align-center"
+                     width="100%"
+                     height="auto"
+                     alt="Tracecat Workflow Run, macOS Agent Test Case Result Inspection"/>
+                </a><div style="height:25px;"></div><p>Checking back on our Wazuh Dashboard, we should notice that an event appeared showing <code class="docutils literal notranslate"><span class="pre">AActive</span> <span class="pre">response:</span> <span class="pre">active-response/bin/pf</span> <span class="pre">-</span> <span class="pre">add</span></code> on that
 specific Agent,as shown in the below image.</p>
-<img alt="Tracecat Workflow Run, Checking Wazuh Dashboard for Active Response Logs of netsh" class="align-center" src="../../_images/tracecat-proof-of-concept-18.png" />
-<div style="height:25px;"></div><p>Checking on the attacker side, after some time, we will see errors, as shown below.</p>
-<img alt="Tracecat Workflow Run, Checking Attacker Side for Failed Attempts of Brute Force Attack" class="align-center" src="../../_images/tracecat-proof-of-concept-19.png" />
-<div style="height:25px;"></div><p>This settles that, our setup is functional and working.</p>
+<a class=""
+               data-lightbox="group-8fcbc8d3-900a-4358-8746-08e740736982"
+               href="../../_images/tracecat-proof-of-concept-181.png"
+               title=""
+               data-title=""
+               
+               ><img src="../../_images/tracecat-proof-of-concept-181.png"
+                     class="align-center"
+                     width="100%"
+                     height="auto"
+                     alt="Tracecat Workflow Run, Checking Wazuh Dashboard for Active Response Logs of netsh"/>
+                </a><div style="height:25px;"></div><p>Checking on the attacker side, after some time, we will see errors, as shown below.</p>
+<a class=""
+               data-lightbox="group-f635db71-c62e-4d74-a6a1-a98f1d5e62d6"
+               href="../../_images/tracecat-proof-of-concept-191.png"
+               title=""
+               data-title=""
+               
+               ><img src="../../_images/tracecat-proof-of-concept-191.png"
+                     class="align-center"
+                     width="100%"
+                     height="auto"
+                     alt="Tracecat Workflow Run, Checking Attacker Side for Failed Attempts of Brute Force Attack"/>
+                </a><div style="height:25px;"></div><p>This settles that, our setup is functional and working.</p>
 </section>
 
 

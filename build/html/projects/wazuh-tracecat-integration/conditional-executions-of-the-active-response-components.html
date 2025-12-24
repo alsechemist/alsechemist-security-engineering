@@ -10,6 +10,8 @@
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sphinxcontrib-images\LightBox2\lightbox2\dist\css\lightbox.min.css?v=6e7d0de0" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sphinxcontrib-images\LightBox2\lightbox2-customize\pointer.css?v=c97663ff" />
       <link rel="stylesheet" type="text/css" href="../../_static/custom-styling/side-panel.css?v=1d19113b" />
 
   
@@ -20,6 +22,8 @@
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../../_static/copybutton.js?v=9760a2b4"></script>
+      <script src="../../_static/sphinxcontrib-images\LightBox2\lightbox2\dist\js\lightbox-plus-jquery.min.js?v=f0ca4bb6"></script>
+      <script src="../../_static/sphinxcontrib-images\LightBox2\lightbox2-customize\jquery-noconflict.js?v=12818e64"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -89,7 +93,11 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Knowledge Base</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../knowledge-base/modsecurity-log-detection_wazuh/introduction.html">Detecting ModSecurity Logs in Wazuh Using Custom Decoders and Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../knowledge-base/manipulation-json-decoders-wazuh.html">Understanding Wazuh JSON Decoders</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Research</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../research/modsecurity-log-detection-wazuh/introduction.html">Detecting ModSecurity Logs in Wazuh Using Custom Decoders and Rules</a></li>
 </ul>
 
         </div>
@@ -128,15 +136,35 @@ It will execute the components only if the specified parameter is found.</p>
 A unique parameter can be the <code class="docutils literal notranslate"><span class="pre">rule.id</span></code> of the attack that is generated on the Wazuh Indexer Server. The unique rule.id that is generated for
 SSH Brute Force Attacks is <code class="docutils literal notranslate"><span class="pre">5763</span></code></p>
 <p>Go to the <strong>Wazuh Indexer Logs</strong> component and check the results tab, you will find the rule.id, something like as the image shown below:</p>
-<img alt="Tracecat, Copying JSON Path Guideline for Linux Agents" class="align-center" src="../../_images/tracecat-conditional-workflow-configuration-1.png" />
-<div style="height:25px;"></div><div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">${{ ACTIONS.wazuh_indexer_logs.result.data.hits.hits[0]._source.rule.id == &quot;5763&quot; }}</span>
+<a class=""
+               data-lightbox="group-13da7e6f-0e77-467f-883a-7f3584f182c6"
+               href="../../_images/tracecat-conditional-workflow-configuration-11.png"
+               title=""
+               data-title=""
+               
+               ><img src="../../_images/tracecat-conditional-workflow-configuration-11.png"
+                     class="align-center"
+                     width="100%"
+                     height="auto"
+                     alt="Tracecat, Copying JSON Path Guideline for Linux Agents"/>
+                </a><div style="height:25px;"></div><div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">${{ ACTIONS.wazuh_indexer_logs.result.data.hits.hits[0]._source.rule.id == &quot;5763&quot; }}</span>
 </pre></div>
 </div>
 <p>Copy the JSON path and paste it on the <strong>Run if</strong> section of the <strong>Active Response for Linux</strong> component or
 we can say the <code class="docutils literal notranslate"><span class="pre">core.http_request</span></code> component that we have configured for the linux agents.
 An image has been attached below for showcasing it.</p>
-<img alt="Tracecat Conditional Workflow Execution for Linux Agents" class="align-center" src="../../_images/tracecat-conditional-workflow-configuration-2.png" />
-<div style="height:25px;"></div><p>And that’s it, we have enabled conditional execution for the AR of linux Endpoints.</p>
+<a class=""
+               data-lightbox="group-65beab63-ba19-4f32-ad6f-d97a3353beaa"
+               href="../../_images/tracecat-conditional-workflow-configuration-21.png"
+               title=""
+               data-title=""
+               
+               ><img src="../../_images/tracecat-conditional-workflow-configuration-21.png"
+                     class="align-center"
+                     width="100%"
+                     height="auto"
+                     alt="Tracecat Conditional Workflow Execution for Linux Agents"/>
+                </a><div style="height:25px;"></div><p>And that’s it, we have enabled conditional execution for the AR of linux Endpoints.</p>
 </section>
 <section id="for-windows-agents">
 <h2>For Windows Agents<a class="headerlink" href="#for-windows-agents" title="Link to this heading"></a></h2>
@@ -146,15 +174,35 @@ we will focus on RDP Brute force attack here.</p>
 <p>A unique parameter can be the <code class="docutils literal notranslate"><span class="pre">rule.id</span></code> of the attack that is generated on the Wazuh Indexer Server.
 The unique <code class="docutils literal notranslate"><span class="pre">rule.id</span></code> that is generated for RDP Brute Force Attacks is <code class="docutils literal notranslate"><span class="pre">60204</span></code></p>
 <p>Go to the <strong>Wazuh Indexer Logs</strong> component and check the results tab, you will find the <code class="docutils literal notranslate"><span class="pre">rule.id</span></code>, something like as the image shown below:</p>
-<img alt="Tracecat, Copying JSON Path Guideline for Windows Agents" class="align-center" src="../../_images/tracecat-conditional-workflow-configuration-3.png" />
-<div style="height:25px;"></div><div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">${{ ACTIONS.wazuh_indexer_logs.result.data.hits.hits[0]._source.rule.id == &quot;60204&quot;}}</span>
+<a class=""
+               data-lightbox="group-1aac9533-461c-44ed-b9a9-a69f79912499"
+               href="../../_images/tracecat-conditional-workflow-configuration-31.png"
+               title=""
+               data-title=""
+               
+               ><img src="../../_images/tracecat-conditional-workflow-configuration-31.png"
+                     class="align-center"
+                     width="100%"
+                     height="auto"
+                     alt="Tracecat, Copying JSON Path Guideline for Windows Agents"/>
+                </a><div style="height:25px;"></div><div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">${{ ACTIONS.wazuh_indexer_logs.result.data.hits.hits[0]._source.rule.id == &quot;60204&quot;}}</span>
 </pre></div>
 </div>
 <p>Copy the JSON path and paste it on the <strong>Run if</strong> section of the <strong>Active Response for Windows</strong> component or
 we can say the <code class="docutils literal notranslate"><span class="pre">core.http_request</span></code> component that we have configured for the windows agents.
 An image has been attached below for showcasing it.</p>
-<img alt="Tracecat Conditional Workflow Execution for Windows Agents" class="align-center" src="../../_images/tracecat-conditional-workflow-configuration-4.png" />
-<div style="height:25px;"></div><p>And that’s it, we have enabled conditional execution for AR of windows endpoints.</p>
+<a class=""
+               data-lightbox="group-bd33d822-122a-4a90-95d1-785145277d73"
+               href="../../_images/tracecat-conditional-workflow-configuration-41.png"
+               title=""
+               data-title=""
+               
+               ><img src="../../_images/tracecat-conditional-workflow-configuration-41.png"
+                     class="align-center"
+                     width="100%"
+                     height="auto"
+                     alt="Tracecat Conditional Workflow Execution for Windows Agents"/>
+                </a><div style="height:25px;"></div><p>And that’s it, we have enabled conditional execution for AR of windows endpoints.</p>
 </section>
 <section id="for-macos-agents">
 <h2>For macOS Agents<a class="headerlink" href="#for-macos-agents" title="Link to this heading"></a></h2>
@@ -162,15 +210,35 @@ An image has been attached below for showcasing it.</p>
 A unique parameter can be the <code class="docutils literal notranslate"><span class="pre">rule.id</span></code> of the attack that is generated on the Wazuh Indexer Server.
 The unique <code class="docutils literal notranslate"><span class="pre">rule.id</span></code> that is generated for SSH Brute Force Attacks is <code class="docutils literal notranslate"><span class="pre">5712</span></code></p>
 <p>Go to the <strong>Wazuh Indexer Logs</strong> component and check the results tab, you will find the <code class="docutils literal notranslate"><span class="pre">rule.id</span></code>, something like as the image shown below:</p>
-<img alt="Tracecat, Copying JSON Path Guideline for macOS Agents" class="align-center" src="../../_images/tracecat-conditional-workflow-configuration-5.png" />
-<div style="height:25px;"></div><div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">${{ ACTIONS.wazuh_indexer_logs.result.data.hits.hits[0]._source.rule.id == &quot;5712&quot; }}</span>
+<a class=""
+               data-lightbox="group-f482232d-d616-473a-9b1b-b2703610084a"
+               href="../../_images/tracecat-conditional-workflow-configuration-51.png"
+               title=""
+               data-title=""
+               
+               ><img src="../../_images/tracecat-conditional-workflow-configuration-51.png"
+                     class="align-center"
+                     width="100%"
+                     height="auto"
+                     alt="Tracecat, Copying JSON Path Guideline for macOS Agents"/>
+                </a><div style="height:25px;"></div><div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">${{ ACTIONS.wazuh_indexer_logs.result.data.hits.hits[0]._source.rule.id == &quot;5712&quot; }}</span>
 </pre></div>
 </div>
 <p>Copy the JSON path and paste it on the <strong>Run if</strong> section of the <strong>Active Response for macOS</strong> component or
 we can say the <code class="docutils literal notranslate"><span class="pre">core.http_request</span></code> component that we have configured for the windows agents.
 An image has been attached below for showcasing it.</p>
-<img alt="Tracecat Conditional Workflow Execution for macOS Agents" class="align-center" src="../../_images/tracecat-conditional-workflow-configuration-6.png" />
-<div style="height:25px;"></div><p>And that’s it, we have enabled conditional execution for AR of macOS endpoints.</p>
+<a class=""
+               data-lightbox="group-7a4a156e-7ff6-495b-86ca-3c384c78e0f3"
+               href="../../_images/tracecat-conditional-workflow-configuration-61.png"
+               title=""
+               data-title=""
+               
+               ><img src="../../_images/tracecat-conditional-workflow-configuration-61.png"
+                     class="align-center"
+                     width="100%"
+                     height="auto"
+                     alt="Tracecat Conditional Workflow Execution for macOS Agents"/>
+                </a><div style="height:25px;"></div><p>And that’s it, we have enabled conditional execution for AR of macOS endpoints.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>The JSON paths in the above code blocks are just like variables named after the naming convention of the Title given to each component.
