@@ -72,7 +72,6 @@
 <li class="toctree-l2"><a class="reference internal" href="architecture.html">Architecture</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="configuration-of-servers.html">Configurations of Servers</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="wazuh-server.html">Wazuh Server</a></li>
-<li class="toctree-l3"><a class="reference internal" href="wazuh-agent-macos.html">Wazuh Agent: macOS</a></li>
 <li class="toctree-l3"><a class="reference internal" href="overview-tracecat-server.html">Overview: Tracecat Server</a></li>
 <li class="toctree-l3"><a class="reference internal" href="prerequisite.html">Prerequisite</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Tracecat Server Components</a><ul>
@@ -102,7 +101,8 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Knowledge Base</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../knowledge-base/manipulation-json-decoders-wazuh/manipulation-json-decoders-wazuh.html">Understanding Wazuh JSON Decoders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../knowledge-base/configuration-active-response-macos/configuration-active-response-macos.html">Configuring Wazuh Active Response for macOS Agents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../knowledge-base/manipulation-json-decoders-wazuh/manipulation-json-decoders-wazuh.html">Manipulating Wazuh JSON Decoders</a></li>
 </ul>
 
         </div>
@@ -145,7 +145,7 @@ explain what we are trying to achieve by setting the parameters.</p>
 </div>
 <p>The below code just sends a https request to the Wazuh Server API. At backend, the component does its job to fetch the JWT Token.</p>
 <a class=""
-               data-lightbox="group-f70ef94d-b52b-4671-ab93-175ebb88e73e"
+               data-lightbox="group-14e6b675-f1b6-48d4-bd01-4c86f44815e3"
                href="../../_images/tracecat-server-workflow-contifiguration-11.png"
                title=""
                data-title=""
@@ -191,7 +191,7 @@ explain what we are trying to achieve by setting the parameters.</p>
 sends a search request to provide data or logs based on <code class="docutils literal notranslate"><span class="pre">rule.id</span> <span class="pre">5763,</span> <span class="pre">60204,</span> <span class="pre">5712</span></code> from the last 1 minute.
 And, It will so up to 10 unique sets of data if available. You can set the time, and size according to your convenience.</p>
 <a class=""
-               data-lightbox="group-a63e6547-c416-4716-a2a8-d2508c7a97d1"
+               data-lightbox="group-31a6d246-bdd4-4cdd-9b5b-46d136bb0e43"
                href="../../_images/tracecat-server-workflow-contifiguration-21.png"
                title=""
                data-title=""
@@ -220,7 +220,7 @@ to know how you can utilize it to the fullest. Go to the <code class="docutils l
 </div>
 <p>The above code contacts the <strong>Wazuh Server API</strong> with collected JWT Token for fetching the list of available agent data on your wazuh server.</p>
 <a class=""
-               data-lightbox="group-1dc9e693-18f1-4b7d-8ce7-7c92f1226215"
+               data-lightbox="group-7b1e15e3-0788-4f09-9b79-aaa7abd8a73e"
                href="../../_images/tracecat-server-workflow-contifiguration-31.png"
                title=""
                data-title=""
@@ -261,7 +261,7 @@ linux agents. The script has additional arguments such as <code class="docutils 
 based on the <code class="docutils literal notranslate"><span class="pre">rule.id</span> <span class="pre">5763</span></code> and its level of severity. You can also set the list of Linux agents you want the script to run on dynamically or
 statically based on the <code class="docutils literal notranslate"><span class="pre">agent.id</span></code> found on your wazuh server.</p>
 <a class=""
-               data-lightbox="group-23b8775b-6926-427b-981f-557d9e125254"
+               data-lightbox="group-7f8e3e76-8114-4ba9-86f2-1e34f49ea69c"
                href="../../_images/tracecat-server-workflow-contifiguration-41.png"
                title=""
                data-title=""
@@ -301,7 +301,7 @@ the <code class="docutils literal notranslate"><span class="pre">netsh</span></c
 blocking the malicious IP for a specific time and more based on the <code class="docutils literal notranslate"><span class="pre">rule.id</span> <span class="pre">60204</span></code> and its level of severity.
 You can also set the list of windows agents you want the script to run on dynamically or statically based on the <code class="docutils literal notranslate"><span class="pre">agent.id</span></code> found on your wazuh server.</p>
 <a class=""
-               data-lightbox="group-fd74cdf6-c54e-446a-a7b1-0271eb95b24d"
+               data-lightbox="group-b33764e8-9fa6-4bef-8468-6f515da0d2b6"
                href="../../_images/tracecat-server-workflow-contifiguration-51.png"
                title=""
                data-title=""
@@ -342,7 +342,7 @@ blocking the malicious IP for a specific time and more based on the <code class=
 its level of severity. You can also set the list of macOS agents you want the script to
 run on dynamically or statically based on the <code class="docutils literal notranslate"><span class="pre">agent.id</span></code> found on your wazuh server.</p>
 <a class=""
-               data-lightbox="group-07605fbf-771f-4ad5-8958-90dad92deffa"
+               data-lightbox="group-e7251c02-d03b-484d-9d85-e094c607bb78"
                href="../../_images/tracecat-server-workflow-contifiguration-61.png"
                title=""
                data-title=""
@@ -364,7 +364,7 @@ Just copy the data or parameter value you need and paste it user <code class="do
 This is helpful if you want the parameters of your <code class="docutils literal notranslate"><span class="pre">YAML</span></code> configuration to be defined dynamically.
 An image has been attached for your reference.</p>
 <a class=""
-               data-lightbox="group-c4cd1efd-5868-4cf4-8aa4-9975c30a7636"
+               data-lightbox="group-6860f4f5-76dc-4331-9f55-3c4746085e55"
                href="../../_images/tracecat-server-workflow-contifiguration-71.png"
                title=""
                data-title=""

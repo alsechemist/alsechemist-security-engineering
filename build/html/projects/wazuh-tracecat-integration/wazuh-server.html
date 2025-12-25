@@ -27,7 +27,7 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Wazuh Agent: macOS" href="wazuh-agent-macos.html" />
+    <link rel="next" title="Overview: Tracecat Server" href="overview-tracecat-server.html" />
     <link rel="prev" title="Configurations of Servers" href="configuration-of-servers.html" /> 
 </head>
 
@@ -74,10 +74,8 @@
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Wazuh Server</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#wazuh-indexer-api">Wazuh Indexer API</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#wazuh-active-response">Wazuh Active Response</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#configuring-active-response-for-macos-devices-at-wazuh-manager">Configuring Active Response for macOS Devices at Wazuh Manager</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="wazuh-agent-macos.html">Wazuh Agent: macOS</a></li>
 <li class="toctree-l3"><a class="reference internal" href="overview-tracecat-server.html">Overview: Tracecat Server</a></li>
 <li class="toctree-l3"><a class="reference internal" href="prerequisite.html">Prerequisite</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tracecat-server-components.html">Tracecat Server Components</a></li>
@@ -99,7 +97,8 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Knowledge Base</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../knowledge-base/manipulation-json-decoders-wazuh/manipulation-json-decoders-wazuh.html">Understanding Wazuh JSON Decoders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../knowledge-base/configuration-active-response-macos/configuration-active-response-macos.html">Configuring Wazuh Active Response for macOS Agents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../knowledge-base/manipulation-json-decoders-wazuh/manipulation-json-decoders-wazuh.html">Manipulating Wazuh JSON Decoders</a></li>
 </ul>
 
         </div>
@@ -156,56 +155,10 @@ If you have more than 2 network interfaces, have it your way of configuring it t
 <section id="wazuh-active-response">
 <h2>Wazuh Active Response<a class="headerlink" href="#wazuh-active-response" title="Link to this heading"></a></h2>
 <p>Now let’s configure Wazuh’s Active Response at your Wazuh Server. To get started it’s already available on <a class="reference external" href="https://documentation.wazuh.com/current/user-manual/capabilities/active-response/ar-use-cases/blocking-ssh-brute-force.html" rel="noreferrer" target="_blank">Wazuh’s Offical Documentation <svg version="1.1" width="1.0em" height="1.0em" viewBox="0 0 16 16" aria-hidden="true" style="display: inline-block; vertical-align: middle; fill: currentColor;"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2Zm6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1Z"></path></svg></a> site.
-Wazuh has already pretty much configured their active response for their Linux and Windows endpoint.
-An extensive documentation and community support can be found as well.
+Wazuh has already pretty much configured their active response for their Linux and Windows endpoint. An extensive documentation and community support can be found as well.
 But here we are going to focus more on <strong>macOS</strong> endpoints as a bit of configuration is need in order for the active response to work properly.</p>
-</section>
-<section id="configuring-active-response-for-macos-devices-at-wazuh-manager">
-<h2>Configuring Active Response for macOS Devices at Wazuh Manager<a class="headerlink" href="#configuring-active-response-for-macos-devices-at-wazuh-manager" title="Link to this heading"></a></h2>
-<p>Go to your Wazuh Server, you can make changes at your manager node both via Wazuh Web GUI and
-by finding the configuration file at <code class="docutils literal notranslate"><span class="pre">/var/ossec/etc/ossec.conf</span></code>, make sure you have <code class="docutils literal notranslate"><span class="pre">sudo</span></code> privileges before accessing through terminal.
-But it more recommended that you access via the Web GUI as it’s more easily manageable and accessible. Follow <code class="docutils literal notranslate"><span class="pre">Server</span> <span class="pre">management</span> <span class="pre">→</span> <span class="pre">Settings</span> <span class="pre">→</span> <span class="pre">Edit</span> <span class="pre">configuration</span></code>.
-There you have to look out for something like <code class="docutils literal notranslate"><span class="pre">&lt;!--</span> <span class="pre">Active</span> <span class="pre">response</span> <span class="pre">--&gt;</span></code>, in that specific section you will notice various active response scripts as shown in the below image:</p>
-<a class=""
-               data-lightbox="group-31fd45d9-f928-4500-9680-3bf3d25f8a69"
-               href="../../_images/wazuh-server-img-11.png"
-               title=""
-               data-title=""
-               
-               ><img src="../../_images/wazuh-server-img-11.png"
-                     class="align-center"
-                     width="100%"
-                     height="auto"
-                     alt="Wazuh Server Configuration File Active Response Settings"/>
-                </a><div style="height:25px;"></div><p>Since Wazuh leverages their active response scripts based on their respective OS, for example, <code class="docutils literal notranslate"><span class="pre">firewall-drop</span></code> for Linux endpoints, <code class="docutils literal notranslate"><span class="pre">netsh</span></code> for
-windows endpoints. Similarly, for macOS endpoints, there is a specific script called <code class="docutils literal notranslate"><span class="pre">pf</span></code>, which is an active response script for
-channeling <strong>Packet Filter</strong> as default stateful kernel level firewall used in almost every macOS devices.
-You can look into more details of <a class="reference external" href="https://documentation.wazuh.com/current/user-manual/capabilities/active-response/default-active-response-scripts.html" rel="noreferrer" target="_blank">Wazuh Active Response Scripts <svg version="1.1" width="1.0em" height="1.0em" viewBox="0 0 16 16" aria-hidden="true" style="display: inline-block; vertical-align: middle; fill: currentColor;"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2Zm6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1Z"></path></svg></a>
-via clicking on the hyperlink. These are all available at your Linux, Windows and macOS endpoints.</p>
-<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;command&gt;</span>
-<span class="w">    </span><span class="nt">&lt;name&gt;</span>pf<span class="nt">&lt;/name&gt;</span>
-<span class="w">    </span><span class="nt">&lt;executable&gt;</span>pf<span class="nt">&lt;/executable&gt;</span>
-<span class="w">    </span><span class="nt">&lt;timeout_allowed&gt;</span>yes<span class="nt">&lt;/timeout_allowed&gt;</span>
-<span class="nt">&lt;/command&gt;</span>
-</pre></div>
-</div>
-<p>Copy and paste the above code block under that section. And this will enable the <code class="docutils literal notranslate"><span class="pre">pf</span></code> active response script.</p>
-<p>Moving forward, find <code class="docutils literal notranslate"><span class="pre">&lt;!--</span> <span class="pre">Active</span> <span class="pre">Response</span> <span class="pre">Rules</span> <span class="pre">--&gt;</span></code> just below and paste the below code block.</p>
-<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;active-response&gt;</span>
-<span class="w">    </span><span class="nt">&lt;disabled&gt;</span>no<span class="nt">&lt;/disabled&gt;</span>
-<span class="w">    </span><span class="nt">&lt;command&gt;</span>pf<span class="nt">&lt;/command&gt;</span>
-<span class="w">    </span><span class="nt">&lt;location&gt;</span>local<span class="nt">&lt;/location&gt;</span>
-<span class="w">    </span><span class="nt">&lt;timeout&gt;</span>180<span class="nt">&lt;/timeout&gt;</span>
-<span class="nt">&lt;/active-response&gt;</span>
-</pre></div>
-</div>
-<p>This will execute the active response script.</p>
-<p>Last, but the least, don’t forget to save and <code class="docutils literal notranslate"><span class="pre">restart</span></code> your Wazuh Manager.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Make sure the above code are under <code class="docutils literal notranslate"><span class="pre">&lt;ossec_config&gt;</span> <span class="pre">*</span> <span class="pre">&lt;/ossec_config&gt;</span></code> block. You can also put under a separate <strong>ossec_config</strong> block at
-the last of the configuration file for tracing and managing it a bit more conveniently.</p>
-</div>
+<p>Refer to the <a class="reference internal" href="../../knowledge-base/configuration-active-response-macos/configuration-active-response-macos.html"><span class="doc">Configuring Active Response for macOS Devices at Wazuh Manager</span></a>
+at the <strong>Knowledge Base</strong> Section to learn and understand the Manager and Agent configuration.</p>
 </section>
 </section>
 
@@ -214,7 +167,7 @@ the last of the configuration file for tracing and managing it a bit more conven
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="configuration-of-servers.html" class="btn btn-neutral float-left" title="Configurations of Servers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="wazuh-agent-macos.html" class="btn btn-neutral float-right" title="Wazuh Agent: macOS" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="overview-tracecat-server.html" class="btn btn-neutral float-right" title="Overview: Tracecat Server" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

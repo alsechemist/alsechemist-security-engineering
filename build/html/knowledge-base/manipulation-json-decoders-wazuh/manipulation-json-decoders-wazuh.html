@@ -27,7 +27,7 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="prev" title="Conclusion" href="../../research/modsecurity-log-detection-wazuh/conclusion.html" /> 
+    <link rel="prev" title="Configuring Active Response for macOS Devices at Wazuh Manager" href="../configuration-active-response-macos/configuration-active-response-macos.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -72,7 +72,8 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Knowledge Base</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Understanding Wazuh JSON Decoders</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="../configuration-active-response-macos/configuration-active-response-macos.html">Configuring Wazuh Active Response for macOS Agents</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Manipulating Wazuh JSON Decoders</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#solution-decoder-name-override-problem">Solution - Decoder Name Override Problem</a></li>
 </ul>
 </li>
@@ -106,7 +107,7 @@
 <p>Before creating any custom decoder, it is crucial to understand how <code class="docutils literal notranslate"><span class="pre">JSON</span> <span class="pre">Decoders</span></code> actually work. We know that Wazuh already has its prebuilt JSON Decoder known as
 <code class="docutils literal notranslate"><span class="pre">0006-json_decoders.xml</span></code>. Inside, if you inspect the decoder, the built-in generic json decoder has this prematch:</p>
 <a class=""
-               data-lightbox="group-464246fc-ea1b-4850-8e52-b1d0d2f05315"
+               data-lightbox="group-d2563892-021b-4a85-bc74-9d4d754c63af"
                href="../../_images/decoder-manipulation-11.png"
                title=""
                data-title=""
@@ -120,7 +121,7 @@
 custom decoders in <code class="docutils literal notranslate"><span class="pre">/var/ossec/etc/decoders/</span></code>, the generic decoder always wins. So basically what this means, no matter what <code class="docutils literal notranslate"><span class="pre">decoder</span> <span class="pre">name</span></code> we give, the prebuilt
 JSON Decoder will override the custom JSON decoders’ name. For example, observe the image below:</p>
 <a class=""
-               data-lightbox="group-ef5f4056-45d7-4a55-ae2b-2123153696cd"
+               data-lightbox="group-609ebc72-7259-4808-9d1a-8179adbfe71b"
                href="../../_images/decoder-manipulation-21.png"
                title=""
                data-title=""
@@ -139,7 +140,7 @@ Obviously, we care about the thing that come with the defaults. We are basically
 <li><p><strong>Step - 2:</strong> Exclude <code class="docutils literal notranslate"><span class="pre">0006-json_decoders.xml</span></code> decoder from executing in the Wazuh Manager.</p>
 <blockquote>
 <div><a class=""
-               data-lightbox="group-ac33ff3a-0e9b-4017-8d01-a3c2286481ac"
+               data-lightbox="group-11b1a9f3-31ef-4c27-9b5d-cd74751d81e4"
                href="../../_images/decoder-manipulation-31.png"
                title=""
                data-title=""
@@ -165,7 +166,7 @@ Obviously, we care about the thing that come with the defaults. We are basically
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../../research/modsecurity-log-detection-wazuh/conclusion.html" class="btn btn-neutral float-left" title="Conclusion" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../configuration-active-response-macos/configuration-active-response-macos.html" class="btn btn-neutral float-left" title="Configuring Active Response for macOS Devices at Wazuh Manager" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
