@@ -15,7 +15,7 @@ Workflow Overview
 
 To give you a glimpse, this what it will look like on our workflow.
 
-.. image:: ../../assets/images/wazuh-tracecat-integration/tracecat-server-overview.png
+.. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-server-overview.png
     :alt: Tracecat Server Overview
     :align: center
 

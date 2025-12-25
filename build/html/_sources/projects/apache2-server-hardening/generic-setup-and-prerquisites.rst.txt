@@ -16,7 +16,7 @@ we have to add the stable repository of the latest version in our machine.
 
 Press Enter to Continue.
 
-.. image:: ../../assets/images/apache2-server-hardening/apache2-server-hardening-img-1.png
+.. image:: ../../assets/images/projects/apache2-server-hardening/apache2-server-hardening-img-1.png
     :alt: Adding APT Repository for Apache2 Server
     :align: center
 
@@ -34,7 +34,7 @@ Next again update the system, to pull the latest packages accordingly. Then inst
 After the installation, although the server starts its service automatically, it better to be sure as aways.
 Check the server status and make sure it is active.
 
-.. image:: ../../assets/images/apache2-server-hardening/apache2-server-hardening-img-2.png
+.. image:: ../../assets/images/projects/apache2-server-hardening/apache2-server-hardening-img-2.png
     :alt: Checking Apache2 Server Status
     :align: center
 

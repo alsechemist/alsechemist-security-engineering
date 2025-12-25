@@ -19,7 +19,7 @@ Prerequisite - Decoder creation
 -------------------------------
 
 Before going further it is required to understand how JSON decoders work. 
-Follow :doc:`Wazuh JSON Decoder Manipulation <../../knowledge-base/manipulation-json-decoders-wazuh>` to understand, how to
+Follow :doc:`Wazuh JSON Decoder Manipulation <../../knowledge-base/manipulation-json-decoders-wazuh/manipulation-json-decoders-wazuh>` to understand, how to
 handle custom JSON Decoder in Wazuh. 
 
 Decoder Definition
@@ -37,7 +37,7 @@ The following custom decoder is used to process ModSecurity audit logs:
 
 Add this block before the built-in/generic decoder. Check the image below for better understanding.
 
-.. image:: ../../assets/images/modsecurity-log-detection-wazuh/decoder-creation-1.png
+.. image:: ../../assets/images/research/modsecurity-log-detection-wazuh/decoder-creation-1.png
    :alt: Testing decoders
    :align: center
 
@@ -58,7 +58,7 @@ In other words, ``**Phase 2: Completed decoding`` should not show any signs of `
 
 Check the image below for reference,
 
-.. image:: ../../assets/images/modsecurity-log-detection-wazuh/decoder-creation-2.png
+.. image:: ../../assets/images/research/modsecurity-log-detection-wazuh/decoder-creation-2.png
    :alt: Testing decoders
    :align: center
 
@@ -109,7 +109,7 @@ During decoder validation using the Wazuh log testing tool, you may encounter an
       mail: 'false'
 
 Why This Alert Occurred?
-^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 This output does not indicate an actual security event or error in your decoder logic. Instead, it is generated because:
 

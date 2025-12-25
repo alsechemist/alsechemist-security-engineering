@@ -46,7 +46,7 @@ by finding the configuration file at ``/var/ossec/etc/ossec.conf``, make sure yo
 But it more recommended that you access via the Web GUI as it's more easily manageable and accessible. Follow ``Server management → Settings → Edit configuration``. 
 There you have to look out for something like ``<!-- Active response -->``, in that specific section you will notice various active response scripts as shown in the below image:
 
-.. image:: ../../assets/images/wazuh-tracecat-integration/wazuh-server-img-1.png
+.. image:: ../../assets/images/projects/wazuh-tracecat-integration/wazuh-server-img-1.png
    :alt: Wazuh Server Configuration File Active Response Settings
    :align: center
 

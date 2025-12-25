@@ -35,7 +35,7 @@ observe the resulting alert inside Wazuh. This confirms that the entire pipeline
 A simple way to trigger a ModSecurity alert is by simulating a common web attack, such as **SQL Injection, Path Traversal, File Access Attempt, RCE**.
 
 SQL Injection Test
-^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~
 
 .. code-block:: bash
 
@@ -44,7 +44,7 @@ SQL Injection Test
 This request is designed to match OWASP CRS SQL Injection detection rules and should result in a ModSecurity audit log entry.
 
 Path Traversal Test
-^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: bash
 
@@ -55,7 +55,7 @@ Path Traversal Test
 This request is designed to match OWASP CRS Path Traversal detection rules and should result in a ModSecurity audit log entry.
 
 File Access Attempt Test
-^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: bash
 
@@ -64,7 +64,7 @@ File Access Attempt Test
 This request is designed to match OWASP CRS File Access Attempt detection rules and should result in a ModSecurity audit log entry.
 
 RCE Test
-^^^^^^^^
+~~~~~~~~
 
 .. code-block:: bash
 
@@ -74,7 +74,7 @@ This request is designed to match OWASP CRS RCE detection rules and should resul
 
 Try these examples, and event logs should appear in the threat hunting section.
 
-.. image:: ../../assets/images/modsecurity-log-detection-wazuh/modsecurity-log-ingestion-1.png
+.. image:: ../../assets/images/research/modsecurity-log-detection-wazuh/modsecurity-log-ingestion-1.png
    :alt: Modsecurity Logs Appearing in Wazuh Event Section
    :align: center
 
@@ -84,7 +84,7 @@ Try these examples, and event logs should appear in the threat hunting section.
 
 Through deeper log inspection, Modsecurity brings vast range and variety of fields to indept analysis
 
-.. image:: ../../assets/images/modsecurity-log-detection-wazuh/modsecurity-log-ingestion-2.png
+.. image:: ../../assets/images/research/modsecurity-log-detection-wazuh/modsecurity-log-ingestion-2.png
    :alt: Modsecurity Logs Appearing in Wazuh Event Section
    :align: center
 

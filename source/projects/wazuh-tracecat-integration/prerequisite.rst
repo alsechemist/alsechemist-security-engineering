@@ -14,7 +14,7 @@ section of Wazuh's Official Documentation Page.
 
     Follow the image below,
 
-    .. image:: ../../assets/images/wazuh-tracecat-integration/tracecat-server-credential-1.png
+    .. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-server-credential-1.png
         :alt: Tracecat Server Credential Guidance
         :align: center
     
@@ -27,7 +27,7 @@ section of Wazuh's Official Documentation Page.
 
     Following up with the next image,
 
-    .. image:: ../../assets/images/wazuh-tracecat-integration/tracecat-server-credential-2.png
+    .. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-server-credential-2.png
         :alt: Tracecat Server Secret Key Guidance
         :align: center
     
@@ -47,7 +47,7 @@ Select **Add Credentials** and set these two parameters exactly as it is and in 
 1. ``WAZUH_WUI_USERNAME``: Fill this parameter with the same name of your **wazuh-wui**, which is **wazuh-wui** itself by default.
 2. ``WAZUH_WUI_PASSWORD``: Fill the parameter with the same password of your **wazuh-wui** user.
 
-.. image:: ../../assets/images/wazuh-tracecat-integration/tracecat-server-credential-3.png
+.. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-server-credential-3.png
     :alt: Tracecat Server Credential - Wazuh WUI User's Credential Setup
     :align: center
 
@@ -65,7 +65,7 @@ the naming convention and order are not required to be the exact since they are 
 1. ``WAZUH_INDEXER_USERNAME``: Fill the parameter with the same username of your Wazuh Admin user.
 2. ``WAZUH_INDEXER_PASSWORD``: Fill this parameter with the same password of your Wazuh Admin.
 
-.. image:: ../../assets/images/wazuh-tracecat-integration/tracecat-server-credential-4.png
+.. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-server-credential-4.png
     :alt: Tracecat Server Credential - Wazuh Indexer User's Credential Setup
     :align: center
 

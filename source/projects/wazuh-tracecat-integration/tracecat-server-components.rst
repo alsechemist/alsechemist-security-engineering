@@ -18,7 +18,7 @@ Go to the ``YAML`` tab. Copy and paste the below code block:
 
 The below code just sends a https request to the Wazuh Server API. At backend, the component does its job to fetch the JWT Token.
 
-.. image:: ../../assets/images/wazuh-tracecat-integration/tracecat-server-workflow-contifiguration-1.png
+.. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-server-workflow-contifiguration-1.png
     :alt: Tracecat Server, Wazuh JWT Token Configuration
     :align: center
 
@@ -64,7 +64,7 @@ The above code contacts the Wazuh Indexer API Server with the required Wazuh Ind
 sends a search request to provide data or logs based on ``rule.id 5763, 60204, 5712`` from the last 1 minute. 
 And, It will so up to 10 unique sets of data if available. You can set the time, and size according to your convenience.
 
-.. image:: ../../assets/images/wazuh-tracecat-integration/tracecat-server-workflow-contifiguration-2.png
+.. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-server-workflow-contifiguration-2.png
     :alt: Tracecat Server, Wazuh Indexer Configuration
     :align: center
 
@@ -91,7 +91,7 @@ This is an **optional** component in this workflow kept,
 
 The above code contacts the **Wazuh Server API** with collected JWT Token for fetching the list of available agent data on your wazuh server.
 
-.. image:: ../../assets/images/wazuh-tracecat-integration/tracecat-server-workflow-contifiguration-3.png
+.. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-server-workflow-contifiguration-3.png
     :alt: Tracecat Server, Wazuh Server API Configuration
     :align: center
 
@@ -132,7 +132,7 @@ linux agents. The script has additional arguments such as ``- add, - delete, - [
 based on the ``rule.id 5763`` and its level of severity. You can also set the list of Linux agents you want the script to run on dynamically or 
 statically based on the ``agent.id`` found on your wazuh server.
 
-.. image:: ../../assets/images/wazuh-tracecat-integration/tracecat-server-workflow-contifiguration-4.png
+.. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-server-workflow-contifiguration-4.png
     :alt: Tracecat Server, Wazuh Active Response Configuration for Linux Agents
     :align: center
 
@@ -173,7 +173,7 @@ the ``netsh`` script on ``windows`` agents. The script has additional arguments 
 blocking the malicious IP for a specific time and more based on the ``rule.id 60204`` and its level of severity.
 You can also set the list of windows agents you want the script to run on dynamically or statically based on the ``agent.id`` found on your wazuh server.
 
-.. image:: ../../assets/images/wazuh-tracecat-integration/tracecat-server-workflow-contifiguration-5.png
+.. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-server-workflow-contifiguration-5.png
     :alt: Tracecat Server, Wazuh Active Response Configuration for Windows Agents
     :align: center
 
@@ -214,7 +214,7 @@ blocking the malicious IP for a specific time and more based on the ``rule.id 57
 its level of severity. You can also set the list of macOS agents you want the script to 
 run on dynamically or statically based on the ``agent.id`` found on your wazuh server.
 
-.. image:: ../../assets/images/wazuh-tracecat-integration/tracecat-server-workflow-contifiguration-6.png
+.. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-server-workflow-contifiguration-6.png
     :alt: Tracecat Server, Wazuh Active Response Configuration for macOS Agents
     :align: center
 
@@ -233,7 +233,7 @@ run on dynamically or statically based on the ``agent.id`` found on your wazuh s
     This is helpful if you want the parameters of your ``YAML`` configuration to be defined dynamically. 
     An image has been attached for your reference.
 
-    .. image:: ../../assets/images/wazuh-tracecat-integration/tracecat-server-workflow-contifiguration-7.png
+    .. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-server-workflow-contifiguration-7.png
         :alt: Tracecat Server JSON Path Reference
         :align: center
 

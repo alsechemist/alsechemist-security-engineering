@@ -51,13 +51,15 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../main/security-engineering.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/about-alsechemist.html">About Alsechemist</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../projects.html">Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../research/research.html">Research</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../knowledge-base/knowledge-base.html">Knowledge Base</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Projects</span></p>
 <ul class="current">
@@ -91,13 +93,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../apache2-server-hardening/introduction.html">Apache2 Server Hardening</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../nginx-server-hardening/introduction.html">Nginx Server Hardening</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Knowledge Base</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../knowledge-base/manipulation-json-decoders-wazuh.html">Understanding Wazuh JSON Decoders</a></li>
-</ul>
 <p class="caption" role="heading"><span class="caption-text">Research</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../research/modsecurity-log-detection-wazuh/introduction.html">Detecting ModSecurity Logs in Wazuh Using Custom Decoders and Rules</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Knowledge Base</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../knowledge-base/manipulation-json-decoders-wazuh/manipulation-json-decoders-wazuh.html">Understanding Wazuh JSON Decoders</a></li>
 </ul>
 
         </div>
@@ -137,7 +139,7 @@ A unique parameter can be the <code class="docutils literal notranslate"><span c
 SSH Brute Force Attacks is <code class="docutils literal notranslate"><span class="pre">5763</span></code></p>
 <p>Go to the <strong>Wazuh Indexer Logs</strong> component and check the results tab, you will find the rule.id, something like as the image shown below:</p>
 <a class=""
-               data-lightbox="group-2a39e522-0ffb-46ce-8c38-f52f8ef90091"
+               data-lightbox="group-d015afff-2a59-4227-bf47-b293887798a9"
                href="../../_images/tracecat-conditional-workflow-configuration-11.png"
                title=""
                data-title=""
@@ -154,7 +156,7 @@ SSH Brute Force Attacks is <code class="docutils literal notranslate"><span clas
 we can say the <code class="docutils literal notranslate"><span class="pre">core.http_request</span></code> component that we have configured for the linux agents.
 An image has been attached below for showcasing it.</p>
 <a class=""
-               data-lightbox="group-6206191b-7d37-457b-86ff-de16da7e3190"
+               data-lightbox="group-12e29d30-50dd-4655-a091-19a66cb8e38c"
                href="../../_images/tracecat-conditional-workflow-configuration-21.png"
                title=""
                data-title=""
@@ -175,7 +177,7 @@ we will focus on RDP Brute force attack here.</p>
 The unique <code class="docutils literal notranslate"><span class="pre">rule.id</span></code> that is generated for RDP Brute Force Attacks is <code class="docutils literal notranslate"><span class="pre">60204</span></code></p>
 <p>Go to the <strong>Wazuh Indexer Logs</strong> component and check the results tab, you will find the <code class="docutils literal notranslate"><span class="pre">rule.id</span></code>, something like as the image shown below:</p>
 <a class=""
-               data-lightbox="group-846a5a57-2e00-4a9b-b9f8-21972b5ff8b5"
+               data-lightbox="group-172210c9-b673-441b-a8c4-e79230db44b0"
                href="../../_images/tracecat-conditional-workflow-configuration-31.png"
                title=""
                data-title=""
@@ -192,7 +194,7 @@ The unique <code class="docutils literal notranslate"><span class="pre">rule.id<
 we can say the <code class="docutils literal notranslate"><span class="pre">core.http_request</span></code> component that we have configured for the windows agents.
 An image has been attached below for showcasing it.</p>
 <a class=""
-               data-lightbox="group-7883262b-1c9c-4a99-9fff-d888a68ecf92"
+               data-lightbox="group-3bbc8516-5df9-48c0-85b0-ba8ae31dadd5"
                href="../../_images/tracecat-conditional-workflow-configuration-41.png"
                title=""
                data-title=""
@@ -211,7 +213,7 @@ A unique parameter can be the <code class="docutils literal notranslate"><span c
 The unique <code class="docutils literal notranslate"><span class="pre">rule.id</span></code> that is generated for SSH Brute Force Attacks is <code class="docutils literal notranslate"><span class="pre">5712</span></code></p>
 <p>Go to the <strong>Wazuh Indexer Logs</strong> component and check the results tab, you will find the <code class="docutils literal notranslate"><span class="pre">rule.id</span></code>, something like as the image shown below:</p>
 <a class=""
-               data-lightbox="group-23a113fa-9bc9-4563-b733-f87e4a8a43ce"
+               data-lightbox="group-220ae4f6-c529-4311-af72-98baedc8f42b"
                href="../../_images/tracecat-conditional-workflow-configuration-51.png"
                title=""
                data-title=""
@@ -228,7 +230,7 @@ The unique <code class="docutils literal notranslate"><span class="pre">rule.id<
 we can say the <code class="docutils literal notranslate"><span class="pre">core.http_request</span></code> component that we have configured for the windows agents.
 An image has been attached below for showcasing it.</p>
 <a class=""
-               data-lightbox="group-e346d6e4-e700-474f-a18c-64c35c813a86"
+               data-lightbox="group-a20eb913-f384-4d0e-9c7e-b548f5dae688"
                href="../../_images/tracecat-conditional-workflow-configuration-61.png"
                title=""
                data-title=""

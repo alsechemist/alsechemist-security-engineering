@@ -15,7 +15,7 @@ SSH Brute Force Attacks is ``5763``
 
 Go to the **Wazuh Indexer Logs** component and check the results tab, you will find the rule.id, something like as the image shown below:
 
-.. image:: ../../assets/images/wazuh-tracecat-integration/tracecat-conditional-workflow-configuration-1.png
+.. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-conditional-workflow-configuration-1.png
     :alt: Tracecat, Copying JSON Path Guideline for Linux Agents
     :align: center
 
@@ -31,7 +31,7 @@ Copy the JSON path and paste it on the **Run if** section of the **Active Respon
 we can say the ``core.http_request`` component that we have configured for the linux agents.
 An image has been attached below for showcasing it.
 
-.. image:: ../../assets/images/wazuh-tracecat-integration/tracecat-conditional-workflow-configuration-2.png
+.. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-conditional-workflow-configuration-2.png
     :alt: Tracecat Conditional Workflow Execution for Linux Agents
     :align: center
 
@@ -53,7 +53,7 @@ The unique ``rule.id`` that is generated for RDP Brute Force Attacks is ``60204`
 
 Go to the **Wazuh Indexer Logs** component and check the results tab, you will find the ``rule.id``, something like as the image shown below:
 
-.. image:: ../../assets/images/wazuh-tracecat-integration/tracecat-conditional-workflow-configuration-3.png
+.. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-conditional-workflow-configuration-3.png
     :alt: Tracecat, Copying JSON Path Guideline for Windows Agents
     :align: center
 
@@ -69,7 +69,7 @@ Copy the JSON path and paste it on the **Run if** section of the **Active Respon
 we can say the ``core.http_request`` component that we have configured for the windows agents.
 An image has been attached below for showcasing it.
 
-.. image:: ../../assets/images/wazuh-tracecat-integration/tracecat-conditional-workflow-configuration-4.png
+.. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-conditional-workflow-configuration-4.png
     :alt: Tracecat Conditional Workflow Execution for Windows Agents
     :align: center
 
@@ -88,7 +88,7 @@ The unique ``rule.id`` that is generated for SSH Brute Force Attacks is ``5712``
 
 Go to the **Wazuh Indexer Logs** component and check the results tab, you will find the ``rule.id``, something like as the image shown below:
 
-.. image:: ../../assets/images/wazuh-tracecat-integration/tracecat-conditional-workflow-configuration-5.png
+.. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-conditional-workflow-configuration-5.png
     :alt: Tracecat, Copying JSON Path Guideline for macOS Agents
     :align: center
 
@@ -104,7 +104,7 @@ Copy the JSON path and paste it on the **Run if** section of the **Active Respon
 we can say the ``core.http_request`` component that we have configured for the windows agents.
 An image has been attached below for showcasing it.
 
-.. image:: ../../assets/images/wazuh-tracecat-integration/tracecat-conditional-workflow-configuration-6.png
+.. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-conditional-workflow-configuration-6.png
     :alt: Tracecat Conditional Workflow Execution for macOS Agents
     :align: center
 

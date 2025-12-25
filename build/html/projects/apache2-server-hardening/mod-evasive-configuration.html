@@ -51,13 +51,15 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../main/security-engineering.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/about-alsechemist.html">About Alsechemist</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../projects.html">Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../research/research.html">Research</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../knowledge-base/knowledge-base.html">Knowledge Base</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Projects</span></p>
 <ul class="current">
@@ -80,13 +82,13 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../nginx-server-hardening/introduction.html">Nginx Server Hardening</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Knowledge Base</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../knowledge-base/manipulation-json-decoders-wazuh.html">Understanding Wazuh JSON Decoders</a></li>
-</ul>
 <p class="caption" role="heading"><span class="caption-text">Research</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../research/modsecurity-log-detection-wazuh/introduction.html">Detecting ModSecurity Logs in Wazuh Using Custom Decoders and Rules</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Knowledge Base</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../knowledge-base/manipulation-json-decoders-wazuh/manipulation-json-decoders-wazuh.html">Understanding Wazuh JSON Decoders</a></li>
 </ul>
 
         </div>
@@ -129,7 +131,7 @@ If we want to receive email regarding the alerts, it will create a postfix serve
 This is not recommended in a production environment, as this will create unnecessary services, if the instance is not dedicated for handling email services.
 For now, we will go with <code class="docutils literal notranslate"><span class="pre">No</span> <span class="pre">Connection</span></code></p>
 <a class=""
-               data-lightbox="group-54af6981-1fa6-4ee6-bda0-4e9906d9f000"
+               data-lightbox="group-c50cf177-d673-4edc-b34a-2636a47c2d85"
                href="../../_images/apache2-server-hardening-img-31.png"
                title=""
                data-title=""
@@ -144,7 +146,7 @@ For now, we will go with <code class="docutils literal notranslate"><span class=
 <h2>Configuring the Evasive Module<a class="headerlink" href="#configuring-the-evasive-module" title="Link to this heading"></a></h2>
 <p>Head over to the <code class="docutils literal notranslate"><span class="pre">/etc/apache2/mods-available/</span></code> directory and open <code class="docutils literal notranslate"><span class="pre">evasive.conf</span></code> file using your preferred text editor. I will be using vim.</p>
 <a class=""
-               data-lightbox="group-4d2341b6-8483-4140-8e58-3c523e620350"
+               data-lightbox="group-0adfbe12-bab6-4dae-bccf-68403ff49681"
                href="../../_images/apache2-server-hardening-img-41.png"
                title=""
                data-title=""
@@ -201,7 +203,7 @@ Otherwise, the logs will also not be generated. If such a problem arises, you ca
 <h2>Testing the Module<a class="headerlink" href="#testing-the-module" title="Link to this heading"></a></h2>
 <p>You will usually see a default apache2 page after sending an http request to your server/instance, with your server’s IP.</p>
 <a class=""
-               data-lightbox="group-5488e76b-4047-4632-b9ec-ab09240fba04"
+               data-lightbox="group-b44825d6-869c-4fb5-abde-e5c399adddf7"
                href="../../_images/apache2-server-hardening-img-51.png"
                title=""
                data-title=""
@@ -219,7 +221,7 @@ After 20 requests within the 10 seconds time frame, it should forbid us from acc
 Besides, the number of requests might vary due to the value of the <code class="docutils literal notranslate"><span class="pre">hashtable</span></code> sometimes.</p>
 </div>
 <a class=""
-               data-lightbox="group-a5dd3702-5ea0-4e3b-b536-224ad3bd7f41"
+               data-lightbox="group-5515c4d3-41a3-4492-8f45-7edca1de7f0a"
                href="../../_images/apache2-server-hardening-img-61.png"
                title=""
                data-title=""
@@ -236,7 +238,7 @@ Besides, the number of requests might vary due to the value of the <code class="
 <p>If an attack gets detected, a log should be generated in the specified directory. For us the directory is <code class="docutils literal notranslate"><span class="pre">/var/log/mod_evasive</span></code>.
 Head over there, and you will find the IP of the attacker, which means the module is blocking requests coming from this particular IP.</p>
 <a class=""
-               data-lightbox="group-2531c8e5-74f2-477e-91af-105949fc9da1"
+               data-lightbox="group-15e39219-89e5-4401-9def-c782b291614b"
                href="../../_images/apache2-server-hardening-img-71.png"
                title=""
                data-title=""
@@ -249,7 +251,7 @@ Head over there, and you will find the IP of the attacker, which means the modul
                 </a><div style="height:25px;"></div><p>Inside the file you find a process <code class="docutils literal notranslate"><span class="pre">id</span></code> or a unique number.</p>
 <p>Besides, you can also head over to check the syslog to investigate the event.</p>
 <a class=""
-               data-lightbox="group-776cab29-1e8f-488a-a128-397c4304726e"
+               data-lightbox="group-0b441d43-8055-4eca-8564-a2682b242bcf"
                href="../../_images/apache2-server-hardening-img-81.png"
                title=""
                data-title=""

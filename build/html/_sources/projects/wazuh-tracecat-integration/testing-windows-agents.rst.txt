@@ -14,7 +14,7 @@ Copy and paste the below command on your attacking machine.
 
 An image has been attached below for demonstration.
 
-.. image:: ../../assets/images/wazuh-tracecat-integration/tracecat-proof-of-concept-8.png
+.. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-proof-of-concept-8.png
    :alt: Tracecat Workflow Run, Testing Windows Agents
    :align: center
 
@@ -24,7 +24,7 @@ An image has been attached below for demonstration.
 
 Now back to our Wazuh Dashboard, we should be seeing the related logs are being generated. 
 
-.. image:: ../../assets/images/wazuh-tracecat-integration/tracecat-proof-of-concept-9.png
+.. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-proof-of-concept-9.png
    :alt: Tracecat Workflow Run, Checking Wazuh Dashboard for Windows Agent Test Case
    :align: center
 
@@ -34,7 +34,7 @@ Now back to our Wazuh Dashboard, we should be seeing the related logs are being 
 
 Now run the workflow that we have created on Tracecat
 
-.. image:: ../../assets/images/wazuh-tracecat-integration/tracecat-proof-of-concept-10.png
+.. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-proof-of-concept-10.png
    :alt: Tracecat Workflow Run, Windows Agent Test Case Successfully Ran
    :align: center
 
@@ -44,7 +44,7 @@ Now run the workflow that we have created on Tracecat
 
 You should notice that, the active response component executed. Checking the result section will show further details.
 
-.. image:: ../../assets/images/wazuh-tracecat-integration/tracecat-proof-of-concept-11.png
+.. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-proof-of-concept-11.png
    :alt: Tracecat Workflow Run, Windows Agent Test Case Result Inspection
    :align: center
 
@@ -55,7 +55,7 @@ You should notice that, the active response component executed. Checking the res
 Checking back on our Wazuh Dashboard, we should notice that an event appeared showing ``Active response: active-response/bin/netsh - add`` on that
 specific Agent,as shown in the below image.
 
-.. image:: ../../assets/images/wazuh-tracecat-integration/tracecat-proof-of-concept-12.png
+.. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-proof-of-concept-12.png
    :alt: Tracecat Workflow Run, Checking Wazuh Dashboard for Active Response Logs of netsh
    :align: center
 
@@ -65,7 +65,7 @@ specific Agent,as shown in the below image.
 
 Checking on the attacker side, after some time, we will see errors, as shown below.
 
-.. image:: ../../assets/images/wazuh-tracecat-integration/tracecat-proof-of-concept-13.png
+.. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-proof-of-concept-13.png
    :alt: Tracecat Workflow Run, Checking Attacker Side for Failed Attempts of Brute Force Attack
    :align: center
 

@@ -51,13 +51,15 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../main/security-engineering.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/about-alsechemist.html">About Alsechemist</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../projects.html">Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../research/research.html">Research</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../knowledge-base/knowledge-base.html">Knowledge Base</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Projects</span></p>
 <ul class="current">
@@ -82,13 +84,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../apache2-server-hardening/introduction.html">Apache2 Server Hardening</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../nginx-server-hardening/introduction.html">Nginx Server Hardening</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Knowledge Base</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../knowledge-base/manipulation-json-decoders-wazuh.html">Understanding Wazuh JSON Decoders</a></li>
-</ul>
 <p class="caption" role="heading"><span class="caption-text">Research</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../research/modsecurity-log-detection-wazuh/introduction.html">Detecting ModSecurity Logs in Wazuh Using Custom Decoders and Rules</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Knowledge Base</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../knowledge-base/manipulation-json-decoders-wazuh/manipulation-json-decoders-wazuh.html">Understanding Wazuh JSON Decoders</a></li>
 </ul>
 
         </div>
@@ -129,7 +131,7 @@ You can skip the <code class="docutils literal notranslate"><span class="pre">-I
 </div>
 <p>An image has been attached below for demonstration.</p>
 <a class=""
-               data-lightbox="group-74b44c12-d6fa-4105-9540-ee062138e989"
+               data-lightbox="group-0641b25d-9ccb-4c1f-96f5-e4d165e6256c"
                href="../../_images/tracecat-proof-of-concept-141.png"
                title=""
                data-title=""
@@ -141,7 +143,7 @@ You can skip the <code class="docutils literal notranslate"><span class="pre">-I
                      alt="Tracecat Workflow Run, Testing macOS Agents"/>
                 </a><div style="height:25px;"></div><p>Now back to our Wazuh Dashboard, we should be seeing the related logs are being generated.</p>
 <a class=""
-               data-lightbox="group-6eb3eabf-86d9-4a52-ad1a-d3fc69e4786e"
+               data-lightbox="group-ce1e2323-e02c-463d-8132-cba5412680f3"
                href="../../_images/tracecat-proof-of-concept-151.png"
                title=""
                data-title=""
@@ -153,7 +155,7 @@ You can skip the <code class="docutils literal notranslate"><span class="pre">-I
                      alt="Tracecat Workflow Run, Checking Wazuh Dashboard for macOS Agent Test Case"/>
                 </a><div style="height:25px;"></div><p>Now run the workflow that we have created on Tracecat</p>
 <a class=""
-               data-lightbox="group-95ac1684-4d66-4e89-a90d-67b403da706f"
+               data-lightbox="group-a4c270b7-88ba-45e2-979d-5a80ec4a773a"
                href="../../_images/tracecat-proof-of-concept-161.png"
                title=""
                data-title=""
@@ -165,7 +167,7 @@ You can skip the <code class="docutils literal notranslate"><span class="pre">-I
                      alt="Tracecat Workflow Run, macOS Agent Test Case Successfully Ran"/>
                 </a><div style="height:25px;"></div><p>You should notice that, the active response component executed. Checking the result section will show further details.</p>
 <a class=""
-               data-lightbox="group-b4046bfc-990d-44f1-b7f4-4058da3e4de2"
+               data-lightbox="group-3fb88561-473c-4e95-919c-86d680a2e41c"
                href="../../_images/tracecat-proof-of-concept-171.png"
                title=""
                data-title=""
@@ -178,7 +180,7 @@ You can skip the <code class="docutils literal notranslate"><span class="pre">-I
                 </a><div style="height:25px;"></div><p>Checking back on our Wazuh Dashboard, we should notice that an event appeared showing <code class="docutils literal notranslate"><span class="pre">AActive</span> <span class="pre">response:</span> <span class="pre">active-response/bin/pf</span> <span class="pre">-</span> <span class="pre">add</span></code> on that
 specific Agent,as shown in the below image.</p>
 <a class=""
-               data-lightbox="group-4ec2b65c-dee7-40fa-a1f7-6b92296939c0"
+               data-lightbox="group-f4d1bea4-b83d-476e-8936-d8eb360df607"
                href="../../_images/tracecat-proof-of-concept-181.png"
                title=""
                data-title=""
@@ -190,7 +192,7 @@ specific Agent,as shown in the below image.</p>
                      alt="Tracecat Workflow Run, Checking Wazuh Dashboard for Active Response Logs of netsh"/>
                 </a><div style="height:25px;"></div><p>Checking on the attacker side, after some time, we will see errors, as shown below.</p>
 <a class=""
-               data-lightbox="group-1e2b5445-0b8a-42d4-87ca-21b6a4aaf93d"
+               data-lightbox="group-c37d792e-f698-4fb2-9d01-9b813e38117c"
                href="../../_images/tracecat-proof-of-concept-191.png"
                title=""
                data-title=""

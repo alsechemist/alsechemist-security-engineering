@@ -15,7 +15,7 @@ as the script leverages ``iptables`` to do its job. Copy and past the command be
 
 You should see ``iptables`` blocked the malicious IP.
 
-.. image:: ../../assets/images/wazuh-tracecat-integration/validation-1.png
+.. image:: ../../assets/images/projects/wazuh-tracecat-integration/validation-1.png
    :alt: Validating malicious IP getting Blocked for Linux Agents
    :align: center
 
@@ -37,7 +37,7 @@ make sure you have ``administrative`` privileges.
 
 You should be able to see an output like this image below:
 
-.. image:: ../../assets/images/wazuh-tracecat-integration/validation-2.png
+.. image:: ../../assets/images/projects/wazuh-tracecat-integration/validation-2.png
    :alt: Validating malicious IP getting Blocked for Windows Agents via netsh Command
    :align: center
 
@@ -48,7 +48,7 @@ You should be able to see an output like this image below:
 Or, you can also check it via the GUI Interface by simply going to **Windows Defender Firewall → Advanced Settings** and check the ``Inbound Rules`` 
 
 
-.. image:: ../../assets/images/wazuh-tracecat-integration/validation-3.png
+.. image:: ../../assets/images/projects/wazuh-tracecat-integration/validation-3.png
    :alt: Validating malicious IP getting Blocked for Windows Agents via GUI
    :align: center
 
@@ -72,7 +72,7 @@ Copy and past the command below in your Linux Agent and make sure you have ``sud
 
 You should see ``pf`` blocked the malicious IP.
 
-.. image:: ../../assets/images/wazuh-tracecat-integration/validation-4.png
+.. image:: ../../assets/images/projects/wazuh-tracecat-integration/validation-4.png
    :alt: Validating malicious IP getting Blocked for macOS Agents
    :align: center
 

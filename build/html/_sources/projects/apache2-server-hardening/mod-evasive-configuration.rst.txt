@@ -19,7 +19,7 @@ If we want to receive email regarding the alerts, it will create a postfix serve
 This is not recommended in a production environment, as this will create unnecessary services, if the instance is not dedicated for handling email services.
 For now, we will go with ``No Connection``
 
-.. image:: ../../assets/images/apache2-server-hardening/apache2-server-hardening-img-3.png
+.. image:: ../../assets/images/projects/apache2-server-hardening/apache2-server-hardening-img-3.png
     :alt: Email Server Setup Options
     :align: center
 
@@ -32,7 +32,7 @@ Configuring the Evasive Module
 
 Head over to the ``/etc/apache2/mods-available/`` directory and open ``evasive.conf`` file using your preferred text editor. I will be using vim.
 
-.. image:: ../../assets/images/apache2-server-hardening/apache2-server-hardening-img-4.png
+.. image:: ../../assets/images/projects/apache2-server-hardening/apache2-server-hardening-img-4.png
     :alt: Mod Evasive Configuration File
     :align: center
 
@@ -41,7 +41,7 @@ Head over to the ``/etc/apache2/mods-available/`` directory and open ``evasive.c
    <div style="height:25px;"></div>
 
 Parameter Description:
-^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~
 
 - **DOSHashTableSize:** Increase or decrease the hash-table size according to your requirements. It is recommended to use higher values if your server is usually busy or receives a high amount of traffic.
 
@@ -102,7 +102,7 @@ Testing the Module
 
 You will usually see a default apache2 page after sending an http request to your server/instance, with your server’s IP.
 
-.. image:: ../../assets/images/apache2-server-hardening/apache2-server-hardening-img-5.png
+.. image:: ../../assets/images/projects/apache2-server-hardening/apache2-server-hardening-img-5.png
     :alt: Testing Mod Evasive Module
     :align: center
 
@@ -117,7 +117,7 @@ You will usually see a default apache2 page after sending an http request to you
     After 20 requests within the 10 seconds time frame, it should forbid us from accessing the webpage. 
     Besides, the number of requests might vary due to the value of the ``hashtable`` sometimes.
 
-.. image:: ../../assets/images/apache2-server-hardening/apache2-server-hardening-img-6.png
+.. image:: ../../assets/images/projects/apache2-server-hardening/apache2-server-hardening-img-6.png
     :alt: Testing Mod Evasive Module - Successful
     :align: center
 
@@ -133,7 +133,7 @@ Checking and Investigating Logs
 If an attack gets detected, a log should be generated in the specified directory. For us the directory is ``/var/log/mod_evasive``.
 Head over there, and you will find the IP of the attacker, which means the module is blocking requests coming from this particular IP.
 
-.. image:: ../../assets/images/apache2-server-hardening/apache2-server-hardening-img-7.png
+.. image:: ../../assets/images/projects/apache2-server-hardening/apache2-server-hardening-img-7.png
     :alt: Checking Mod Evasive Logs
     :align: center
 
@@ -145,7 +145,7 @@ Inside the file you find a process ``id`` or a unique number.
 
 Besides, you can also head over to check the syslog to investigate the event.
 
-.. image:: ../../assets/images/apache2-server-hardening/apache2-server-hardening-img-8.png
+.. image:: ../../assets/images/projects/apache2-server-hardening/apache2-server-hardening-img-8.png
     :alt: Checking Mod Evasive Syslog
     :align: center
 

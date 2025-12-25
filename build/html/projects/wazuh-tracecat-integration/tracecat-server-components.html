@@ -51,13 +51,15 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../main/security-engineering.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/about-alsechemist.html">About Alsechemist</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../projects.html">Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../research/research.html">Research</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../knowledge-base/knowledge-base.html">Knowledge Base</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Projects</span></p>
 <ul class="current">
@@ -94,13 +96,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../apache2-server-hardening/introduction.html">Apache2 Server Hardening</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../nginx-server-hardening/introduction.html">Nginx Server Hardening</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Knowledge Base</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../knowledge-base/manipulation-json-decoders-wazuh.html">Understanding Wazuh JSON Decoders</a></li>
-</ul>
 <p class="caption" role="heading"><span class="caption-text">Research</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../research/modsecurity-log-detection-wazuh/introduction.html">Detecting ModSecurity Logs in Wazuh Using Custom Decoders and Rules</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Knowledge Base</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../knowledge-base/manipulation-json-decoders-wazuh/manipulation-json-decoders-wazuh.html">Understanding Wazuh JSON Decoders</a></li>
 </ul>
 
         </div>
@@ -143,7 +145,7 @@ explain what we are trying to achieve by setting the parameters.</p>
 </div>
 <p>The below code just sends a https request to the Wazuh Server API. At backend, the component does its job to fetch the JWT Token.</p>
 <a class=""
-               data-lightbox="group-2b9b1b4e-a0ec-4016-a067-90546fe8eec9"
+               data-lightbox="group-f70ef94d-b52b-4671-ab93-175ebb88e73e"
                href="../../_images/tracecat-server-workflow-contifiguration-11.png"
                title=""
                data-title=""
@@ -189,7 +191,7 @@ explain what we are trying to achieve by setting the parameters.</p>
 sends a search request to provide data or logs based on <code class="docutils literal notranslate"><span class="pre">rule.id</span> <span class="pre">5763,</span> <span class="pre">60204,</span> <span class="pre">5712</span></code> from the last 1 minute.
 And, It will so up to 10 unique sets of data if available. You can set the time, and size according to your convenience.</p>
 <a class=""
-               data-lightbox="group-a287a1ca-377d-41f2-a645-947db4b1f418"
+               data-lightbox="group-a63e6547-c416-4716-a2a8-d2508c7a97d1"
                href="../../_images/tracecat-server-workflow-contifiguration-21.png"
                title=""
                data-title=""
@@ -218,7 +220,7 @@ to know how you can utilize it to the fullest. Go to the <code class="docutils l
 </div>
 <p>The above code contacts the <strong>Wazuh Server API</strong> with collected JWT Token for fetching the list of available agent data on your wazuh server.</p>
 <a class=""
-               data-lightbox="group-0f5e130e-4acb-486f-a83c-1c29cf2a7f3d"
+               data-lightbox="group-1dc9e693-18f1-4b7d-8ce7-7c92f1226215"
                href="../../_images/tracecat-server-workflow-contifiguration-31.png"
                title=""
                data-title=""
@@ -259,7 +261,7 @@ linux agents. The script has additional arguments such as <code class="docutils 
 based on the <code class="docutils literal notranslate"><span class="pre">rule.id</span> <span class="pre">5763</span></code> and its level of severity. You can also set the list of Linux agents you want the script to run on dynamically or
 statically based on the <code class="docutils literal notranslate"><span class="pre">agent.id</span></code> found on your wazuh server.</p>
 <a class=""
-               data-lightbox="group-301004c4-54b7-48f3-93d8-0d8b310a7aeb"
+               data-lightbox="group-23b8775b-6926-427b-981f-557d9e125254"
                href="../../_images/tracecat-server-workflow-contifiguration-41.png"
                title=""
                data-title=""
@@ -299,7 +301,7 @@ the <code class="docutils literal notranslate"><span class="pre">netsh</span></c
 blocking the malicious IP for a specific time and more based on the <code class="docutils literal notranslate"><span class="pre">rule.id</span> <span class="pre">60204</span></code> and its level of severity.
 You can also set the list of windows agents you want the script to run on dynamically or statically based on the <code class="docutils literal notranslate"><span class="pre">agent.id</span></code> found on your wazuh server.</p>
 <a class=""
-               data-lightbox="group-08ee10ad-789d-4488-bce6-0ec94491b671"
+               data-lightbox="group-fd74cdf6-c54e-446a-a7b1-0271eb95b24d"
                href="../../_images/tracecat-server-workflow-contifiguration-51.png"
                title=""
                data-title=""
@@ -340,7 +342,7 @@ blocking the malicious IP for a specific time and more based on the <code class=
 its level of severity. You can also set the list of macOS agents you want the script to
 run on dynamically or statically based on the <code class="docutils literal notranslate"><span class="pre">agent.id</span></code> found on your wazuh server.</p>
 <a class=""
-               data-lightbox="group-653cc241-7aaa-4979-846e-ad4c383a97d9"
+               data-lightbox="group-07605fbf-771f-4ad5-8958-90dad92deffa"
                href="../../_images/tracecat-server-workflow-contifiguration-61.png"
                title=""
                data-title=""
@@ -362,7 +364,7 @@ Just copy the data or parameter value you need and paste it user <code class="do
 This is helpful if you want the parameters of your <code class="docutils literal notranslate"><span class="pre">YAML</span></code> configuration to be defined dynamically.
 An image has been attached for your reference.</p>
 <a class=""
-               data-lightbox="group-a0f49c58-55a4-44a1-9bea-d1d50a1a46f0"
+               data-lightbox="group-c4cd1efd-5868-4cf4-8aa4-9975c30a7636"
                href="../../_images/tracecat-server-workflow-contifiguration-71.png"
                title=""
                data-title=""

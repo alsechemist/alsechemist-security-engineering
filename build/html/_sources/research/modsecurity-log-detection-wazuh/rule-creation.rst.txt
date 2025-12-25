@@ -97,7 +97,7 @@ Once applied, the results should be the same as we have seen in the :doc:`Decode
 
 Check the image below for reference,
 
-.. image:: ../../assets/images/modsecurity-log-detection-wazuh/ruleset-creation-1.png
+.. image:: ../../assets/images/research/modsecurity-log-detection-wazuh/ruleset-creation-1.png
    :alt: Testing Ruleset
    :align: center
 

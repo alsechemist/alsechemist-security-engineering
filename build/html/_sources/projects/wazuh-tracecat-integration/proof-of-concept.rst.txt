@@ -9,7 +9,7 @@ Alright, now it's time for to test what we have configured so far. We will be us
 
 If everything goes alright, without any error we will see something like this, at our Tracecat environment.
 
-.. image:: ../../assets/images/wazuh-tracecat-integration/tracecat-proof-of-concept-1.png
+.. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-proof-of-concept-1.png
    :alt: Tracecat Workflow Run
    :align: center
 

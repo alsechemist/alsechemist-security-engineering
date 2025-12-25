@@ -51,23 +51,21 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../main/security-engineering.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/about-alsechemist.html">About Alsechemist</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../projects/projects.html">Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../research.html">Research</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../knowledge-base/knowledge-base.html">Knowledge Base</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Projects</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../projects/wazuh-tracecat-integration/introduction.html">Wazuh &amp; Tracecat Integration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../projects/apache2-server-hardening/introduction.html">Apache2 Server Hardening</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../projects/nginx-server-hardening/introduction.html">Nginx Server Hardening</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Knowledge Base</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../knowledge-base/manipulation-json-decoders-wazuh.html">Understanding Wazuh JSON Decoders</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Research</span></p>
 <ul class="current">
@@ -91,6 +89,10 @@
 <li class="toctree-l2"><a class="reference internal" href="conclusion.html">Conclusion</a></li>
 </ul>
 </li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Knowledge Base</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../knowledge-base/manipulation-json-decoders-wazuh/manipulation-json-decoders-wazuh.html">Understanding Wazuh JSON Decoders</a></li>
 </ul>
 
         </div>
@@ -134,7 +136,7 @@
 <section id="prerequisite-decoder-creation">
 <h2>Prerequisite - Decoder creation<a class="headerlink" href="#prerequisite-decoder-creation" title="Link to this heading"></a></h2>
 <p>Before going further it is required to understand how JSON decoders work.
-Follow <a class="reference internal" href="../../knowledge-base/manipulation-json-decoders-wazuh.html"><span class="doc">Wazuh JSON Decoder Manipulation</span></a> to understand, how to
+Follow <a class="reference internal" href="../../knowledge-base/manipulation-json-decoders-wazuh/manipulation-json-decoders-wazuh.html"><span class="doc">Wazuh JSON Decoder Manipulation</span></a> to understand, how to
 handle custom JSON Decoder in Wazuh.</p>
 </section>
 <section id="decoder-definition">
@@ -149,7 +151,7 @@ handle custom JSON Decoder in Wazuh.</p>
 </div>
 <p>Add this block before the built-in/generic decoder. Check the image below for better understanding.</p>
 <a class=""
-               data-lightbox="group-c8fd2f72-57cb-49c5-81c8-c762ba7ced8d"
+               data-lightbox="group-cdea8118-b8f1-4233-8525-6e38a0f07f40"
                href="../../_images/decoder-creation-11.png"
                title=""
                data-title=""
@@ -171,7 +173,7 @@ for a comprehensive overview over decoder, how to make them and learn about synt
 In other words, <code class="docutils literal notranslate"><span class="pre">**Phase</span> <span class="pre">2:</span> <span class="pre">Completed</span> <span class="pre">decoding</span></code> should not show any signs of <code class="docutils literal notranslate"><span class="pre">No</span> <span class="pre">decoder</span> <span class="pre">matched</span></code>.</p>
 <p>Check the image below for reference,</p>
 <a class=""
-               data-lightbox="group-1b260c6e-7d07-43b9-a2c0-da5ec321de5f"
+               data-lightbox="group-47ceac1d-30e4-4958-bafc-7ac00e1ecb42"
                href="../../_images/decoder-creation-21.png"
                title=""
                data-title=""

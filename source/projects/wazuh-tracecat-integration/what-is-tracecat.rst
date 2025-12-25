@@ -9,7 +9,7 @@ enrich threat intelligence, and execute complex response procedures without huma
 Tracecat's strength lies in its ability to standardize and streamline security operations, 
 reducing the mean time to response and ensuring consistent handling of security incidents.
 
-.. image:: ../../assets/images/wazuh-tracecat-integration/tracecat-logo.svg
+.. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-logo.svg
    :alt: Tracecat Logo
    :align: center
 

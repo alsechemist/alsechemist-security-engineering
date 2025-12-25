@@ -26,7 +26,7 @@ Next, the building process:
 
 The building process might take a while depending on your system specification. If everything goes well, you will receive a message like this:
 
-.. image:: ../../assets/images/nginx-server-hardening/settingup-modsecurity-1.png
+.. image:: ../../assets/images/projects/nginx-server-hardening/settingup-modsecurity-1.png
    :alt: Build Message - Successful
    :align: center
 
