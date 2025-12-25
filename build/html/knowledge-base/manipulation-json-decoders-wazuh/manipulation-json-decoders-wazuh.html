@@ -107,7 +107,7 @@
 <p>Before creating any custom decoder, it is crucial to understand how <code class="docutils literal notranslate"><span class="pre">JSON</span> <span class="pre">Decoders</span></code> actually work. We know that Wazuh already has its prebuilt JSON Decoder known as
 <code class="docutils literal notranslate"><span class="pre">0006-json_decoders.xml</span></code>. Inside, if you inspect the decoder, the built-in generic json decoder has this prematch:</p>
 <a class=""
-               data-lightbox="group-d2563892-021b-4a85-bc74-9d4d754c63af"
+               data-lightbox="group-e2fda887-e5e3-4dbe-9c4d-0334f9bc03d6"
                href="../../_images/decoder-manipulation-11.png"
                title=""
                data-title=""
@@ -121,7 +121,7 @@
 custom decoders in <code class="docutils literal notranslate"><span class="pre">/var/ossec/etc/decoders/</span></code>, the generic decoder always wins. So basically what this means, no matter what <code class="docutils literal notranslate"><span class="pre">decoder</span> <span class="pre">name</span></code> we give, the prebuilt
 JSON Decoder will override the custom JSON decoders’ name. For example, observe the image below:</p>
 <a class=""
-               data-lightbox="group-609ebc72-7259-4808-9d1a-8179adbfe71b"
+               data-lightbox="group-5800387a-9010-4c5d-a609-499013def369"
                href="../../_images/decoder-manipulation-21.png"
                title=""
                data-title=""
@@ -140,7 +140,7 @@ Obviously, we care about the thing that come with the defaults. We are basically
 <li><p><strong>Step - 2:</strong> Exclude <code class="docutils literal notranslate"><span class="pre">0006-json_decoders.xml</span></code> decoder from executing in the Wazuh Manager.</p>
 <blockquote>
 <div><a class=""
-               data-lightbox="group-11b1a9f3-31ef-4c27-9b5d-cd74751d81e4"
+               data-lightbox="group-84032d4c-86e3-4b1e-a84c-1cf3169fd1a1"
                href="../../_images/decoder-manipulation-31.png"
                title=""
                data-title=""

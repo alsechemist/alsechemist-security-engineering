@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Setting Up ModSecurity from the Source &mdash; Security Engineering 1.0 documentation</title>
+  <title>Setting Up ModSecurity &mdash; Security Engineering 1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -68,8 +68,9 @@
 <li class="toctree-l1 current"><a class="reference internal" href="introduction.html">Nginx Server Hardening</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="scope-of-work.html">Scope of Work</a></li>
 <li class="toctree-l2"><a class="reference internal" href="prerequisite.html">Prerequisites</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Setting Up ModSecurity from the Source</a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Setting Up ModSecurity</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#cloning-the-repository-reference">Cloning the Repository - (Reference)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#required-files-placement-reorganization">Required Files Placement - Reorganization</a></li>
 </ul>
 </li>
 </ul>
@@ -100,7 +101,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="introduction.html">Introduction - Nginx Server Hardening</a></li>
-      <li class="breadcrumb-item active">Setting Up ModSecurity from the Source</li>
+      <li class="breadcrumb-item active">Setting Up ModSecurity</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -109,8 +110,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="setting-up-modsecurity-from-the-source">
-<h1>Setting Up ModSecurity from the Source<a class="headerlink" href="#setting-up-modsecurity-from-the-source" title="Link to this heading"></a></h1>
+  <section id="setting-up-modsecurity">
+<h1>Setting Up ModSecurity<a class="headerlink" href="#setting-up-modsecurity" title="Link to this heading"></a></h1>
 <p>This section provides a detailed guide for <strong>building and installing ModSecurity v3 (libmodsecurity)</strong> from the official GitHub repository on <strong>Ubuntu Server 24.04 LTS</strong>.</p>
 <section id="cloning-the-repository-reference">
 <h2>Cloning the Repository - <a class="reference external" href="https://github.com/owasp-modsecurity/ModSecurity" rel="noreferrer" target="_blank">(Reference) <svg version="1.1" width="1.0em" height="1.0em" viewBox="0 0 16 16" aria-hidden="true" style="display: inline-block; vertical-align: middle; fill: currentColor;"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2Zm6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1Z"></path></svg></a><a class="headerlink" href="#cloning-the-repository-reference" title="Link to this heading"></a></h2>
@@ -129,7 +130,7 @@ sudo<span class="w"> </span>make<span class="w"> </span>install
 </div>
 <p>The building process might take a while depending on your system specification. If everything goes well, you will receive a message like this:</p>
 <a class=""
-               data-lightbox="group-2aea9632-b7b7-461f-be10-42ed4062ef0e"
+               data-lightbox="group-d165a717-cf48-4b42-92e3-925aaebd41a4"
                href="../../_images/settingup-modsecurity-11.png"
                title=""
                data-title=""
@@ -140,6 +141,20 @@ sudo<span class="w"> </span>make<span class="w"> </span>install
                      height="auto"
                      alt="Build Message - Successful"/>
                 </a><div style="height:25px;"></div><p>As we can see from the above image that, Modsecurity have been installed at <code class="docutils literal notranslate"><span class="pre">/usr/local/modsecurity</span></code> and its libraries at <code class="docutils literal notranslate"><span class="pre">/usr/local/modsecurity/lib</span></code></p>
+</section>
+<section id="required-files-placement-reorganization">
+<h2>Required Files Placement - Reorganization<a class="headerlink" href="#required-files-placement-reorganization" title="Link to this heading"></a></h2>
+<p>This is very important step where we will be reorganizing two required configuration files from the <code class="docutils literal notranslate"><span class="pre">ModSecurity</span></code> Github repository. Which are currently named:</p>
+<ul class="simple">
+<li><p><strong>modsecurity.conf-recommended</strong></p></li>
+<li><p><strong>unicode.mapping</strong></p></li>
+</ul>
+<p>Both of these two files need to be in the same directory. For only reorganization purposes, we will be transferring the file to <code class="docutils literal notranslate"><span class="pre">/usr/local/modsecurity</span></code>
+directory while renaming <code class="docutils literal notranslate"><span class="pre">modsecurity.conf-recommended</span></code> to <code class="docutils literal notranslate"><span class="pre">modsecurity.conf</span></code> so that the nginx services can identify the required file.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cp<span class="w"> </span>/path/to/ModSecurity/modsecurity.conf-recommended<span class="w"> </span>/usr/local/modsecurity/modsecurity.conf
+cp<span class="w"> </span>/path/to/ModSecurity/unicode.mapping<span class="w"> </span>/usr/local/modsecurity/unicode.mapping
+</pre></div>
+</div>
 </section>
 </section>
 

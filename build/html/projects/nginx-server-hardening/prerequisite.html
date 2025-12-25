@@ -27,7 +27,7 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Setting Up ModSecurity from the Source" href="modsecurity-setup.html" />
+    <link rel="next" title="Setting Up ModSecurity" href="modsecurity-setup.html" />
     <link rel="prev" title="Scope of Work" href="scope-of-work.html" /> 
 </head>
 
@@ -70,9 +70,10 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Prerequisites</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#system-dependencies-reference">System Dependencies - (Reference)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#setting-up-ssdeep-fuzzy-hashing-library">Setting Up SSDEEP (Fuzzy Hashing Library)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setting-up-nginx">Setting Up NGINX</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="modsecurity-setup.html">Setting Up ModSecurity from the Source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modsecurity-setup.html">Setting Up ModSecurity</a></li>
 </ul>
 </li>
 </ul>
@@ -156,6 +157,17 @@ may evade exact signature-based detection.</p>
 <p>While ssdeep is optional, enabling it enhances ModSecurity’s capability to detect variants of malicious content, thereby increasing overall WAF effectiveness.</p>
 </div>
 </section>
+<section id="setting-up-nginx">
+<h2>Setting Up NGINX<a class="headerlink" href="#setting-up-nginx" title="Link to this heading"></a></h2>
+<p>To setup NGINX refer to their official <a class="reference external" href="https://nginx.org/en/linux_packages.html#Ubuntu" rel="noreferrer" target="_blank">Installation Documentation <svg version="1.1" width="1.0em" height="1.0em" viewBox="0 0 16 16" aria-hidden="true" style="display: inline-block; vertical-align: middle; fill: currentColor;"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2Zm6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1Z"></path></svg></a> for Ubuntu distributions.
+At Alsechemist, we always promote to stay updated, adapt the changes that new technologies bring and make new innovations along with changes that
+come from time to time.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Always make sure to setup or install the <code class="docutils literal notranslate"><span class="pre">latest</span> <span class="pre">stable</span></code> versions that vendors usually recommend regarding any package or tools.
+A <code class="docutils literal notranslate"><span class="pre">latest</span></code> without <code class="docutils literal notranslate"><span class="pre">stable</span></code> isn’t always suitable for production environments. So choose your versions wisely.</p>
+</div>
+</section>
 </section>
 
 
@@ -163,7 +175,7 @@ may evade exact signature-based detection.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="scope-of-work.html" class="btn btn-neutral float-left" title="Scope of Work" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="modsecurity-setup.html" class="btn btn-neutral float-right" title="Setting Up ModSecurity from the Source" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="modsecurity-setup.html" class="btn btn-neutral float-right" title="Setting Up ModSecurity" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

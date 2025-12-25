@@ -1,0 +1,123 @@
+Setting Up the ModSecurity NGINX Connector
+==========================================
+
+After successfully building and installing **ModSecurity v3 (libmodsecurity)**, the next step is to integrate it with **NGINX** using the official
+**ModSecurity-nginx connector**. This connector acts as a bridge between NGINX and the ModSecurity engine, enabling NGINX to pass HTTP transaction data to
+libmodsecurity for inspection.
+
+Download the Official Release - `(ModSecurity-nginx) <https://github.com/owasp-modsecurity/ModSecurity-nginx>`_
+---------------------------------------------------------------------------------------------------------------
+
+Begin by downloading the latest official release of ModSecurity NGINX connector
+
+.. code-block:: bash
+
+   cd /usr/local/src
+   git clone https://github.com/SpiderLabs/ModSecurity-nginx.git
+
+This repository contains the required source code that allows NGINX to interface
+with libmodsecurity during compilation.
+
+Preparing NGINX Source Code
+----------------------------
+
+The ModSecurity connector must be compiled as a **dynamic module** against the
+same version of NGINX that will be used in production.
+
+Download and extract the NGINX source code matching your installed version
+(e.g., NGINX 1.28.0):
+
+.. code-block:: bash
+
+   cd /usr/local/src
+   wget http://nginx.org/download/nginx-1.28.0.tar.gz
+   tar -xzf nginx-1.28.0.tar.gz
+   cd nginx-1.28.0
+
+Configuring NGINX with the ModSecurity Connector
+------------------------------------------------
+
+Configure NGINX to build the ModSecurity connector as a dynamic module:
+
+.. code-block:: bash
+
+   ./configure \
+     --with-compat \
+     --add-dynamic-module=../ModSecurity-nginx
+
+The `--with-compat` flag ensures binary compatibility with existing NGINX
+installations, allowing the module to be loaded dynamically without rebuilding
+the entire NGINX binary.
+
+Building the Module
+-------------------
+
+Compile the dynamic module using:
+
+.. code-block:: bash
+
+   make modules
+
+After successful compilation, the ModSecurity module will be available as:
+
+.. code-block:: text
+
+   objs/ngx_http_modsecurity_module.so
+
+Installing the Module
+---------------------
+
+Copy the compiled module to the NGINX modules directory:
+
+.. code-block:: bash
+
+   sudo cp objs/ngx_http_modsecurity_module.so /etc/nginx/modules/
+
+Ensure the directory exists before copying if necessary.
+
+Loading the Module in NGINX
+---------------------------
+
+Edit the main NGINX configuration file:
+
+.. code-block:: bash
+
+   sudo nano /etc/nginx/nginx.conf
+
+Add the following line **at the very top** of the configuration file:
+
+.. code-block:: nginx
+
+   load_module modules/ngx_http_modsecurity_module.so;
+
+This directive must appear **before** the `events` and `http` blocks.
+
+Verification
+------------
+
+Test the NGINX configuration to confirm the module is loaded correctly:
+
+.. code-block:: bash
+
+   sudo nginx -t
+
+If the configuration is valid, reload NGINX:
+
+.. code-block:: bash
+
+   sudo systemctl reload nginx
+
+At this stage, the ModSecurity connector is successfully integrated with NGINX,
+and the web server is ready to load ModSecurity rules and configurations.
+
+Next Steps
+----------
+
+The next step is to **configure ModSecurity itself**, including:
+
+- Enabling the ModSecurity engine
+- Defining rule files and directories
+- Integrating the OWASP Core Rule Set (CRS)
+- Testing rule enforcement and logging
+
+Let me know when you’re ready to proceed to **ModSecurity configuration and rule setup**.
