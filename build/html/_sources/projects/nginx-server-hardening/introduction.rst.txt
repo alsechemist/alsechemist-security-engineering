@@ -25,5 +25,5 @@ This guide provides a **complete and structured walkthrough** for setting up Mod
    :hidden:
 
    ../../projects/nginx-server-hardening/scope-of-work
-   ../../projects/nginx-server-hardening/prerequisite
+   ../../projects/nginx-server-hardening/prerequisites
    ../../projects/nginx-server-hardening/modsecurity-setup

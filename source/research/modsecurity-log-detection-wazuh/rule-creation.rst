@@ -109,7 +109,7 @@ In other word, it means that our custom created rules are working perfectly.
 
 .. note::
 
-    If you are not sure, how we have handled the exception, that we have seen in the :ref:`decoder-creation` part, we have actually called ``<decoded_as>json</decoded_as>``
+    If you are not sure, how we have handled the exception, that we have seen in the :ref:`unexpected-rule-trigger` part, we have actually called ``<decoded_as>json</decoded_as>``
     to kind of override the ``rule id - 1002`` that was being triggered earlier. The explanation of the action is, that we specifically called the name of the decoder ``json``
     which was being triggered during **Phase - 2** of decoder testing and also uniquely identified by defining ``<field name="transaction.producer.modsecurity">ModSecurity</field>``
     which mean that the rule will be trigger spacially if it sees that, the logs are being generated from ``ModSecurity``

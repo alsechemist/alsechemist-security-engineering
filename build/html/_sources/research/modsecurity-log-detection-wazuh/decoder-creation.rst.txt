@@ -92,7 +92,7 @@ Using the ``JSON_Decoder`` plugin provides several advantages:
 
 This design choice aligns with best practices for SIEM integrations involving structured logs.
 
-.. _decoder-creation:
+.. _unexpected-rule-trigger:
 
 Unexpected Rule Trigger During Decoder Testing
 ----------------------------------------------

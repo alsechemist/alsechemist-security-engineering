@@ -55,6 +55,8 @@ On **Ubuntu 24.04 LTS**, ssdeep can be installed using:
 
    While ssdeep is optional, enabling it enhances ModSecurity's capability to detect variants of malicious content, thereby increasing overall WAF effectiveness.
 
+.. _setup-nginx-production:
+
 Setting Up NGINX
 ----------------
 
