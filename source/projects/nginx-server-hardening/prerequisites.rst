@@ -11,8 +11,8 @@ Install the required packages using the package manager:
 
 .. code-block:: bash
 
-    sudo apt update
-    sudo apt install git g++ apt-utils autoconf automake build-essential libcurl4-openssl-dev libgeoip-dev liblmdb-dev libpcre2-dev libtool libxml2-dev libyajl-dev pkgconf zlib1g-dev
+   apt update
+   apt install git g++ apt-utils autoconf automake build-essential libcurl4-openssl-dev libgeoip-dev liblmdb-dev libpcre2-dev libtool libxml2-dev libyajl-dev pkgconf zlib1g-dev
 
 These packages provide the necessary build tools and libraries required by libModSecurity during compilation and runtime.
 
@@ -49,7 +49,7 @@ On **Ubuntu 24.04 LTS**, ssdeep can be installed using:
 
 .. code-block:: bash
 
-   sudo apt install -y ssdeep libfuzzy2 libfuzzy-dev
+   apt install -y ssdeep libfuzzy2 libfuzzy-dev
 
 .. note::
 

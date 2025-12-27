@@ -21,7 +21,7 @@
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
-      <script src="../../_static/copybutton.js?v=9760a2b4"></script>
+      <script src="../../_static/copybutton.js?v=7310f75f"></script>
       <script src="../../_static/sphinxcontrib-images\LightBox2\lightbox2\dist\js\lightbox-plus-jquery.min.js?v=f0ca4bb6"></script>
       <script src="../../_static/sphinxcontrib-images\LightBox2\lightbox2-customize\jquery-noconflict.js?v=12818e64"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -74,6 +74,9 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="modsecurity-setup.html">Setting Up ModSecurity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modsecurity-connector-setup.html">Setting Up the ModSecurity NGINX Connector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modsecurity-crs-setup.html">Setting Up ModSecurity Core Rule Set (CRS)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modsecurity-post-installation-setup.html">Post Installation Setup - ModSecurity</a></li>
 </ul>
 </li>
 </ul>
@@ -118,8 +121,8 @@ These dependencies are necessary to compile the core ModSecurity engine and enab
 JSON parsing, regular expressions, compression, and HTTP communication.</p>
 <p>The following prerequisites have been validated on <strong>Ubuntu Server 24.04 LTS</strong> as well.</p>
 <p>Install the required packages using the package manager:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>update
-sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>git<span class="w"> </span>g++<span class="w"> </span>apt-utils<span class="w"> </span>autoconf<span class="w"> </span>automake<span class="w"> </span>build-essential<span class="w"> </span>libcurl4-openssl-dev<span class="w"> </span>libgeoip-dev<span class="w"> </span>liblmdb-dev<span class="w"> </span>libpcre2-dev<span class="w"> </span>libtool<span class="w"> </span>libxml2-dev<span class="w"> </span>libyajl-dev<span class="w"> </span>pkgconf<span class="w"> </span>zlib1g-dev
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>apt<span class="w"> </span>update
+apt<span class="w"> </span>install<span class="w"> </span>git<span class="w"> </span>g++<span class="w"> </span>apt-utils<span class="w"> </span>autoconf<span class="w"> </span>automake<span class="w"> </span>build-essential<span class="w"> </span>libcurl4-openssl-dev<span class="w"> </span>libgeoip-dev<span class="w"> </span>liblmdb-dev<span class="w"> </span>libpcre2-dev<span class="w"> </span>libtool<span class="w"> </span>libxml2-dev<span class="w"> </span>libyajl-dev<span class="w"> </span>pkgconf<span class="w"> </span>zlib1g-dev
 </pre></div>
 </div>
 <p>These packages provide the necessary build tools and libraries required by libModSecurity during compilation and runtime.</p>
@@ -149,7 +152,7 @@ may evade exact signature-based detection.</p>
 <li><p>Complement the OWASP Core Rule Set (CRS) by adding an extra layer of similarity-based detection.</p></li>
 </ul>
 <p>On <strong>Ubuntu 24.04 LTS</strong>, ssdeep can be installed using:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>ssdeep<span class="w"> </span>libfuzzy2<span class="w"> </span>libfuzzy-dev
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>ssdeep<span class="w"> </span>libfuzzy2<span class="w"> </span>libfuzzy-dev
 </pre></div>
 </div>
 <div class="admonition note">

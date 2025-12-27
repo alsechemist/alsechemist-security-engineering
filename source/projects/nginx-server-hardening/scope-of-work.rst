@@ -2,7 +2,7 @@ Scope of Work
 =============
 
 The scope of this documentation is to provide a **comprehensive and practical guide** for deploying and configuring **ModSecurity v3 (libModSecurity)** with 
-**NGINX** in a modern Linux server environment.
+**NGINX** in a modern Linux server environment. Make sure you have ``root`` or ``sudo`` privileges.
 
 The project has been implemented and validated on the following platform and software stack:
 

@@ -52,7 +52,11 @@ images_config = {
 
 # -- Options for Copy Button -------------------------------------------------
 
-copybutton_prompt_text = r">>> |\.\.\. |\$ |# "
+copybutton_prompt_text = r"^(?!\s*#).*"
 copybutton_prompt_is_regexp = True
-copybutton_only_copy_prompt_lines = False
+copybutton_only_copy_prompt_lines = True
+copybutton_remove_prompts = False
+
+# -- Options for New Tab Link -------------------------------------------------
+
 new_tab_link_show_external_link_icon = True

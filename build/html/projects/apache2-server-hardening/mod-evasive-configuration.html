@@ -21,7 +21,7 @@
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
-      <script src="../../_static/copybutton.js?v=9760a2b4"></script>
+      <script src="../../_static/copybutton.js?v=7310f75f"></script>
       <script src="../../_static/sphinxcontrib-images\LightBox2\lightbox2\dist\js\lightbox-plus-jquery.min.js?v=f0ca4bb6"></script>
       <script src="../../_static/sphinxcontrib-images\LightBox2\lightbox2-customize\jquery-noconflict.js?v=12818e64"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -132,7 +132,7 @@ If we want to receive email regarding the alerts, it will create a postfix serve
 This is not recommended in a production environment, as this will create unnecessary services, if the instance is not dedicated for handling email services.
 For now, we will go with <code class="docutils literal notranslate"><span class="pre">No</span> <span class="pre">Connection</span></code></p>
 <a class=""
-               data-lightbox="group-46aae481-6842-4ea5-811b-ab01a2f90d20"
+               data-lightbox="group-a85be0fb-12da-4319-8496-6cda87f4af39"
                href="../../_images/apache2-server-hardening-img-31.png"
                title=""
                data-title=""
@@ -147,7 +147,7 @@ For now, we will go with <code class="docutils literal notranslate"><span class=
 <h2>Configuring the Evasive Module<a class="headerlink" href="#configuring-the-evasive-module" title="Link to this heading"></a></h2>
 <p>Head over to the <code class="docutils literal notranslate"><span class="pre">/etc/apache2/mods-available/</span></code> directory and open <code class="docutils literal notranslate"><span class="pre">evasive.conf</span></code> file using your preferred text editor. I will be using vim.</p>
 <a class=""
-               data-lightbox="group-a61adcf1-d023-4f4d-95b7-ccb4a093070b"
+               data-lightbox="group-cfbdeb43-c64a-47bc-8948-240f5b0ee7a5"
                href="../../_images/apache2-server-hardening-img-41.png"
                title=""
                data-title=""
@@ -204,7 +204,7 @@ Otherwise, the logs will also not be generated. If such a problem arises, you ca
 <h2>Testing the Module<a class="headerlink" href="#testing-the-module" title="Link to this heading"></a></h2>
 <p>You will usually see a default apache2 page after sending an http request to your server/instance, with your server’s IP.</p>
 <a class=""
-               data-lightbox="group-1cdf9b54-b5f6-42c9-b142-fab678d7da9e"
+               data-lightbox="group-1380c67a-4d91-4211-9a12-14453dfa721a"
                href="../../_images/apache2-server-hardening-img-51.png"
                title=""
                data-title=""
@@ -222,7 +222,7 @@ After 20 requests within the 10 seconds time frame, it should forbid us from acc
 Besides, the number of requests might vary due to the value of the <code class="docutils literal notranslate"><span class="pre">hashtable</span></code> sometimes.</p>
 </div>
 <a class=""
-               data-lightbox="group-9ccdce3a-9aef-4e8f-b06f-cfe2c4c07734"
+               data-lightbox="group-e653d4ad-e1a4-498c-bf4b-a652ccb84a81"
                href="../../_images/apache2-server-hardening-img-61.png"
                title=""
                data-title=""
@@ -239,7 +239,7 @@ Besides, the number of requests might vary due to the value of the <code class="
 <p>If an attack gets detected, a log should be generated in the specified directory. For us the directory is <code class="docutils literal notranslate"><span class="pre">/var/log/mod_evasive</span></code>.
 Head over there, and you will find the IP of the attacker, which means the module is blocking requests coming from this particular IP.</p>
 <a class=""
-               data-lightbox="group-3d3a7692-71ef-4855-b0e5-87de1176a580"
+               data-lightbox="group-2f0ed74d-2728-4038-8b07-3e810d8c664a"
                href="../../_images/apache2-server-hardening-img-71.png"
                title=""
                data-title=""
@@ -252,7 +252,7 @@ Head over there, and you will find the IP of the attacker, which means the modul
                 </a><div style="height:25px;"></div><p>Inside the file you find a process <code class="docutils literal notranslate"><span class="pre">id</span></code> or a unique number.</p>
 <p>Besides, you can also head over to check the syslog to investigate the event.</p>
 <a class=""
-               data-lightbox="group-1acdeb6c-e6fb-4dd3-bbf6-72cbce55884e"
+               data-lightbox="group-59c0c6cd-750d-4125-8ed4-bf9488932042"
                href="../../_images/apache2-server-hardening-img-81.png"
                title=""
                data-title=""

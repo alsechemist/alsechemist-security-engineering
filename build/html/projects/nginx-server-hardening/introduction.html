@@ -21,7 +21,7 @@
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
-      <script src="../../_static/copybutton.js?v=9760a2b4"></script>
+      <script src="../../_static/copybutton.js?v=7310f75f"></script>
       <script src="../../_static/sphinxcontrib-images\LightBox2\lightbox2\dist\js\lightbox-plus-jquery.min.js?v=f0ca4bb6"></script>
       <script src="../../_static/sphinxcontrib-images\LightBox2\lightbox2-customize\jquery-noconflict.js?v=12818e64"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -69,6 +69,9 @@
 <li class="toctree-l2"><a class="reference internal" href="scope-of-work.html">Scope of Work</a></li>
 <li class="toctree-l2"><a class="reference internal" href="prerequisites.html">Prerequisites</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modsecurity-setup.html">Setting Up ModSecurity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modsecurity-connector-setup.html">Setting Up the ModSecurity NGINX Connector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modsecurity-crs-setup.html">Setting Up ModSecurity Core Rule Set (CRS)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modsecurity-post-installation-setup.html">Post Installation Setup - ModSecurity</a></li>
 </ul>
 </li>
 </ul>
@@ -109,15 +112,15 @@
 <h1>Introduction - Nginx Server Hardening<a class="headerlink" href="#introduction-nginx-server-hardening" title="Link to this heading"></a></h1>
 <p>ModSecurity is a widely adopted <strong>open-source Web Application Firewall (WAF)</strong> that provides robust protection against common web-based attacks such as SQL
 Injection, Cross-Site Scripting (XSS), Remote Code Execution (RCE), and protocol violations. Originally designed as an Apache module, ModSecurity has evolved into
-a <strong>standalone security engine (libmodsecurity)</strong> starting from version 3, allowing it to be integrated with multiple web servers through dedicated connectors.</p>
-<p>This documentation focuses on <strong>ModSecurity v3 (libmodsecurity)</strong> integrated with <strong>NGINX using the ModSecurity-nginx connector</strong>. Unlike ModSecurity v2,
+a <strong>standalone security engine (libModSecurity)</strong> starting from version 3, allowing it to be integrated with multiple web servers through dedicated connectors.</p>
+<p>This documentation focuses on <strong>ModSecurity v3 (libModSecurity)</strong> integrated with <strong>NGINX using the ModSecurity-nginx connector</strong>. Unlike ModSecurity v2,
 which tightly coupled the engine with Apache, ModSecurity v3 separates the <strong>rule processing engine</strong> from the <strong>web server</strong>,
 offering improved flexibility, performance, and extensibility.</p>
 <p>NGINX, known for its high performance and event-driven architecture, does not natively support ModSecurity. To bridge this gap, the <strong>ModSecurity-nginx
-connector</strong> acts as an interface between NGINX and libmodsecurity, enabling full WAF capabilities without compromising NGINX’s design principles.</p>
+connector</strong> acts as an interface between NGINX and libModSecurity, enabling full WAF capabilities without compromising NGINX’s design principles.</p>
 <p>This guide provides a <strong>complete and structured walkthrough</strong> for setting up ModSecurity v3 with NGINX, including:</p>
 <ul class="simple">
-<li><p>Building and installing libmodsecurity</p></li>
+<li><p>Building and installing libModSecurity</p></li>
 <li><p>Integrating the NGINX connector</p></li>
 <li><p>Configuring ModSecurity directives</p></li>
 <li><p>Deploying and testing rule sets</p></li>
