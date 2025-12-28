@@ -27,7 +27,7 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Setting Up ModSecurity Core Rule Set (CRS)" href="modsecurity-crs-setup.html" />
+    <link rel="next" title="Connecting ModSecurity with NGINX" href="modsecurity-nginx-connection.html" />
     <link rel="prev" title="Setting Up ModSecurity" href="modsecurity-setup.html" /> 
 </head>
 
@@ -75,11 +75,9 @@
 <li class="toctree-l3"><a class="reference internal" href="#configuring-nginx-with-the-modsecurity-connector">Configuring NGINX with the ModSecurity Connector</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#building-the-module">Building the Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#installing-the-module-via-reorganization">Installing the Module via Reorganization</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#loading-the-module-in-nginx">Loading the Module in NGINX</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#turing-on-the-modsecurity-engine-in-nginx">Turing ON the ModSecurity Engine in NGINX</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#verification">Verification</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="modsecurity-nginx-connection.html">Connecting ModSecurity with NGINX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modsecurity-crs-setup.html">Setting Up ModSecurity Core Rule Set (CRS)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modsecurity-post-installation-setup.html">Post Installation Setup - ModSecurity</a></li>
 </ul>
@@ -157,7 +155,7 @@ Otherwise, there are high chances of version compatibility/collision issues.</p>
 </div>
 <p>If everything goes well, you will see an output similar to this image below,</p>
 <a class=""
-               data-lightbox="group-2cacf5b9-d9b9-47b9-8614-29a3ec333444"
+               data-lightbox="group-cc361d39-d5ea-4ba2-a3bb-cc4149c62729"
                href="../../_images/settingup-modsecurity-connector-nginx-11.png"
                title=""
                data-title=""
@@ -191,74 +189,6 @@ the entire NGINX binary.</p>
 <p>Directory <code class="docutils literal notranslate"><span class="pre">/usr/lib/nginx/modules</span></code> is symbolic link for <code class="docutils literal notranslate"><span class="pre">/etc/nginx/modules/</span></code>.
 Which mean, any module you put there will also be dynamically available in <code class="docutils literal notranslate"><span class="pre">/etc/nginx/modules/</span></code> directory.</p>
 </section>
-<section id="loading-the-module-in-nginx">
-<h2>Loading the Module in NGINX<a class="headerlink" href="#loading-the-module-in-nginx" title="Link to this heading"></a></h2>
-<p>Edit the main NGINX configuration file:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>vim<span class="w"> </span>/etc/nginx/nginx.conf
-</pre></div>
-</div>
-<p>Add the following line <strong>at the very top</strong> of the configuration file:</p>
-<div class="highlight-nginx notranslate"><div class="highlight"><pre><span></span><span class="k">load_module</span><span class="w"> </span><span class="s">modules/ngx_http_modsecurity_module.so</span><span class="p">;</span>
-</pre></div>
-</div>
-<p>Follow the image below to have high level view,</p>
-<a class=""
-               data-lightbox="group-e5110d54-9698-41ab-b66f-9926354be470"
-               href="../../_images/settingup-modsecurity-connector-nginx-21.png"
-               title=""
-               data-title=""
-               
-               ><img src="../../_images/settingup-modsecurity-connector-nginx-21.png"
-                     class="align-center"
-                     width="100%"
-                     height="auto"
-                     alt="Loading ngx_http_modsecurity_module.so Module on Nginx"/>
-                </a><div style="height:25px;"></div><p>This directive must appear <strong>before</strong> the <cite>events</cite> and <cite>http</cite> blocks. Actually, it is always suggested to load the modules first at the beginning.</p>
-</section>
-<section id="turing-on-the-modsecurity-engine-in-nginx">
-<h2>Turing ON the ModSecurity Engine in NGINX<a class="headerlink" href="#turing-on-the-modsecurity-engine-in-nginx" title="Link to this heading"></a></h2>
-<p>Now for the final step, it’s time to turn the ModSecurity Engine in the NGINX Server. Remember that we have placed the <code class="docutils literal notranslate"><span class="pre">modsecurity.conf</span></code> file at <code class="docutils literal notranslate"><span class="pre">/usr/local/modsecurity</span></code> while going through the <a class="reference internal" href="modsecurity-setup.html#required-files-placement-reorganization"><span class="std std-ref">Required Files Placement - Reorganization</span></a> section.
-This is the main configuration file of ModSecurity. We are going to load it in the http server configuration file of NGINX, basically including the Modsecurity engine in
-the http server.</p>
-<p>Edit the main NGINX server configuration file at <code class="docutils literal notranslate"><span class="pre">/conf.d/default.conf</span></code></p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>vim<span class="w"> </span>/etc/nginx/conf.d/default.conf
-</pre></div>
-</div>
-<p>Add this line inside the <code class="docutils literal notranslate"><span class="pre">server</span></code> block</p>
-<div class="highlight-nginx notranslate"><div class="highlight"><pre><span></span><span class="k">modsecurity</span><span class="w"> </span><span class="no">on</span><span class="p">;</span>
-</pre></div>
-</div>
-<p>And add this line in the <code class="docutils literal notranslate"><span class="pre">location</span></code> block</p>
-<div class="highlight-nginx notranslate"><div class="highlight"><pre><span></span><span class="k">modsecurity_rules_file</span><span class="w"> </span><span class="s">/usr/local/modsecurity/modsecurity.conf</span><span class="p">;</span>
-</pre></div>
-</div>
-<p>Refer to the image below for high level view.</p>
-<a class=""
-               data-lightbox="group-bb9e4d3d-62ee-413c-92bf-6dfbc33f7209"
-               href="../../_images/settingup-modsecurity-connector-nginx-31.png"
-               title=""
-               data-title=""
-               
-               ><img src="../../_images/settingup-modsecurity-connector-nginx-31.png"
-                     class="align-center"
-                     width="100%"
-                     height="auto"
-                     alt="Adding ModSecurity Engine in NGINX Server Configuration File"/>
-                </a><div style="height:25px;"></div><div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The above two lines can also be added in the <code class="docutils literal notranslate"><span class="pre">server</span></code> block.
-This will basically load the same configuration file across all the locations following centralized manner.</p>
-</div>
-</section>
-<section id="verification">
-<h2>Verification<a class="headerlink" href="#verification" title="Link to this heading"></a></h2>
-<p>Test the NGINX configuration to confirm the module is loaded correctly:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nginx<span class="w"> </span>-t
-</pre></div>
-</div>
-<p>It should say the syntaxes are <code class="docutils literal notranslate"><span class="pre">ok</span></code> and the test is <strong>successfully</strong>!</p>
-<p>At this stage, the ModSecurity connector is successfully integrated with NGINX, and the web server is ready to load ModSecurity rules and configurations.</p>
-</section>
 </section>
 
 
@@ -266,7 +196,7 @@ This will basically load the same configuration file across all the locations fo
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="modsecurity-setup.html" class="btn btn-neutral float-left" title="Setting Up ModSecurity" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="modsecurity-crs-setup.html" class="btn btn-neutral float-right" title="Setting Up ModSecurity Core Rule Set (CRS)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="modsecurity-nginx-connection.html" class="btn btn-neutral float-right" title="Connecting ModSecurity with NGINX" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

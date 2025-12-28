@@ -28,5 +28,6 @@ This guide provides a **complete and structured walkthrough** for setting up Mod
    ../../projects/nginx-server-hardening/prerequisites
    ../../projects/nginx-server-hardening/modsecurity-setup
    ../../projects/nginx-server-hardening/modsecurity-connector-setup
+   ../../projects/nginx-server-hardening/modsecurity-nginx-connection
    ../../projects/nginx-server-hardening/modsecurity-crs-setup
    ../../projects/nginx-server-hardening/modsecurity-post-installation-setup
