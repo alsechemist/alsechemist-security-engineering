@@ -1,5 +1,5 @@
-Setting Up Mod Evasive Module
-=============================
+Setting Up Mod Evasive
+======================
 
 ModEvasive is an Apache module designed to provide evasive action against HTTP DoS (Denial of Service), 
 DDoS (Distributed Denial of Service), and brute-force attacks. It works by tracking the number of requests per client and

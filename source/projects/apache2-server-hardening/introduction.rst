@@ -12,5 +12,7 @@ SQL injection and XSS, strengthening overall security for Apache2 servers.
    :maxdepth: 3
    :hidden:
 
+   ../../projects/apache2-server-hardening/scope-of-engagement
    ../../projects/apache2-server-hardening/generic-setup-and-prerquisites
-   ../../projects/apache2-server-hardening/mod-evasive-configuration
+   ../../projects/apache2-server-hardening/modevasive-setup
+   ../../projects/apache2-server-hardening/modmaxminddb-setup

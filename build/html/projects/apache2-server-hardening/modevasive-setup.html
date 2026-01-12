@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Setting Up Mod Evasive Module &mdash; Security Engineering 1.0 documentation</title>
+  <title>Setting Up Mod Evasive &mdash; Security Engineering 1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -27,7 +27,7 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Introduction - Nginx Server Hardening" href="../nginx-server-hardening/introduction.html" />
+    <link rel="next" title="Setting Up Mod Maxmind DB" href="modmaxminddb-setup.html" />
     <link rel="prev" title="Generic Setup &amp; Prerequisites" href="generic-setup-and-prerquisites.html" /> 
 </head>
 
@@ -65,8 +65,9 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../wazuh-tracecat-integration/introduction.html">Wazuh &amp; Tracecat Integration</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="introduction.html">Apache2 Server Hardening</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="scope-of-engagement.html">Scope of Engagement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generic-setup-and-prerquisites.html">Generic Setup &amp; Prerequisites</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Setting Up Mod Evasive Module</a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Setting Up Mod Evasive</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#installing-the-apache2-evasive-module">Installing the apache2 evasive module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#configuring-the-evasive-module">Configuring the Evasive Module</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#parameter-description">Parameter Description:</a></li>
@@ -78,6 +79,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#checking-and-investigating-logs">Checking and Investigating Logs</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="modmaxminddb-setup.html">Setting Up Mod Maxmind DB</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../nginx-server-hardening/introduction.html">Nginx Server Hardening</a></li>
@@ -107,7 +109,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="introduction.html">Introduction - Apache2 Server Hardening</a></li>
-      <li class="breadcrumb-item active">Setting Up Mod Evasive Module</li>
+      <li class="breadcrumb-item active">Setting Up Mod Evasive</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -116,8 +118,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="setting-up-mod-evasive-module">
-<h1>Setting Up Mod Evasive Module<a class="headerlink" href="#setting-up-mod-evasive-module" title="Link to this heading"></a></h1>
+  <section id="setting-up-mod-evasive">
+<h1>Setting Up Mod Evasive<a class="headerlink" href="#setting-up-mod-evasive" title="Link to this heading"></a></h1>
 <p>ModEvasive is an Apache module designed to provide evasive action against HTTP DoS (Denial of Service),
 DDoS (Distributed Denial of Service), and brute-force attacks. It works by tracking the number of requests per client and
 temporarily blocking IPs that exceed configured thresholds, helping protect web servers from overload and malicious traffic.</p>
@@ -132,7 +134,7 @@ If we want to receive email regarding the alerts, it will create a postfix serve
 This is not recommended in a production environment, as this will create unnecessary services, if the instance is not dedicated for handling email services.
 For now, we will go with <code class="docutils literal notranslate"><span class="pre">No</span> <span class="pre">Connection</span></code></p>
 <a class=""
-               data-lightbox="group-692a0be2-b511-46e7-8f72-271c4c4c49b5"
+               data-lightbox="group-265c09f0-96b6-49fa-8d1d-fb5f7473362c"
                href="../../_images/apache2-server-hardening-img-31.png"
                title=""
                data-title=""
@@ -147,7 +149,7 @@ For now, we will go with <code class="docutils literal notranslate"><span class=
 <h2>Configuring the Evasive Module<a class="headerlink" href="#configuring-the-evasive-module" title="Link to this heading"></a></h2>
 <p>Head over to the <code class="docutils literal notranslate"><span class="pre">/etc/apache2/mods-available/</span></code> directory and open <code class="docutils literal notranslate"><span class="pre">evasive.conf</span></code> file using your preferred text editor. I will be using vim.</p>
 <a class=""
-               data-lightbox="group-68eb5460-7cf4-4d99-927e-fb07155fa826"
+               data-lightbox="group-ab69ecf3-4483-480d-a73d-2740c98c20a1"
                href="../../_images/apache2-server-hardening-img-41.png"
                title=""
                data-title=""
@@ -204,7 +206,7 @@ Otherwise, the logs will also not be generated. If such a problem arises, you ca
 <h2>Testing the Module<a class="headerlink" href="#testing-the-module" title="Link to this heading"></a></h2>
 <p>You will usually see a default apache2 page after sending an http request to your server/instance, with your server’s IP.</p>
 <a class=""
-               data-lightbox="group-7f0acb00-a7d2-48fc-82da-61666912fe95"
+               data-lightbox="group-ac2c6285-2d87-4b88-b0d6-0d05d61e5bcf"
                href="../../_images/apache2-server-hardening-img-51.png"
                title=""
                data-title=""
@@ -222,7 +224,7 @@ After 20 requests within the 10 seconds time frame, it should forbid us from acc
 Besides, the number of requests might vary due to the value of the <code class="docutils literal notranslate"><span class="pre">hashtable</span></code> sometimes.</p>
 </div>
 <a class=""
-               data-lightbox="group-6f69366b-bba0-4af4-9cfe-10aaf448577f"
+               data-lightbox="group-0d70302e-82f4-4383-9c57-8e8de3c4470c"
                href="../../_images/apache2-server-hardening-img-61.png"
                title=""
                data-title=""
@@ -239,7 +241,7 @@ Besides, the number of requests might vary due to the value of the <code class="
 <p>If an attack gets detected, a log should be generated in the specified directory. For us the directory is <code class="docutils literal notranslate"><span class="pre">/var/log/mod_evasive</span></code>.
 Head over there, and you will find the IP of the attacker, which means the module is blocking requests coming from this particular IP.</p>
 <a class=""
-               data-lightbox="group-95229855-453a-4181-bfa5-4039306251fb"
+               data-lightbox="group-6460a866-e3a8-450d-ada2-904556a164d5"
                href="../../_images/apache2-server-hardening-img-71.png"
                title=""
                data-title=""
@@ -252,7 +254,7 @@ Head over there, and you will find the IP of the attacker, which means the modul
                 </a><div style="height:25px;"></div><p>Inside the file you find a process <code class="docutils literal notranslate"><span class="pre">id</span></code> or a unique number.</p>
 <p>Besides, you can also head over to check the syslog to investigate the event.</p>
 <a class=""
-               data-lightbox="group-ae399fc8-c6a1-42a6-a790-814f2f86c469"
+               data-lightbox="group-c22c3120-f57a-41bc-aa2e-04de79da0eb6"
                href="../../_images/apache2-server-hardening-img-81.png"
                title=""
                data-title=""
@@ -275,7 +277,7 @@ Head over there, and you will find the IP of the attacker, which means the modul
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="generic-setup-and-prerquisites.html" class="btn btn-neutral float-left" title="Generic Setup &amp; Prerequisites" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../nginx-server-hardening/introduction.html" class="btn btn-neutral float-right" title="Introduction - Nginx Server Hardening" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="modmaxminddb-setup.html" class="btn btn-neutral float-right" title="Setting Up Mod Maxmind DB" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

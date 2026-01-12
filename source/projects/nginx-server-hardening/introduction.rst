@@ -24,7 +24,7 @@ This guide provides a **complete and structured walkthrough** for setting up Mod
    :maxdepth: 3
    :hidden:
 
-   ../../projects/nginx-server-hardening/scope-of-work
+   ../../projects/nginx-server-hardening/scope-of-engagement
    ../../projects/nginx-server-hardening/prerequisites
    ../../projects/nginx-server-hardening/modsecurity-setup
    ../../projects/nginx-server-hardening/modsecurity-connector-setup
