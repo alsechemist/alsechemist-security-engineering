@@ -80,7 +80,7 @@ Besides, this decoder allows Wazuh to extract relevant fields such as:
 
 These fields form the foundation for building custom detection rules and alerts.
 
-Why Use JSON_Decoder?
+Why Use JSON Decoder?
 ---------------------
 
 Using the ``JSON_Decoder`` plugin provides several advantages:

@@ -1,5 +1,5 @@
-Manipulating JSON Decoders - Wazuh
-==================================
+Understanding & Manipulating JSON Decoders - Wazuh
+==================================================
 
 Before creating any custom decoder for JSON logs, it is crucial to understand how ``JSON Decoders`` actually work. We know that Wazuh already has its prebuilt JSON Decoder known as
 ``0006-json_decoders.xml``. Inside, if you inspect the decoder, the built-in generic json decoder has this prematch:
