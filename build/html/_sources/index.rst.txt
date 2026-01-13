@@ -63,7 +63,7 @@ This documentation is continuously updated as I explore new areas in cybersecuri
    :hidden:
 
    Configuring Wazuh Active Response for macOS Agents </knowledge-base/configuration-active-response-macos/configuration-active-response-macos>
-   Manipulating Wazuh JSON Decoders </knowledge-base/manipulation-json-decoders-wazuh/manipulation-json-decoders-wazuh>
+   Understanding & Manipulating Wazuh JSON Decoders </knowledge-base/understand-manipulate-json-decoders-wazuh/understand-manipulate-json-decoders-wazuh>
 
 .. Indices and tables
    ==================

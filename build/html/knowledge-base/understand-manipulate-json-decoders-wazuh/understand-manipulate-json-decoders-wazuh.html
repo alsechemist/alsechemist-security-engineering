@@ -73,7 +73,7 @@
 <p class="caption" role="heading"><span class="caption-text">Knowledge Base</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../configuration-active-response-macos/configuration-active-response-macos.html">Configuring Wazuh Active Response for macOS Agents</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Manipulating Wazuh JSON Decoders</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Understanding &amp; Manipulating Wazuh JSON Decoders</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#solution-decoder-name-override-problem">Solution - Decoder Name Override Problem</a></li>
 </ul>
 </li>
@@ -107,7 +107,7 @@
 <p>Before creating any custom decoder for JSON logs, it is crucial to understand how <code class="docutils literal notranslate"><span class="pre">JSON</span> <span class="pre">Decoders</span></code> actually work. We know that Wazuh already has its prebuilt JSON Decoder known as
 <code class="docutils literal notranslate"><span class="pre">0006-json_decoders.xml</span></code>. Inside, if you inspect the decoder, the built-in generic json decoder has this prematch:</p>
 <a class=""
-               data-lightbox="group-e0713810-f40a-4821-8103-42bb11d3e168"
+               data-lightbox="group-4435b9b1-abba-4a4c-9ff0-e09e4f9a391a"
                href="../../_images/decoder-manipulation-11.png"
                title=""
                data-title=""
@@ -121,7 +121,7 @@
 custom decoders in <code class="docutils literal notranslate"><span class="pre">/var/ossec/etc/decoders/</span></code>, the generic decoder always wins. So basically what this means, no matter what <code class="docutils literal notranslate"><span class="pre">decoder</span> <span class="pre">name</span></code> we give, the prebuilt
 JSON Decoder will override the custom JSON decoders’ name. For example, observe the image below:</p>
 <a class=""
-               data-lightbox="group-a5bb1a9b-7a48-4d8c-af6d-005585e7c916"
+               data-lightbox="group-a2d96c67-74d1-49d7-8bff-4318257a5fc3"
                href="../../_images/decoder-manipulation-21.png"
                title=""
                data-title=""
@@ -141,7 +141,7 @@ Obviously, we care about the thing that come with the defaults. We are basically
 <li><p><strong>Step - 2:</strong> Exclude <code class="docutils literal notranslate"><span class="pre">0006-json_decoders.xml</span></code> decoder from executing in the Wazuh Manager.</p>
 <blockquote>
 <div><a class=""
-               data-lightbox="group-96b9c2e6-e45b-4444-bcb3-a8545c483d9b"
+               data-lightbox="group-94c9ffcf-086d-4e28-815b-dc392e057673"
                href="../../_images/decoder-manipulation-31.png"
                title=""
                data-title=""

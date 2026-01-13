@@ -19,7 +19,7 @@ Prerequisite - Decoder creation
 -------------------------------
 
 Before going further it is required to understand how JSON decoders work. 
-Follow :doc:`Wazuh JSON Decoder Manipulation <../../knowledge-base/manipulation-json-decoders-wazuh/manipulation-json-decoders-wazuh>` to understand, how to
+Follow :doc:`Wazuh JSON Decoder Manipulation <../../knowledge-base/understand-manipulate-json-decoders-wazuh/understand-manipulate-json-decoders-wazuh>` to understand, how to
 handle custom JSON Decoder in Wazuh. 
 
 Decoder Definition
