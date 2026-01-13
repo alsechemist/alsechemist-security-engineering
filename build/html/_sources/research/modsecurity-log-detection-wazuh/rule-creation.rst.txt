@@ -105,7 +105,7 @@ Check the image below for reference,
 
        <div style="height:25px;"></div>
 
-In other word, it means that our custom created rules are working perfectly.
+In other words, it means that our custom created rules are working perfectly.
 
 .. note::
 

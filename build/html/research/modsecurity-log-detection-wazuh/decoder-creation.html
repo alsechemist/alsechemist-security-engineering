@@ -78,7 +78,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#decoder-definition">Decoder Definition</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#decoder-testing">Decoder Testing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#why-use-json-decoder">Why Use JSON_Decoder?</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#unexpected-rule-trigger-during-decoder-testing">Unexpected Rule Trigger During Decoder Testing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#unexpected-rule-trigger">Unexpected Rule Trigger</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#why-this-alert-occurred">Why This Alert Occurred?</a></li>
 </ul>
 </li>
@@ -152,7 +152,7 @@ handle custom JSON Decoder in Wazuh.</p>
 </div>
 <p>Add this block before the built-in/generic decoder. Check the image below for better understanding.</p>
 <a class=""
-               data-lightbox="group-816fa889-b52c-4a65-a3df-dce2f0069c0b"
+               data-lightbox="group-43b9bf6c-670b-4072-9fab-8b7229234b40"
                href="../../_images/decoder-creation-11.png"
                title=""
                data-title=""
@@ -174,7 +174,7 @@ for a comprehensive overview over decoder, how to make them and learn about synt
 In other words, <code class="docutils literal notranslate"><span class="pre">**Phase</span> <span class="pre">2:</span> <span class="pre">Completed</span> <span class="pre">decoding</span></code> should not show any signs of <code class="docutils literal notranslate"><span class="pre">No</span> <span class="pre">decoder</span> <span class="pre">matched</span></code>.</p>
 <p>Check the image below for reference,</p>
 <a class=""
-               data-lightbox="group-82b6386e-3b57-491b-a72a-165e6dde4a5a"
+               data-lightbox="group-f91e515b-54d0-4c2e-bdcc-47097f086338"
                href="../../_images/decoder-creation-21.png"
                title=""
                data-title=""
@@ -208,9 +208,9 @@ In other words, <code class="docutils literal notranslate"><span class="pre">**P
 </ul>
 <p>This design choice aligns with best practices for SIEM integrations involving structured logs.</p>
 </section>
-<section id="unexpected-rule-trigger-during-decoder-testing">
-<span id="unexpected-rule-trigger"></span><h2>Unexpected Rule Trigger During Decoder Testing<a class="headerlink" href="#unexpected-rule-trigger-during-decoder-testing" title="Link to this heading"></a></h2>
-<p>During decoder validation using the Wazuh log testing tool, you may encounter an automatic alert similar to the following:</p>
+<section id="unexpected-rule-trigger">
+<span id="id1"></span><h2>Unexpected Rule Trigger<a class="headerlink" href="#unexpected-rule-trigger" title="Link to this heading"></a></h2>
+<p>During decoder validation, using the Wazuh log testing tool, you may encounter an automatic alert similar to the following:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">**</span><span class="n">Phase</span> <span class="mi">3</span><span class="p">:</span> <span class="n">Completed</span> <span class="n">filtering</span> <span class="p">(</span><span class="n">rules</span><span class="p">)</span><span class="o">.</span>
   <span class="nb">id</span><span class="p">:</span> <span class="s1">&#39;1002&#39;</span>
   <span class="n">level</span><span class="p">:</span> <span class="s1">&#39;2&#39;</span>

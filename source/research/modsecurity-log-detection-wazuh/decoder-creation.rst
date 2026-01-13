@@ -94,10 +94,10 @@ This design choice aligns with best practices for SIEM integrations involving st
 
 .. _unexpected-rule-trigger:
 
-Unexpected Rule Trigger During Decoder Testing
-----------------------------------------------
+Unexpected Rule Trigger
+-----------------------
 
-During decoder validation using the Wazuh log testing tool, you may encounter an automatic alert similar to the following::
+During decoder validation, using the Wazuh log testing tool, you may encounter an automatic alert similar to the following::
 
     **Phase 3: Completed filtering (rules).
       id: '1002'

@@ -104,10 +104,10 @@
              
   <section id="manipulating-json-decoders-wazuh">
 <h1>Manipulating JSON Decoders - Wazuh<a class="headerlink" href="#manipulating-json-decoders-wazuh" title="Link to this heading"></a></h1>
-<p>Before creating any custom decoder, it is crucial to understand how <code class="docutils literal notranslate"><span class="pre">JSON</span> <span class="pre">Decoders</span></code> actually work. We know that Wazuh already has its prebuilt JSON Decoder known as
+<p>Before creating any custom decoder for JSON logs, it is crucial to understand how <code class="docutils literal notranslate"><span class="pre">JSON</span> <span class="pre">Decoders</span></code> actually work. We know that Wazuh already has its prebuilt JSON Decoder known as
 <code class="docutils literal notranslate"><span class="pre">0006-json_decoders.xml</span></code>. Inside, if you inspect the decoder, the built-in generic json decoder has this prematch:</p>
 <a class=""
-               data-lightbox="group-8167d606-a2dc-4b53-b78a-2aac6d6cd180"
+               data-lightbox="group-d337e5fd-b80d-4283-9f9a-99f478f4b0c4"
                href="../../_images/decoder-manipulation-11.png"
                title=""
                data-title=""
@@ -121,7 +121,7 @@
 custom decoders in <code class="docutils literal notranslate"><span class="pre">/var/ossec/etc/decoders/</span></code>, the generic decoder always wins. So basically what this means, no matter what <code class="docutils literal notranslate"><span class="pre">decoder</span> <span class="pre">name</span></code> we give, the prebuilt
 JSON Decoder will override the custom JSON decoders’ name. For example, observe the image below:</p>
 <a class=""
-               data-lightbox="group-36a22539-d3f3-4742-a52b-78784508b9cd"
+               data-lightbox="group-7b4f01dd-37ab-4fe0-a962-bfd409fec3eb"
                href="../../_images/decoder-manipulation-21.png"
                title=""
                data-title=""
@@ -131,7 +131,8 @@ JSON Decoder will override the custom JSON decoders’ name. For example, observ
                      width="100%"
                      height="auto"
                      alt="JSON Decoder Behavior"/>
-                </a><div style="height:25px;"></div><section id="solution-decoder-name-override-problem">
+                </a><div style="height:25px;"></div><p>To address this issue from the root cause, we are going to use the <code class="docutils literal notranslate"><span class="pre">&lt;decoder_exclude&gt;[decoder_name]&lt;/decoder_exclude&gt;</span></code> tag, to exclude the decoder that’s causing it.</p>
+<section id="solution-decoder-name-override-problem">
 <h2>Solution - Decoder Name Override Problem<a class="headerlink" href="#solution-decoder-name-override-problem" title="Link to this heading"></a></h2>
 <p>To solve this problem it is required to exclude the prebuilt <code class="docutils literal notranslate"><span class="pre">0006-json_decoders.xml</span></code> decoder. Dont’t worry we are not fully excluding it.
 Obviously, we care about the thing that come with the defaults. We are basically going to make it or represent it as <strong>not the inbuilt decoder itself</strong>.</p>
@@ -140,7 +141,7 @@ Obviously, we care about the thing that come with the defaults. We are basically
 <li><p><strong>Step - 2:</strong> Exclude <code class="docutils literal notranslate"><span class="pre">0006-json_decoders.xml</span></code> decoder from executing in the Wazuh Manager.</p>
 <blockquote>
 <div><a class=""
-               data-lightbox="group-b2c93dd5-b8f1-4154-9b4d-65ca4f4030ee"
+               data-lightbox="group-ea19cb3e-f7e0-459d-af59-857bd5234314"
                href="../../_images/decoder-manipulation-31.png"
                title=""
                data-title=""
@@ -155,6 +156,8 @@ Obviously, we care about the thing that come with the defaults. We are basically
 </li>
 </ul>
 <p>This method actually preserves the built-in features of <code class="docutils literal notranslate"><span class="pre">0006-json_decoders.xml</span></code> decoder while also making it usable for customization purposes.</p>
+<p>To further see it into action and how it works, checkout the <a class="reference internal" href="../../research/modsecurity-log-detection-wazuh/decoder-creation.html"><span class="doc">Decoder Creation of ModSecurity JSON Logs</span></a>,
+there the concept will be utilized for Detection Engineering.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
 <p>Order matters! Custom JSON Decoders must be defined <code class="docutils literal notranslate"><span class="pre">BEFORE</span></code> the generic json decoder. Other it won’t work as decoders are prioritized by order.</p>

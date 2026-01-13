@@ -1,7 +1,7 @@
 Manipulating JSON Decoders - Wazuh
 ==================================
 
-Before creating any custom decoder, it is crucial to understand how ``JSON Decoders`` actually work. We know that Wazuh already has its prebuilt JSON Decoder known as
+Before creating any custom decoder for JSON logs, it is crucial to understand how ``JSON Decoders`` actually work. We know that Wazuh already has its prebuilt JSON Decoder known as
 ``0006-json_decoders.xml``. Inside, if you inspect the decoder, the built-in generic json decoder has this prematch:
 
 .. image:: ../../assets/images/knowledge-base/manipulating-json-decoders-wazuh/decoder-manipulation-1.png
@@ -24,6 +24,8 @@ JSON Decoder will override the custom JSON decoders' name. For example, observe 
 
    <div style="height:25px;"></div>
 
+To address this issue from the root cause, we are going to use the ``<decoder_exclude>[decoder_name]</decoder_exclude>`` tag, to exclude the decoder that's causing it. 
+
 Solution - Decoder Name Override Problem
 ----------------------------------------
 
@@ -44,6 +46,9 @@ Obviously, we care about the thing that come with the defaults. We are basically
     Save it, then restart the manager.
 
 This method actually preserves the built-in features of ``0006-json_decoders.xml`` decoder while also making it usable for customization purposes. 
+
+To further see it into action and how it works, checkout the :doc:`Decoder Creation of ModSecurity JSON Logs <../../research/modsecurity-log-detection-wazuh/decoder-creation>`,
+there the concept will be utilized for Detection Engineering.
 
 .. important::
 
