@@ -11,12 +11,12 @@ Below is the **full ruleset** in a single code block:
 
     <group name="modsecurity,waf">
 
-        <!-- Exception Handling Rule -->
+        <!-- Exception Handling Rule & General Rule for Catching All Rules-->
 
-        <rule id="100000" level="0">
+        <rule id="100000" level="3">
             <decoded_as>modsecurity_decoder</decoded_as>
             <field name="transaction.producer.modsecurity">ModSecurity</field>
-            <description>ModSecurity: Event Exception Handler</description>
+            <description>ModSecurity Event: $(transaction.messages)</description>
         </rule>
 
         <!-- General Rule for all types of Triggered Logs -->
@@ -24,7 +24,7 @@ Below is the **full ruleset** in a single code block:
         <rule id="100001" level="10">
             <if_sid>100000</if_sid>
             <field name="transaction.response.http_code">403</field>
-            <description>ModSecurity: Blocked Request (Unidentified)| Inspection Required</description>
+            <description>ModSecurity: Blocked Request (Unidentified) | Inspection Required</description>
             <group>attack,pci_dss_6.5,</group>
         </rule>
 
