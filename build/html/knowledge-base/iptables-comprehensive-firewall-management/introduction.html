@@ -1,0 +1,377 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IPTABLES - A Comprehensive Firewall Management Guide &mdash; Security Engineering 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sphinxcontrib-images\LightBox2\lightbox2\dist\css\lightbox.min.css?v=6e7d0de0" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sphinxcontrib-images\LightBox2\lightbox2-customize\pointer.css?v=c97663ff" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom-styling/side-panel.css?v=1d19113b" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=7310f75f"></script>
+      <script src="../../_static/sphinxcontrib-images\LightBox2\lightbox2\dist\js\lightbox-plus-jquery.min.js?v=f0ca4bb6"></script>
+      <script src="../../_static/sphinxcontrib-images\LightBox2\lightbox2-customize\jquery-noconflict.js?v=12818e64"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="Understanding &amp; Manipulating JSON Decoders - Wazuh" href="../understand-manipulate-json-decoders-wazuh/understand-manipulate-json-decoders-wazuh.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Security Engineering
+              <img src="../../_static/alsechemist-logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../main/about-alsechemist.html">About Alsechemist</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../projects/projects.html">Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../research/research.html">Research</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../knowledge-base.html">Knowledge Base</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Projects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../projects/wazuh-tracecat-integration/introduction.html">Wazuh &amp; Tracecat Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../projects/apache2-server-hardening/introduction.html">Apache2 Server Hardening</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../projects/nginx-server-hardening/introduction.html">Nginx Server Hardening</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Research</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../research/modsecurity-log-detection-wazuh/introduction.html">Detecting ModSecurity Logs in Wazuh Using Custom Decoders and Rules</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Knowledge Base</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../configuration-active-response-macos/configuration-active-response-macos.html">Configuring Wazuh Active Response for macOS Agents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../understand-manipulate-json-decoders-wazuh/understand-manipulate-json-decoders-wazuh.html">Understanding &amp; Manipulating Wazuh JSON Decoders</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">IPTables - Comprehensive Firewall Management</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#allowing-loopback-traffic">Allowing Loopback Traffic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#allowing-established-and-related-incoming-connections">Allowing Established and Related Incoming Connections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#allowing-established-and-related-forwarding-traffic">Allowing Established and Related Forwarding Traffic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#allowing-incoming-ssh-traffic">Allowing Incoming SSH Traffic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#allowing-incoming-http-and-https-traffic">Allowing Incoming HTTP and HTTPS Traffic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dropping-invalid-packets">Dropping Invalid Packets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#logging-dropped-packets">Logging Dropped Packets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setting-default-policies-to-drop">Setting Default Policies to Drop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#saving-iptables-rules">Saving IPTables Rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#checking-iptables-rules-list">Checking IPTables Rules List</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#observing-iptables-logs">Observing IPTables Logs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#storing-the-iptables-locally">Storing the IPTables Locally</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#conclusion">Conclusion</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Security Engineering</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">IPTABLES - A Comprehensive Firewall Management Guide</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="iptables-a-comprehensive-firewall-management-guide">
+<h1>IPTABLES - A Comprehensive Firewall Management Guide<a class="headerlink" href="#iptables-a-comprehensive-firewall-management-guide" title="Link to this heading"></a></h1>
+<p>IPTables is a firewall utility that allows configuring Linux kernel firewall. It provides filtering, NAT, and packet mangling functions.
+IPTables rules can be created to filter traffic and secure cloud infrastructure components like virtual machines, containers, load balancers etc.</p>
+<p>Below we are going too see some essential IPTables rules to secure an environment step by step,</p>
+<ul class="simple">
+<li><p>Allow all loopback (lo0) traffic and drop all traffic to 127/8 that doesn’t use lo0</p></li>
+<li><p>Allow established and related incoming connections</p></li>
+<li><p>Allow incoming SSH</p></li>
+<li><p>Allow incoming HTTP and HTTPS</p></li>
+<li><p>Log dropped packets</p></li>
+<li><p>Drop all other incoming traffic</p></li>
+<li><p>Save IPTables rules</p></li>
+<li><p>Make IPTables rules persistent across reboots</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This guide assumes you have root or sudo access to the Linux system where you want to configure IPTables.
+Please ensure you understand the implications of modifying firewall rules, as incorrect configurations can lead to loss of connectivity.</p>
+</div>
+<section id="allowing-loopback-traffic">
+<h2>Allowing Loopback Traffic<a class="headerlink" href="#allowing-loopback-traffic" title="Link to this heading"></a></h2>
+<p>The loopback interface (lo0) is used for internal communication within the host. It’s essential to allow all traffic on this interface.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>iptables<span class="w"> </span>-A<span class="w"> </span>INPUT<span class="w"> </span>-i<span class="w"> </span>lo<span class="w"> </span>-j<span class="w"> </span>ACCEPT
+iptables<span class="w"> </span>-A<span class="w"> </span>OUTPUT<span class="w"> </span>-o<span class="w"> </span>lo<span class="w"> </span>-j<span class="w"> </span>ACCEPT
+</pre></div>
+</div>
+</section>
+<section id="allowing-established-and-related-incoming-connections">
+<h2>Allowing Established and Related Incoming Connections<a class="headerlink" href="#allowing-established-and-related-incoming-connections" title="Link to this heading"></a></h2>
+<p>To maintain existing connections and allow related traffic, we need to accept established and related incoming connections.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>iptables<span class="w"> </span>-A<span class="w"> </span>INPUT<span class="w"> </span>-m<span class="w"> </span>conntrack<span class="w"> </span>--ctstate<span class="w"> </span>ESTABLISHED,RELATED<span class="w"> </span>-j<span class="w"> </span>ACCEPT
+</pre></div>
+</div>
+<p>This rule ensures that any incoming traffic that is part of an established connection or related to it is accepted by the firewall.</p>
+</section>
+<section id="allowing-established-and-related-forwarding-traffic">
+<h2>Allowing Established and Related Forwarding Traffic<a class="headerlink" href="#allowing-established-and-related-forwarding-traffic" title="Link to this heading"></a></h2>
+<p>To allow established and related forwarding traffic, we can add the following rule:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>iptables<span class="w"> </span>-A<span class="w"> </span>FORWARD<span class="w"> </span>-m<span class="w"> </span>conntrack<span class="w"> </span>--ctstate<span class="w"> </span>ESTABLISHED,RELATED<span class="w"> </span>-j<span class="w"> </span>ACCEPT
+</pre></div>
+</div>
+<p>This rule ensures that any forwarding traffic that is part of an established connection or related to it is accepted by the firewall.</p>
+</section>
+<section id="allowing-incoming-ssh-traffic">
+<h2>Allowing Incoming SSH Traffic<a class="headerlink" href="#allowing-incoming-ssh-traffic" title="Link to this heading"></a></h2>
+<p>To allow incoming SSH connections, we need to accept traffic on port 22 (default SSH port).</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>iptables<span class="w"> </span>-A<span class="w"> </span>INPUT<span class="w"> </span>-p<span class="w"> </span>tcp<span class="w"> </span>--dport<span class="w"> </span><span class="m">22</span><span class="w"> </span>-m<span class="w"> </span>conntrack<span class="w"> </span>--ctstate<span class="w"> </span>NEW<span class="w"> </span>-j<span class="w"> </span>ACCEPT
+</pre></div>
+</div>
+<p>This rule allows new incoming TCP connections on port 22, enabling SSH access to the server.</p>
+</section>
+<section id="allowing-incoming-http-and-https-traffic">
+<h2>Allowing Incoming HTTP and HTTPS Traffic<a class="headerlink" href="#allowing-incoming-http-and-https-traffic" title="Link to this heading"></a></h2>
+<p>To allow incoming HTTP and HTTPS connections, we need to accept traffic on ports 80 and 443.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>iptables<span class="w"> </span>-A<span class="w"> </span>INPUT<span class="w"> </span>-p<span class="w"> </span>tcp<span class="w"> </span>--dport<span class="w"> </span><span class="m">80</span><span class="w"> </span>-m<span class="w"> </span>conntrack<span class="w"> </span>--ctstate<span class="w"> </span>NEW<span class="w"> </span>-j<span class="w"> </span>ACCEPT
+iptables<span class="w"> </span>-A<span class="w"> </span>INPUT<span class="w"> </span>-p<span class="w"> </span>tcp<span class="w"> </span>--dport<span class="w"> </span><span class="m">443</span><span class="w"> </span>-m<span class="w"> </span>conntrack<span class="w"> </span>--ctstate<span class="w"> </span>NEW<span class="w"> </span>-j<span class="w"> </span>ACCEPT
+</pre></div>
+</div>
+<p>These rules allow new incoming TCP traffic on ports 80 and 443, enabling web server access.</p>
+</section>
+<section id="dropping-invalid-packets">
+<h2>Dropping Invalid Packets<a class="headerlink" href="#dropping-invalid-packets" title="Link to this heading"></a></h2>
+<p>To enhance security, we can drop invalid packets that do not conform to expected states.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>iptables<span class="w"> </span>-I<span class="w"> </span>INPUT<span class="w"> </span>-m<span class="w"> </span>conntrack<span class="w"> </span>--ctstate<span class="w"> </span>INVALID<span class="w"> </span>-j<span class="w"> </span>DROP
+iptables<span class="w"> </span>-I<span class="w"> </span>FORWARD<span class="w"> </span>-m<span class="w"> </span>conntrack<span class="w"> </span>--ctstate<span class="w"> </span>INVALID<span class="w"> </span>-j<span class="w"> </span>DROP
+</pre></div>
+</div>
+<p>These rules drop any incoming or forwarding packets that are classified as INVALID by the connection tracking module.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The above rules should be placed at the top of the INPUT and FORWARD chains to ensure they are evaluated first.</p>
+</div>
+</section>
+<section id="logging-dropped-packets">
+<h2>Logging Dropped Packets<a class="headerlink" href="#logging-dropped-packets" title="Link to this heading"></a></h2>
+<p>To log dropped packets for monitoring and troubleshooting purposes, we can add the following rule:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>iptables<span class="w"> </span>-I<span class="w"> </span>INPUT<span class="w"> </span>-m<span class="w"> </span>conntrack<span class="w"> </span>--ctstate<span class="w"> </span>INVALID<span class="w"> </span>-j<span class="w"> </span>LOG<span class="w"> </span>--log-prefix<span class="w"> </span><span class="s2">&quot;IPTABLES INVALID INBOUND: &quot;</span><span class="w"> </span>--log-level<span class="w"> </span><span class="m">4</span>
+iptables<span class="w"> </span>-I<span class="w"> </span>FORWARD<span class="w"> </span>-m<span class="w"> </span>conntrack<span class="w"> </span>--ctstate<span class="w"> </span>INVALID<span class="w"> </span>-j<span class="w"> </span>LOG<span class="w"> </span>--log-prefix<span class="w"> </span><span class="s2">&quot;IPTABLES INVALID FORWARD: &quot;</span><span class="w"> </span>--log-level<span class="w"> </span><span class="m">4</span>
+iptables<span class="w"> </span>-A<span class="w"> </span>INPUT<span class="w"> </span>-m<span class="w"> </span>limit<span class="w"> </span>--limit<span class="w"> </span><span class="m">10</span>/min<span class="w"> </span>--limit-burst<span class="w"> </span><span class="m">20</span><span class="w"> </span>-j<span class="w"> </span>LOG<span class="w"> </span>--log-prefix<span class="w"> </span><span class="s2">&quot;IPTABLES INBOUND DROP: &quot;</span><span class="w"> </span>--log-level<span class="w"> </span><span class="m">4</span>
+iptables<span class="w"> </span>-A<span class="w"> </span>FORWARD<span class="w"> </span>-m<span class="w"> </span>limit<span class="w"> </span>--limit<span class="w"> </span><span class="m">10</span>/min<span class="w"> </span>--limit-burst<span class="w"> </span><span class="m">20</span><span class="w"> </span>-j<span class="w"> </span>LOG<span class="w"> </span>--log-prefix<span class="w"> </span><span class="s2">&quot;IPTABLES FORWARD DROP: &quot;</span><span class="w"> </span>--log-level<span class="w"> </span><span class="m">4</span>
+</pre></div>
+</div>
+<p>These rules log dropped packets with a limit to prevent log flooding.</p>
+</section>
+<section id="setting-default-policies-to-drop">
+<h2>Setting Default Policies to Drop<a class="headerlink" href="#setting-default-policies-to-drop" title="Link to this heading"></a></h2>
+<p>To enhance security, we set the default policies for INPUT and FORWARD chains to DROP. This means any traffic not explicitly allowed by previous rules will be dropped.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>iptables<span class="w"> </span>-P<span class="w"> </span>INPUT<span class="w"> </span>DROP
+iptables<span class="w"> </span>-P<span class="w"> </span>FORWARD<span class="w"> </span>DROP
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Be cautious when setting default policies to DROP, as it may lead to loss of connectivity if not configured properly.
+Ensure that all necessary rules are in place before applying this step.</p>
+<p>OUTPUT chain is typically set to ACCEPT to allow outgoing traffic from the server. It is optional to set it to DROP based on specific security requirements.</p>
+</div>
+</section>
+<section id="saving-iptables-rules">
+<h2>Saving IPTables Rules<a class="headerlink" href="#saving-iptables-rules" title="Link to this heading"></a></h2>
+<p>To ensure that the IPTables rules persist across system reboots, we need to save them. The method to save IPTables rules may vary based on the Linux distribution.</p>
+<p>For Debian/Ubuntu systems, at first we need to install the iptables-persistent package if it’s not already installed.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>apt<span class="w"> </span>install<span class="w"> </span>iptables-persistent
+</pre></div>
+</div>
+<p>Then, we can save the current IPTables rules using the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>iptables-save<span class="w"> </span>&gt;<span class="w"> </span>/etc/iptables/rules.v4
+</pre></div>
+</div>
+<p>This command saves the current IPv4 IPTables rules to the specified file and will auto-load them on system boot.</p>
+</section>
+<section id="checking-iptables-rules-list">
+<h2>Checking IPTables Rules List<a class="headerlink" href="#checking-iptables-rules-list" title="Link to this heading"></a></h2>
+<p>To verify the current IPTables rules, we can use the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>iptables<span class="w"> </span>-L
+</pre></div>
+</div>
+<p>This command lists all the current IPTables rules in a human-readable format, allowing us to confirm that our rules have been applied correctly.</p>
+<p>Refer to the image below for a high-level view,</p>
+<a class=""
+               data-lightbox="group-94491982-5d11-475c-9a3c-6f7b817bc524"
+               href="../../_images/iptables-firewall-management-11.png"
+               title=""
+               data-title=""
+               
+               ><img src="../../_images/iptables-firewall-management-11.png"
+                     class="align-center"
+                     width="100%"
+                     height="auto"
+                     alt="IPTables Rules List"/>
+                </a><div style="height:25px;"></div><div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Always log first, then drop. This way, you can monitor what is being dropped by the firewall.</p>
+</div>
+</section>
+<section id="observing-iptables-logs">
+<h2>Observing IPTables Logs<a class="headerlink" href="#observing-iptables-logs" title="Link to this heading"></a></h2>
+<p>By default, IPTables logs are sent to the kernel, where it can be viewed by excuting the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>journalctl<span class="w"> </span>-k<span class="w"> </span>-f<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>IPTABLES
+</pre></div>
+</div>
+<p>This command will display real-time logs related to IPTables, allowing you to monitor dropped packets and other firewall activities.</p>
+<p>Refer to the image below for a high-level view,</p>
+<a class=""
+               data-lightbox="group-2b4f1bad-0a64-471e-86f2-106639ed7e65"
+               href="../../_images/iptables-firewall-management-21.png"
+               title=""
+               data-title=""
+               
+               ><img src="../../_images/iptables-firewall-management-21.png"
+                     class="align-center"
+                     width="100%"
+                     height="auto"
+                     alt="IPTables Logs Observation"/>
+                </a><div style="height:25px;"></div><p>A ping test was conducted from an external source to the server, which is not allowed by the IPTables rules we have set up.
+The logs above confirm that the ping requests were successfully dropped by the firewall, as indicated by the “IPTABLES INBOUND DROP” log entries.</p>
+</section>
+<section id="storing-the-iptables-locally">
+<h2>Storing the IPTables Locally<a class="headerlink" href="#storing-the-iptables-locally" title="Link to this heading"></a></h2>
+<p>By default, iptables are not saved locally as logs only keep appearing in the runtime kernel. To save the IPTables logs for future reference and analysis,
+we can configure rsyslog to capture and store these logs in a dedicated file.</p>
+<p>Install rsyslog if it’s not already installed:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>apt<span class="w"> </span>install<span class="w"> </span>rsyslog
+</pre></div>
+</div>
+<p>Enable and start the rsyslog service:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>--now<span class="w"> </span>rsyslog
+</pre></div>
+</div>
+<p>Create a new configuration file for IPTables logging:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nano<span class="w"> </span>/etc/rsyslog.d/10-iptables.conf
+</pre></div>
+</div>
+<p>Add the following line to the configuration file to direct IPTables logs to a specific file:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">:msg, contains, &quot;IPTABLES INBOUND DROP</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;</span><span class="nv"> </span><span class="s">-/var/log/iptables/iptables-input.log</span>
+<span class="s">&amp;</span><span class="nv"> </span><span class="s">stop</span>
+
+<span class="s">:msg,</span><span class="nv"> </span><span class="s">contains,</span><span class="nv"> </span><span class="s">&quot;</span><span class="nt">IPTABLES FORWARD DROP</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="nv"> </span><span class="s">-/var/log/iptables/iptables-forward.log</span>
+<span class="s">&amp;</span><span class="nv"> </span><span class="s">stop</span>
+</pre></div>
+</div>
+<p>Save and close the file.</p>
+<p>Create the log directory and set appropriate permissions:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>-p<span class="w"> </span>/var/log/iptables
+chown<span class="w"> </span>syslog:adm<span class="w"> </span>/var/log/iptables
+chmod<span class="w"> </span><span class="m">750</span><span class="w"> </span>/var/log/iptables
+</pre></div>
+</div>
+<p>Create the log files and set appropriate permissions:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>touch<span class="w"> </span>/var/log/iptables/iptables-input.log
+touch<span class="w"> </span>/var/log/iptables/iptables-forward.log
+chown<span class="w"> </span>syslog:adm<span class="w"> </span>/var/log/iptables/iptables-input.log
+chown<span class="w"> </span>syslog:adm<span class="w"> </span>/var/log/iptables/iptables-forward.log
+chmod<span class="w"> </span><span class="m">640</span><span class="w"> </span>/var/log/iptables/iptables-input.log
+chmod<span class="w"> </span><span class="m">640</span><span class="w"> </span>/var/log/iptables/iptables-forward.log
+</pre></div>
+</div>
+<p>Restart the rsyslog service to apply the changes:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>systemctl<span class="w"> </span>restart<span class="w"> </span>rsyslog
+</pre></div>
+</div>
+<p>Now, IPTables logs will be stored in the specified log files for future reference and analysis.</p>
+<p>You can monitor the IPTables logs in real-time by using the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>tail<span class="w"> </span>-f<span class="w"> </span>/var/log/iptables/iptables-input.log
+tail<span class="w"> </span>-f<span class="w"> </span>/var/log/iptables/iptables-forward.log
+</pre></div>
+</div>
+<p>Refer to the image below for a high-level view,</p>
+<a class=""
+               data-lightbox="group-bac8941f-9d17-49b4-9536-45a3c0f740e7"
+               href="../../_images/iptables-firewall-management-31.png"
+               title=""
+               data-title=""
+               
+               ><img src="../../_images/iptables-firewall-management-31.png"
+                     class="align-center"
+                     width="100%"
+                     height="auto"
+                     alt="IPTables Logs Stored Locally"/>
+                </a><div style="height:25px;"></div></section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading"></a></h2>
+<p>In this guide, we have covered the essential IPTables rules to secure a Linux system effectively.
+By allowing necessary traffic, dropping unwanted packets, logging activities, and ensuring persistence across reboots,
+you can enhance the security of your server and protect it from potential threats by applying more iptables rules as per your requirements.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../understand-manipulate-json-decoders-wazuh/understand-manipulate-json-decoders-wazuh.html" class="btn btn-neutral float-left" title="Understanding &amp; Manipulating JSON Decoders - Wazuh" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Alsechemist.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

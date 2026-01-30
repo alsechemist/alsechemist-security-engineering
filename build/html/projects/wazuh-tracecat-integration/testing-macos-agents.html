@@ -92,6 +92,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../knowledge-base/configuration-active-response-macos/configuration-active-response-macos.html">Configuring Wazuh Active Response for macOS Agents</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../knowledge-base/understand-manipulate-json-decoders-wazuh/understand-manipulate-json-decoders-wazuh.html">Understanding &amp; Manipulating Wazuh JSON Decoders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../knowledge-base/iptables-comprehensive-firewall-management/introduction.html">IPTables - Comprehensive Firewall Management</a></li>
 </ul>
 
         </div>
@@ -132,7 +133,7 @@ You can skip the <code class="docutils literal notranslate"><span class="pre">-I
 </div>
 <p>An image has been attached below for demonstration.</p>
 <a class=""
-               data-lightbox="group-dd2f9b3e-d5c6-44ce-a152-a50041262843"
+               data-lightbox="group-3bea830f-14ab-4e3e-86db-d6d12ff7a93f"
                href="../../_images/tracecat-proof-of-concept-141.png"
                title=""
                data-title=""
@@ -144,7 +145,7 @@ You can skip the <code class="docutils literal notranslate"><span class="pre">-I
                      alt="Tracecat Workflow Run, Testing macOS Agents"/>
                 </a><div style="height:25px;"></div><p>Now back to our Wazuh Dashboard, we should be seeing the related logs are being generated.</p>
 <a class=""
-               data-lightbox="group-5b86f5fe-07bf-42fd-8e31-08cae4cd61d8"
+               data-lightbox="group-00b85689-0163-478d-9d7f-79d840d7059b"
                href="../../_images/tracecat-proof-of-concept-151.png"
                title=""
                data-title=""
@@ -156,7 +157,7 @@ You can skip the <code class="docutils literal notranslate"><span class="pre">-I
                      alt="Tracecat Workflow Run, Checking Wazuh Dashboard for macOS Agent Test Case"/>
                 </a><div style="height:25px;"></div><p>Now run the workflow that we have created on Tracecat</p>
 <a class=""
-               data-lightbox="group-835809eb-7f83-43f9-825b-e15d46638714"
+               data-lightbox="group-87974b7b-d496-4ecb-b538-5070b7412eb7"
                href="../../_images/tracecat-proof-of-concept-161.png"
                title=""
                data-title=""
@@ -168,7 +169,7 @@ You can skip the <code class="docutils literal notranslate"><span class="pre">-I
                      alt="Tracecat Workflow Run, macOS Agent Test Case Successfully Ran"/>
                 </a><div style="height:25px;"></div><p>You should notice that, the active response component executed. Checking the result section will show further details.</p>
 <a class=""
-               data-lightbox="group-998d186c-e69e-410a-aca9-0c9f4c2b509c"
+               data-lightbox="group-43f2573c-f195-4dbd-9bed-f5b944700afc"
                href="../../_images/tracecat-proof-of-concept-171.png"
                title=""
                data-title=""
@@ -181,7 +182,7 @@ You can skip the <code class="docutils literal notranslate"><span class="pre">-I
                 </a><div style="height:25px;"></div><p>Checking back on our Wazuh Dashboard, we should notice that an event appeared showing <code class="docutils literal notranslate"><span class="pre">AActive</span> <span class="pre">response:</span> <span class="pre">active-response/bin/pf</span> <span class="pre">-</span> <span class="pre">add</span></code> on that
 specific Agent,as shown in the below image.</p>
 <a class=""
-               data-lightbox="group-ea91da1a-e259-4e2f-abee-3c3616b20f9a"
+               data-lightbox="group-46767a29-1664-49e4-bcd6-63b0b2306402"
                href="../../_images/tracecat-proof-of-concept-181.png"
                title=""
                data-title=""
@@ -193,7 +194,7 @@ specific Agent,as shown in the below image.</p>
                      alt="Tracecat Workflow Run, Checking Wazuh Dashboard for Active Response Logs of netsh"/>
                 </a><div style="height:25px;"></div><p>Checking on the attacker side, after some time, we will see errors, as shown below.</p>
 <a class=""
-               data-lightbox="group-cbba5a27-5572-402f-adb1-809f85ed8408"
+               data-lightbox="group-0ab8e4d3-9702-4063-aaa5-d670bd1463f9"
                href="../../_images/tracecat-proof-of-concept-191.png"
                title=""
                data-title=""

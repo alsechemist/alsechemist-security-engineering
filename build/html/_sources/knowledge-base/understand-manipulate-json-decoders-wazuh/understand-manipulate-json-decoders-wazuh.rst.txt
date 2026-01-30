@@ -57,7 +57,7 @@ there the concept will be utilized for Detection Engineering.
 
 .. important::
 
-    Order matters! Custom JSON Decoders must be defined ``BEFORE`` the generic json decoder. Other it won't work as decoders are prioritized by order.
+   Order matters! Custom JSON Decoders must be defined ``BEFORE`` the generic json decoder. Other it won't work as decoders are prioritized by order.
 
 Solution - 2: The Naming Convention Approach
 --------------------------------------------
@@ -67,13 +67,13 @@ This is only applicable if case scenarios like our, where we have multiple colli
 
 First observe how Wazuh Decoders are actually named, 
 
-   .. image:: ../../assets/images/knowledge-base/understand-manipulate-json-decoders-wazuh/decoder-manipulation-4.png
-      :alt: Wazuh Decoder Naming Convention
-      :align: center
+.. image:: ../../assets/images/knowledge-base/understand-manipulate-json-decoders-wazuh/decoder-manipulation-4.png
+   :alt: Wazuh Decoder Naming Convention
+   :align: center
 
-   .. raw:: html
+.. raw:: html
 
-      <div style="height:25px;"></div>
+   <div style="height:25px;"></div>
 
 Note that the decoder are named like **000[*]-[decoder_name]**, an usual ascending order approach.
 
@@ -87,19 +87,19 @@ make the decoder there.
 
 Refer to the images in the slider to have a high level view,
 
-   .. image:: ../../assets/images/knowledge-base/understand-manipulate-json-decoders-wazuh/decoder-manipulation-5.png
-      :alt: Naming Custom Decoder
-      :align: center
-      :group: solution-2
+.. image:: ../../assets/images/knowledge-base/understand-manipulate-json-decoders-wazuh/decoder-manipulation-5.png
+   :alt: Naming Custom Decoder
+   :align: center
+   :group: solution-2
 
-   .. image:: ../../assets/images/knowledge-base/understand-manipulate-json-decoders-wazuh/decoder-manipulation-6.png
-      :alt: Observing Custom Decoder - Success
-      :align: center
-      :group: solution-2
+.. image:: ../../assets/images/knowledge-base/understand-manipulate-json-decoders-wazuh/decoder-manipulation-6.png
+   :alt: Observing Custom Decoder - Success
+   :align: center
+   :group: solution-2
 
-   .. raw:: html
+.. raw:: html
 
-      <div style="height:25px;"></div>
+   <div style="height:25px;"></div>
 
 Notice that the test actually caught our decoder name without even using the ``use_own_name`` tag. This approach is much safer than the previous one, as we didn't have to
 alter any default configurations already set by Wazuh. And, this is also a more convenient approach.
@@ -112,3 +112,16 @@ Suricata, Zeek and ModSecurity JSON logs, or any JSON logs coming from multiple 
 
 While the use cases are endless, the above 2 solutions, although serving the same cause, might come in handy across various scenarios. It is suggested to find out
 what suits your scenario the best.
+
+Credits
+-------
+
+The solutions provided here are based on extensive community support and contributions from the Wazuh Community and Wazuh Ambassadors. 
+These solutions have been developed through continuous technical discussions and convenient implementations provided by highly skilled individuals within the community.
+
+Special acknowledgment to the following Wazuh Ambassadors who have contributed significantly to these solutions:
+
+- `Jakub Pacowski <https://wazuh.com/ambassadors/jakub-pacowski/>`_
+- `Kevin Branch <https://wazuh.com/ambassadors/kevin-branch/>`_
+
+We deeply appreciate their dedication and expertise in helping develop and refine these JSON decoder manipulation techniques.

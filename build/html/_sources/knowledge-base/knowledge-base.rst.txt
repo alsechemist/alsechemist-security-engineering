@@ -9,6 +9,7 @@ Core Topics
 
 * :doc:`Configuring Active Response for macOS Devices at Wazuh Manager <configuration-active-response-macos/configuration-active-response-macos>` - Learn how to configure active response for macOS agents
 * :doc:`Manipulating JSON Decoders in Wazuh <understand-manipulate-json-decoders-wazuh/understand-manipulate-json-decoders-wazuh>` - Understanding how to handle and control JSON Decoders in Wazuh
+* :doc:`IPTables - Comprehensive Firewall Management <iptables-comprehensive-firewall-management/introduction>` - A detailed guide on managing IPTables for effective firewall configurations
 
 Learning Notes
 --------------

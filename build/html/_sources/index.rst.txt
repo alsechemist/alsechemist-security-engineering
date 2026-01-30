@@ -64,6 +64,7 @@ This documentation is continuously updated as I explore new areas in cybersecuri
 
    Configuring Wazuh Active Response for macOS Agents </knowledge-base/configuration-active-response-macos/configuration-active-response-macos>
    Understanding & Manipulating Wazuh JSON Decoders </knowledge-base/understand-manipulate-json-decoders-wazuh/understand-manipulate-json-decoders-wazuh>
+   IPTables - Comprehensive Firewall Management </knowledge-base/iptables-comprehensive-firewall-management/introduction>
 
 .. Indices and tables
    ==================

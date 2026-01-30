@@ -103,6 +103,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../knowledge-base/configuration-active-response-macos/configuration-active-response-macos.html">Configuring Wazuh Active Response for macOS Agents</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../knowledge-base/understand-manipulate-json-decoders-wazuh/understand-manipulate-json-decoders-wazuh.html">Understanding &amp; Manipulating Wazuh JSON Decoders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../knowledge-base/iptables-comprehensive-firewall-management/introduction.html">IPTables - Comprehensive Firewall Management</a></li>
 </ul>
 
         </div>
@@ -145,7 +146,7 @@ explain what we are trying to achieve by setting the parameters.</p>
 </div>
 <p>The below code just sends a https request to the Wazuh Server API. At backend, the component does its job to fetch the JWT Token.</p>
 <a class=""
-               data-lightbox="group-4d4f4710-bcca-44d4-afce-09fcdcf8eea4"
+               data-lightbox="group-d96e72e9-bcef-4f7d-aba3-35e109066b7b"
                href="../../_images/tracecat-server-workflow-contifiguration-11.png"
                title=""
                data-title=""
@@ -191,7 +192,7 @@ explain what we are trying to achieve by setting the parameters.</p>
 sends a search request to provide data or logs based on <code class="docutils literal notranslate"><span class="pre">rule.id</span> <span class="pre">5763,</span> <span class="pre">60204,</span> <span class="pre">5712</span></code> from the last 1 minute.
 And, It will so up to 10 unique sets of data if available. You can set the time, and size according to your convenience.</p>
 <a class=""
-               data-lightbox="group-46eca461-77f9-4d55-a5a2-f4b41e85f710"
+               data-lightbox="group-f8b1c5de-f89c-41f9-a9e3-6c61b6a60cf8"
                href="../../_images/tracecat-server-workflow-contifiguration-21.png"
                title=""
                data-title=""
@@ -220,7 +221,7 @@ to know how you can utilize it to the fullest. Go to the <code class="docutils l
 </div>
 <p>The above code contacts the <strong>Wazuh Server API</strong> with collected JWT Token for fetching the list of available agent data on your wazuh server.</p>
 <a class=""
-               data-lightbox="group-aebc4c6d-d622-4278-9e4d-ed1db40a6611"
+               data-lightbox="group-4022f881-79f4-4c50-bb95-b749eae3cab9"
                href="../../_images/tracecat-server-workflow-contifiguration-31.png"
                title=""
                data-title=""
@@ -261,7 +262,7 @@ linux agents. The script has additional arguments such as <code class="docutils 
 based on the <code class="docutils literal notranslate"><span class="pre">rule.id</span> <span class="pre">5763</span></code> and its level of severity. You can also set the list of Linux agents you want the script to run on dynamically or
 statically based on the <code class="docutils literal notranslate"><span class="pre">agent.id</span></code> found on your wazuh server.</p>
 <a class=""
-               data-lightbox="group-3a9fc10e-21be-4172-a9aa-82945426c7ac"
+               data-lightbox="group-1b4e89f9-aec9-42fb-9970-e54015bec13c"
                href="../../_images/tracecat-server-workflow-contifiguration-41.png"
                title=""
                data-title=""
@@ -301,7 +302,7 @@ the <code class="docutils literal notranslate"><span class="pre">netsh</span></c
 blocking the malicious IP for a specific time and more based on the <code class="docutils literal notranslate"><span class="pre">rule.id</span> <span class="pre">60204</span></code> and its level of severity.
 You can also set the list of windows agents you want the script to run on dynamically or statically based on the <code class="docutils literal notranslate"><span class="pre">agent.id</span></code> found on your wazuh server.</p>
 <a class=""
-               data-lightbox="group-d48c8f0f-7a21-4f20-8810-7c746c3d5bc7"
+               data-lightbox="group-312d92d9-006b-4b7b-b477-800021f15d5e"
                href="../../_images/tracecat-server-workflow-contifiguration-51.png"
                title=""
                data-title=""
@@ -342,7 +343,7 @@ blocking the malicious IP for a specific time and more based on the <code class=
 its level of severity. You can also set the list of macOS agents you want the script to
 run on dynamically or statically based on the <code class="docutils literal notranslate"><span class="pre">agent.id</span></code> found on your wazuh server.</p>
 <a class=""
-               data-lightbox="group-04f5528c-4fed-412f-9905-ffe40ca5a1d8"
+               data-lightbox="group-5e252cae-4dc5-45eb-bda5-baa3cb595884"
                href="../../_images/tracecat-server-workflow-contifiguration-61.png"
                title=""
                data-title=""
@@ -364,7 +365,7 @@ Just copy the data or parameter value you need and paste it user <code class="do
 This is helpful if you want the parameters of your <code class="docutils literal notranslate"><span class="pre">YAML</span></code> configuration to be defined dynamically.
 An image has been attached for your reference.</p>
 <a class=""
-               data-lightbox="group-1a7ce490-7059-4d06-ba43-fb4d9889c4f0"
+               data-lightbox="group-314865f4-198b-410e-b9e0-565e533e0e61"
                href="../../_images/tracecat-server-workflow-contifiguration-71.png"
                title=""
                data-title=""

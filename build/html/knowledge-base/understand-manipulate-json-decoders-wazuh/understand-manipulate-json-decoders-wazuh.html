@@ -27,6 +27,7 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="IPTABLES - A Comprehensive Firewall Management Guide" href="../iptables-comprehensive-firewall-management/introduction.html" />
     <link rel="prev" title="Configuring Active Response for macOS Devices at Wazuh Manager" href="../configuration-active-response-macos/configuration-active-response-macos.html" /> 
 </head>
 
@@ -77,8 +78,10 @@
 <li class="toctree-l2"><a class="reference internal" href="#solution-1-using-the-decoder-exclude-tag">Solution - 1: Using the <code class="docutils literal notranslate"><span class="pre">decoder_exclude</span></code> tag</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#solution-2-the-naming-convention-approach">Solution - 2: The Naming Convention Approach</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#disclaimer">Disclaimer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#credits">Credits</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../iptables-comprehensive-firewall-management/introduction.html">IPTables - Comprehensive Firewall Management</a></li>
 </ul>
 
         </div>
@@ -109,7 +112,7 @@
 <p>Before creating any custom decoder for JSON logs, it is crucial to understand how <code class="docutils literal notranslate"><span class="pre">JSON</span> <span class="pre">Decoders</span></code> actually work. We know that Wazuh already has its prebuilt JSON Decoder known as
 <code class="docutils literal notranslate"><span class="pre">0006-json_decoders.xml</span></code>. Inside, if you inspect the decoder, the built-in generic json decoder has this prematch:</p>
 <a class=""
-               data-lightbox="group-5ea15149-8e3b-4088-9edc-6cef4a0ddb26"
+               data-lightbox="group-5dd1742f-00f9-4d55-9543-97b6394eaa79"
                href="../../_images/decoder-manipulation-11.png"
                title=""
                data-title=""
@@ -123,7 +126,7 @@
 custom decoders in <code class="docutils literal notranslate"><span class="pre">/var/ossec/etc/decoders/</span></code>, the generic decoder always wins. So basically what this means, no matter what <code class="docutils literal notranslate"><span class="pre">decoder</span> <span class="pre">name</span></code> we give, the prebuilt
 JSON Decoder will override the custom JSON decoders’ name. For example, observe the image below:</p>
 <a class=""
-               data-lightbox="group-9d4e418f-e173-409d-9db9-09778c29f075"
+               data-lightbox="group-cacf1af6-4a37-4f57-b689-4adf3c9ef687"
                href="../../_images/decoder-manipulation-21.png"
                title=""
                data-title=""
@@ -147,7 +150,7 @@ Obviously, we care about the thing that come with the defaults. We are basically
 <li><p><strong>Step - 2:</strong> Exclude <code class="docutils literal notranslate"><span class="pre">0006-json_decoders.xml</span></code> decoder from executing in the Wazuh Manager.</p>
 <blockquote>
 <div><a class=""
-               data-lightbox="group-5a629bc3-87f9-456a-8faf-5bb5c9bcc61b"
+               data-lightbox="group-34485d73-94a7-42a9-a3af-2dcb41679de4"
                href="../../_images/decoder-manipulation-31.png"
                title=""
                data-title=""
@@ -174,9 +177,8 @@ there the concept will be utilized for Detection Engineering.</p>
 <p>In this approach, we are going to follow a simple naming convention that Wazuh uses to execute its decoders by ascending order.
 This is only applicable if case scenarios like our, where we have multiple colliding decoder names overwriting each other.</p>
 <p>First observe how Wazuh Decoders are actually named,</p>
-<blockquote>
-<div><a class=""
-               data-lightbox="group-4edb4abb-77ce-482c-a114-a5cd67e74ec9"
+<a class=""
+               data-lightbox="group-c3bebdf8-c11b-408b-b08f-2da44cc004e3"
                href="../../_images/decoder-manipulation-41.png"
                title=""
                data-title=""
@@ -186,8 +188,7 @@ This is only applicable if case scenarios like our, where we have multiple colli
                      width="100%"
                      height="auto"
                      alt="Wazuh Decoder Naming Convention"/>
-                </a><div style="height:25px;"></div></div></blockquote>
-<p>Note that the decoder are named like <strong>000[*]-[decoder_name]</strong>, an usual ascending order approach.</p>
+                </a><div style="height:25px;"></div><p>Note that the decoder are named like <strong>000[*]-[decoder_name]</strong>, an usual ascending order approach.</p>
 <p>If we name our decoders the same way, it will work just like the previous approach we have discussed earlier in <a class="reference internal" href="#solution-1"><span class="std std-ref">Solution - 1: Using the decoder_exclude tag</span></a>. The only difference is that,
 we don’t have the need to use the <code class="docutils literal notranslate"><span class="pre">decoder_exclude</span></code> tag, here. In other words, it’s pretty much doing the same thing,
 maintaining the name of the JSON Decoders in ascending order.</p>
@@ -195,8 +196,7 @@ maintaining the name of the JSON Decoders in ascending order.</p>
 instead of making the decoders in <code class="docutils literal notranslate"><span class="pre">local_decoder.xml</span></code> file, we would rather create a custom decoder file with the name <code class="docutils literal notranslate"><span class="pre">0000-modsecurity_decoder.xml</span></code> and
 make the decoder there.</p>
 <p>Refer to the images in the slider to have a high level view,</p>
-<blockquote>
-<div><a class=""
+<a class=""
                data-lightbox="group-solution-2"
                href="../../_images/decoder-manipulation-51.png"
                title=""
@@ -218,8 +218,7 @@ make the decoder there.</p>
                      width="100%"
                      height="auto"
                      alt="Observing Custom Decoder - Success"/>
-                </a><div style="height:25px;"></div></div></blockquote>
-<p>Notice that the test actually caught our decoder name without even using the <code class="docutils literal notranslate"><span class="pre">use_own_name</span></code> tag. This approach is much safer than the previous one, as we didn’t have to
+                </a><div style="height:25px;"></div><p>Notice that the test actually caught our decoder name without even using the <code class="docutils literal notranslate"><span class="pre">use_own_name</span></code> tag. This approach is much safer than the previous one, as we didn’t have to
 alter any default configurations already set by Wazuh. And, this is also a more convenient approach.</p>
 </section>
 <section id="disclaimer">
@@ -229,6 +228,17 @@ Suricata, Zeek and ModSecurity JSON logs, or any JSON logs coming from multiple 
 <p>While the use cases are endless, the above 2 solutions, although serving the same cause, might come in handy across various scenarios. It is suggested to find out
 what suits your scenario the best.</p>
 </section>
+<section id="credits">
+<h2>Credits<a class="headerlink" href="#credits" title="Link to this heading"></a></h2>
+<p>The solutions provided here are based on extensive community support and contributions from the Wazuh Community and Wazuh Ambassadors.
+These solutions have been developed through continuous technical discussions and convenient implementations provided by highly skilled individuals within the community.</p>
+<p>Special acknowledgment to the following Wazuh Ambassadors who have contributed significantly to these solutions:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://wazuh.com/ambassadors/jakub-pacowski/" rel="noreferrer" target="_blank">Jakub Pacowski <svg version="1.1" width="1.0em" height="1.0em" viewBox="0 0 16 16" aria-hidden="true" style="display: inline-block; vertical-align: middle; fill: currentColor;"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2Zm6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1Z"></path></svg></a></p></li>
+<li><p><a class="reference external" href="https://wazuh.com/ambassadors/kevin-branch/" rel="noreferrer" target="_blank">Kevin Branch <svg version="1.1" width="1.0em" height="1.0em" viewBox="0 0 16 16" aria-hidden="true" style="display: inline-block; vertical-align: middle; fill: currentColor;"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2Zm6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1Z"></path></svg></a></p></li>
+</ul>
+<p>We deeply appreciate their dedication and expertise in helping develop and refine these JSON decoder manipulation techniques.</p>
+</section>
 </section>
 
 
@@ -236,6 +246,7 @@ what suits your scenario the best.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="../configuration-active-response-macos/configuration-active-response-macos.html" class="btn btn-neutral float-left" title="Configuring Active Response for macOS Devices at Wazuh Manager" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../iptables-comprehensive-firewall-management/introduction.html" class="btn btn-neutral float-right" title="IPTABLES - A Comprehensive Firewall Management Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
