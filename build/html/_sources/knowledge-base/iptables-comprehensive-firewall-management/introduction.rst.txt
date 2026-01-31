@@ -12,7 +12,7 @@ Below we are going too see some essential IPTables rules to secure an environmen
 - Allow incoming SSH
 - Allow incoming HTTP and HTTPS
 - Drop invalid packets
-- Log dropped packets
+- Log every packets
 - Drop all other incoming traffic
 - Save IPTables rules
 - Make IPTables rules persistent across reboots
@@ -94,19 +94,19 @@ These rules drop any incoming or forwarding packets that are classified as INVAL
 
    The above rules should be placed at the top of the INPUT and FORWARD chains to ensure they are evaluated first.
 
-Logging Dropped Packets
------------------------
+Logging Every Packet
+--------------------
 
-To log dropped packets for monitoring and troubleshooting purposes, we can add the following rule:
+To log every packet for monitoring and troubleshooting purposes, we can add the following rule:
 
 .. code-block:: bash
 
-    iptables -I INPUT -m conntrack --ctstate INVALID -j LOG --log-prefix "IPTABLES INVALID INBOUND: " --log-level 4
-    iptables -I FORWARD -m conntrack --ctstate INVALID -j LOG --log-prefix "IPTABLES INVALID FORWARD: " --log-level 4
-    iptables -A INPUT -m limit --limit 10/min --limit-burst 20 -j LOG --log-prefix "IPTABLES INBOUND DROP: " --log-level 4
-    iptables -A FORWARD -m limit --limit 10/min --limit-burst 20 -j LOG --log-prefix "IPTABLES FORWARD DROP: " --log-level 4
+   iptables -I INPUT -m limit --limit 10/min --limit-burst 20 -j LOG --log-prefix "IPTABLES INBOUND EVENT: " --log-level 4
+   iptables -I FORWARD -m limit --limit 10/min --limit-burst 20 -j LOG --log-prefix "IPTABLES FORWARD EVENT: " --log-level 4
+   iptables -I INPUT -m conntrack --ctstate INVALID -j LOG --log-prefix "IPTABLES INVALID INBOUND EVENT: " --log-level 4
+   iptables -I FORWARD -m conntrack --ctstate INVALID -j LOG --log-prefix "IPTABLES INVALID FORWARD EVENT: " --log-level 4
 
-These rules log dropped packets with a limit to prevent log flooding.
+These rules log every packet with a limit to prevent log flooding.
 
 Setting Default Policies to Drop
 --------------------------------
@@ -167,18 +167,18 @@ Refer to the image below for a high-level view,
 
 .. tip::
 
-   Always log first, then drop. This way, you can monitor what is being dropped by the firewall.
+   Always log first, then set the rules. This way, you can monitor what is being logged by the firewall. If you set the rules first, you may miss important log entries.
 
 Observing IPTables Logs
 -----------------------
 
-By default, IPTables logs are sent to the kernel, where it can be viewed by excuting the following command:
+By default, IPTables logs are sent to the kernel, where it can be viewed by executing the following command:
 
 .. code-block:: bash
 
    sudo journalctl -k -f | grep IPTABLES
 
-This command will display real-time logs related to IPTables, allowing you to monitor dropped packets and other firewall activities.
+This command will display real-time logs related to IPTables, allowing you to monitor every packet and other firewall activities.
 
 Refer to the image below for a high-level view,
 
@@ -191,7 +191,7 @@ Refer to the image below for a high-level view,
    <div style="height:25px;"></div>
 
 A ping test was conducted from an external source to the server, which is not allowed by the IPTables rules we have set up. 
-The logs above confirm that the ping requests were successfully dropped by the firewall, as indicated by the "IPTABLES INBOUND DROP" log entries.
+The logs above confirm that the ping requests were successfully dropped by the firewall, as indicated by the "IPTABLES INBOUND EVENT" log entries.
 
 Storing the IPTables Logs Locally
 ---------------------------------
@@ -221,10 +221,16 @@ Add the following line to the configuration file to direct IPTables logs to a sp
 
 .. code-block:: yaml
 
-   :msg, contains, "IPTABLES INBOUND DROP: " -/var/log/iptables/iptables-input.log
+   :msg, contains, "IPTABLES INBOUND EVENT: " -/var/log/iptables/iptables-input.log
    & stop
 
-   :msg, contains, "IPTABLES FORWARD DROP: " -/var/log/iptables/iptables-forward.log
+   :msg, contains, "IPTABLES FORWARD EVENT: " -/var/log/iptables/iptables-forward.log
+   & stop
+
+   :msg, contains, "IPTABLES INVALID INBOUND EVENT: " -/var/log/iptables/iptables-invalid-input.log
+   & stop
+
+   :msg, contains, "IPTABLES INVALID FORWARD EVENT: " -/var/log/iptables/iptables-invalid-forward.log
    & stop
 
 Save and close the file.
@@ -243,10 +249,16 @@ Create the log files and set appropriate permissions:
 
    touch /var/log/iptables/iptables-input.log
    touch /var/log/iptables/iptables-forward.log
+   touch /var/log/iptables/iptables-invalid-input.log
+   touch /var/log/iptables/iptables-invalid-forward.log
    chown syslog:adm /var/log/iptables/iptables-input.log
    chown syslog:adm /var/log/iptables/iptables-forward.log
+   chown syslog:adm /var/log/iptables/iptables-invalid-input.log
+   chown syslog:adm /var/log/iptables/iptables-invalid-forward.log
    chmod 640 /var/log/iptables/iptables-input.log
    chmod 640 /var/log/iptables/iptables-forward.log
+   chmod 640 /var/log/iptables/iptables-invalid-input.log
+   chmod 640 /var/log/iptables/iptables-invalid-forward.log
 
 Restart the rsyslog service to apply the changes:
 
@@ -262,6 +274,8 @@ You can monitor the IPTables logs in real-time by using the following command:
 
    tail -f /var/log/iptables/iptables-input.log
    tail -f /var/log/iptables/iptables-forward.log
+   tail -f /var/log/iptables/iptables-invalid-input.log
+   tail -f /var/log/iptables/iptables-invalid-forward.log
 
 Refer to the image below for a high-level view,
 

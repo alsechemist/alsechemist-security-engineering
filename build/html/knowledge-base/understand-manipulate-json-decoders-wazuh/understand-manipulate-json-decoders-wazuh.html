@@ -112,7 +112,7 @@
 <p>Before creating any custom decoder for JSON logs, it is crucial to understand how <code class="docutils literal notranslate"><span class="pre">JSON</span> <span class="pre">Decoders</span></code> actually work. We know that Wazuh already has its prebuilt JSON Decoder known as
 <code class="docutils literal notranslate"><span class="pre">0006-json_decoders.xml</span></code>. Inside, if you inspect the decoder, the built-in generic json decoder has this prematch:</p>
 <a class=""
-               data-lightbox="group-1c3b8c5b-fa54-4a0e-bcd6-c1fa25c0f19f"
+               data-lightbox="group-61e8b18a-9806-445c-937c-08e0ebc757c7"
                href="../../_images/decoder-manipulation-11.png"
                title=""
                data-title=""
@@ -126,7 +126,7 @@
 custom decoders in <code class="docutils literal notranslate"><span class="pre">/var/ossec/etc/decoders/</span></code>, the generic decoder always wins. So basically what this means, no matter what <code class="docutils literal notranslate"><span class="pre">decoder</span> <span class="pre">name</span></code> we give, the prebuilt
 JSON Decoder will override the custom JSON decoders’ name. For example, observe the image below:</p>
 <a class=""
-               data-lightbox="group-27d2aba0-c323-4e51-af73-b426102ed1d4"
+               data-lightbox="group-1fdd06ff-a936-4371-b7be-3ca288c7afba"
                href="../../_images/decoder-manipulation-21.png"
                title=""
                data-title=""
@@ -150,7 +150,7 @@ Obviously, we care about the thing that come with the defaults. We are basically
 <li><p><strong>Step - 2:</strong> Exclude <code class="docutils literal notranslate"><span class="pre">0006-json_decoders.xml</span></code> decoder from executing in the Wazuh Manager.</p>
 <blockquote>
 <div><a class=""
-               data-lightbox="group-f8eb8a40-a834-40de-8ca0-5ddd6b0bbeaa"
+               data-lightbox="group-6fd4fd25-973e-4251-a697-51079e115b1f"
                href="../../_images/decoder-manipulation-31.png"
                title=""
                data-title=""
@@ -178,7 +178,7 @@ there the concept will be utilized for Detection Engineering.</p>
 This is only applicable if case scenarios like our, where we have multiple colliding decoder names overwriting each other.</p>
 <p>First observe how Wazuh Decoders are actually named,</p>
 <a class=""
-               data-lightbox="group-1066cf74-bf7a-48bb-9d67-5b231a5e2b03"
+               data-lightbox="group-836ff969-4d9e-4dcb-9223-2ddcddbab225"
                href="../../_images/decoder-manipulation-41.png"
                title=""
                data-title=""

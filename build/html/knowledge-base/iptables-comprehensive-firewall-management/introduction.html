@@ -81,7 +81,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#allowing-incoming-ssh-traffic">Allowing Incoming SSH Traffic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#allowing-incoming-http-and-https-traffic">Allowing Incoming HTTP and HTTPS Traffic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#dropping-invalid-packets">Dropping Invalid Packets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#logging-dropped-packets">Logging Dropped Packets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#logging-every-packet">Logging Every Packet</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#setting-default-policies-to-drop">Setting Default Policies to Drop</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#saving-iptables-rules">Saving IPTables Rules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#checking-iptables-rules-list">Checking IPTables Rules List</a></li>
@@ -131,7 +131,7 @@ IPTables rules can be created to filter traffic and secure cloud infrastructure 
 <li><p>Allow incoming SSH</p></li>
 <li><p>Allow incoming HTTP and HTTPS</p></li>
 <li><p>Drop invalid packets</p></li>
-<li><p>Log dropped packets</p></li>
+<li><p>Log every packets</p></li>
 <li><p>Drop all other incoming traffic</p></li>
 <li><p>Save IPTables rules</p></li>
 <li><p>Make IPTables rules persistent across reboots</p></li>
@@ -196,16 +196,16 @@ iptables<span class="w"> </span>-I<span class="w"> </span>FORWARD<span class="w"
 <p>The above rules should be placed at the top of the INPUT and FORWARD chains to ensure they are evaluated first.</p>
 </div>
 </section>
-<section id="logging-dropped-packets">
-<h2>Logging Dropped Packets<a class="headerlink" href="#logging-dropped-packets" title="Link to this heading"></a></h2>
-<p>To log dropped packets for monitoring and troubleshooting purposes, we can add the following rule:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>iptables<span class="w"> </span>-I<span class="w"> </span>INPUT<span class="w"> </span>-m<span class="w"> </span>conntrack<span class="w"> </span>--ctstate<span class="w"> </span>INVALID<span class="w"> </span>-j<span class="w"> </span>LOG<span class="w"> </span>--log-prefix<span class="w"> </span><span class="s2">&quot;IPTABLES INVALID INBOUND: &quot;</span><span class="w"> </span>--log-level<span class="w"> </span><span class="m">4</span>
-iptables<span class="w"> </span>-I<span class="w"> </span>FORWARD<span class="w"> </span>-m<span class="w"> </span>conntrack<span class="w"> </span>--ctstate<span class="w"> </span>INVALID<span class="w"> </span>-j<span class="w"> </span>LOG<span class="w"> </span>--log-prefix<span class="w"> </span><span class="s2">&quot;IPTABLES INVALID FORWARD: &quot;</span><span class="w"> </span>--log-level<span class="w"> </span><span class="m">4</span>
-iptables<span class="w"> </span>-A<span class="w"> </span>INPUT<span class="w"> </span>-m<span class="w"> </span>limit<span class="w"> </span>--limit<span class="w"> </span><span class="m">10</span>/min<span class="w"> </span>--limit-burst<span class="w"> </span><span class="m">20</span><span class="w"> </span>-j<span class="w"> </span>LOG<span class="w"> </span>--log-prefix<span class="w"> </span><span class="s2">&quot;IPTABLES INBOUND DROP: &quot;</span><span class="w"> </span>--log-level<span class="w"> </span><span class="m">4</span>
-iptables<span class="w"> </span>-A<span class="w"> </span>FORWARD<span class="w"> </span>-m<span class="w"> </span>limit<span class="w"> </span>--limit<span class="w"> </span><span class="m">10</span>/min<span class="w"> </span>--limit-burst<span class="w"> </span><span class="m">20</span><span class="w"> </span>-j<span class="w"> </span>LOG<span class="w"> </span>--log-prefix<span class="w"> </span><span class="s2">&quot;IPTABLES FORWARD DROP: &quot;</span><span class="w"> </span>--log-level<span class="w"> </span><span class="m">4</span>
+<section id="logging-every-packet">
+<h2>Logging Every Packet<a class="headerlink" href="#logging-every-packet" title="Link to this heading"></a></h2>
+<p>To log every packet for monitoring and troubleshooting purposes, we can add the following rule:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>iptables<span class="w"> </span>-I<span class="w"> </span>INPUT<span class="w"> </span>-m<span class="w"> </span>limit<span class="w"> </span>--limit<span class="w"> </span><span class="m">10</span>/min<span class="w"> </span>--limit-burst<span class="w"> </span><span class="m">20</span><span class="w"> </span>-j<span class="w"> </span>LOG<span class="w"> </span>--log-prefix<span class="w"> </span><span class="s2">&quot;IPTABLES INBOUND EVENT: &quot;</span><span class="w"> </span>--log-level<span class="w"> </span><span class="m">4</span>
+iptables<span class="w"> </span>-I<span class="w"> </span>FORWARD<span class="w"> </span>-m<span class="w"> </span>limit<span class="w"> </span>--limit<span class="w"> </span><span class="m">10</span>/min<span class="w"> </span>--limit-burst<span class="w"> </span><span class="m">20</span><span class="w"> </span>-j<span class="w"> </span>LOG<span class="w"> </span>--log-prefix<span class="w"> </span><span class="s2">&quot;IPTABLES FORWARD EVENT: &quot;</span><span class="w"> </span>--log-level<span class="w"> </span><span class="m">4</span>
+iptables<span class="w"> </span>-I<span class="w"> </span>INPUT<span class="w"> </span>-m<span class="w"> </span>conntrack<span class="w"> </span>--ctstate<span class="w"> </span>INVALID<span class="w"> </span>-j<span class="w"> </span>LOG<span class="w"> </span>--log-prefix<span class="w"> </span><span class="s2">&quot;IPTABLES INVALID INBOUND EVENT: &quot;</span><span class="w"> </span>--log-level<span class="w"> </span><span class="m">4</span>
+iptables<span class="w"> </span>-I<span class="w"> </span>FORWARD<span class="w"> </span>-m<span class="w"> </span>conntrack<span class="w"> </span>--ctstate<span class="w"> </span>INVALID<span class="w"> </span>-j<span class="w"> </span>LOG<span class="w"> </span>--log-prefix<span class="w"> </span><span class="s2">&quot;IPTABLES INVALID FORWARD EVENT: &quot;</span><span class="w"> </span>--log-level<span class="w"> </span><span class="m">4</span>
 </pre></div>
 </div>
-<p>These rules log dropped packets with a limit to prevent log flooding.</p>
+<p>These rules log every packet with a limit to prevent log flooding.</p>
 </section>
 <section id="setting-default-policies-to-drop">
 <h2>Setting Default Policies to Drop<a class="headerlink" href="#setting-default-policies-to-drop" title="Link to this heading"></a></h2>
@@ -243,7 +243,7 @@ Ensure that all necessary rules are in place before applying this step.</p>
 <p>This command lists all the current IPTables rules in a human-readable format, allowing us to confirm that our rules have been applied correctly.</p>
 <p>Refer to the image below for a high-level view,</p>
 <a class=""
-               data-lightbox="group-9ee885f1-6b10-40ae-9441-64ff22436efe"
+               data-lightbox="group-7d35bfab-3ec2-411c-8f7f-fe06609fb7dc"
                href="../../_images/iptables-firewall-management-11.png"
                title=""
                data-title=""
@@ -255,19 +255,19 @@ Ensure that all necessary rules are in place before applying this step.</p>
                      alt="IPTables Rules List"/>
                 </a><div style="height:25px;"></div><div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>Always log first, then drop. This way, you can monitor what is being dropped by the firewall.</p>
+<p>Always log first, then set the rules. This way, you can monitor what is being logged by the firewall. If you set the rules first, you may miss important log entries.</p>
 </div>
 </section>
 <section id="observing-iptables-logs">
 <h2>Observing IPTables Logs<a class="headerlink" href="#observing-iptables-logs" title="Link to this heading"></a></h2>
-<p>By default, IPTables logs are sent to the kernel, where it can be viewed by excuting the following command:</p>
+<p>By default, IPTables logs are sent to the kernel, where it can be viewed by executing the following command:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>journalctl<span class="w"> </span>-k<span class="w"> </span>-f<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>IPTABLES
 </pre></div>
 </div>
-<p>This command will display real-time logs related to IPTables, allowing you to monitor dropped packets and other firewall activities.</p>
+<p>This command will display real-time logs related to IPTables, allowing you to monitor every packet and other firewall activities.</p>
 <p>Refer to the image below for a high-level view,</p>
 <a class=""
-               data-lightbox="group-b8937c81-6029-482d-b447-d13723bf6801"
+               data-lightbox="group-b520bbbf-5b03-4dac-8aaf-ec4c24e63753"
                href="../../_images/iptables-firewall-management-21.png"
                title=""
                data-title=""
@@ -278,7 +278,7 @@ Ensure that all necessary rules are in place before applying this step.</p>
                      height="auto"
                      alt="IPTables Logs Observation"/>
                 </a><div style="height:25px;"></div><p>A ping test was conducted from an external source to the server, which is not allowed by the IPTables rules we have set up.
-The logs above confirm that the ping requests were successfully dropped by the firewall, as indicated by the “IPTABLES INBOUND DROP” log entries.</p>
+The logs above confirm that the ping requests were successfully dropped by the firewall, as indicated by the “IPTABLES INBOUND EVENT” log entries.</p>
 </section>
 <section id="storing-the-iptables-logs-locally">
 <h2>Storing the IPTables Logs Locally<a class="headerlink" href="#storing-the-iptables-logs-locally" title="Link to this heading"></a></h2>
@@ -297,10 +297,16 @@ we can configure rsyslog to capture and store these logs in a dedicated file.</p
 </pre></div>
 </div>
 <p>Add the following line to the configuration file to direct IPTables logs to a specific file:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">:msg, contains, &quot;IPTABLES INBOUND DROP</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;</span><span class="nv"> </span><span class="s">-/var/log/iptables/iptables-input.log</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">:msg, contains, &quot;IPTABLES INBOUND EVENT</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;</span><span class="nv"> </span><span class="s">-/var/log/iptables/iptables-input.log</span>
 <span class="s">&amp;</span><span class="nv"> </span><span class="s">stop</span>
 
-<span class="s">:msg,</span><span class="nv"> </span><span class="s">contains,</span><span class="nv"> </span><span class="s">&quot;</span><span class="nt">IPTABLES FORWARD DROP</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="nv"> </span><span class="s">-/var/log/iptables/iptables-forward.log</span>
+<span class="s">:msg,</span><span class="nv"> </span><span class="s">contains,</span><span class="nv"> </span><span class="s">&quot;</span><span class="nt">IPTABLES FORWARD EVENT</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="nv"> </span><span class="s">-/var/log/iptables/iptables-forward.log</span>
+<span class="s">&amp;</span><span class="nv"> </span><span class="s">stop</span>
+
+<span class="s">:msg,</span><span class="nv"> </span><span class="s">contains,</span><span class="nv"> </span><span class="s">&quot;</span><span class="nt">IPTABLES INVALID INBOUND EVENT</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="nv"> </span><span class="s">-/var/log/iptables/iptables-invalid-input.log</span>
+<span class="s">&amp;</span><span class="nv"> </span><span class="s">stop</span>
+
+<span class="s">:msg,</span><span class="nv"> </span><span class="s">contains,</span><span class="nv"> </span><span class="s">&quot;</span><span class="nt">IPTABLES INVALID FORWARD EVENT</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="nv"> </span><span class="s">-/var/log/iptables/iptables-invalid-forward.log</span>
 <span class="s">&amp;</span><span class="nv"> </span><span class="s">stop</span>
 </pre></div>
 </div>
@@ -314,10 +320,16 @@ chmod<span class="w"> </span><span class="m">750</span><span class="w"> </span>/
 <p>Create the log files and set appropriate permissions:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>touch<span class="w"> </span>/var/log/iptables/iptables-input.log
 touch<span class="w"> </span>/var/log/iptables/iptables-forward.log
+touch<span class="w"> </span>/var/log/iptables/iptables-invalid-input.log
+touch<span class="w"> </span>/var/log/iptables/iptables-invalid-forward.log
 chown<span class="w"> </span>syslog:adm<span class="w"> </span>/var/log/iptables/iptables-input.log
 chown<span class="w"> </span>syslog:adm<span class="w"> </span>/var/log/iptables/iptables-forward.log
+chown<span class="w"> </span>syslog:adm<span class="w"> </span>/var/log/iptables/iptables-invalid-input.log
+chown<span class="w"> </span>syslog:adm<span class="w"> </span>/var/log/iptables/iptables-invalid-forward.log
 chmod<span class="w"> </span><span class="m">640</span><span class="w"> </span>/var/log/iptables/iptables-input.log
 chmod<span class="w"> </span><span class="m">640</span><span class="w"> </span>/var/log/iptables/iptables-forward.log
+chmod<span class="w"> </span><span class="m">640</span><span class="w"> </span>/var/log/iptables/iptables-invalid-input.log
+chmod<span class="w"> </span><span class="m">640</span><span class="w"> </span>/var/log/iptables/iptables-invalid-forward.log
 </pre></div>
 </div>
 <p>Restart the rsyslog service to apply the changes:</p>
@@ -328,11 +340,13 @@ chmod<span class="w"> </span><span class="m">640</span><span class="w"> </span>/
 <p>You can monitor the IPTables logs in real-time by using the following command:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>tail<span class="w"> </span>-f<span class="w"> </span>/var/log/iptables/iptables-input.log
 tail<span class="w"> </span>-f<span class="w"> </span>/var/log/iptables/iptables-forward.log
+tail<span class="w"> </span>-f<span class="w"> </span>/var/log/iptables/iptables-invalid-input.log
+tail<span class="w"> </span>-f<span class="w"> </span>/var/log/iptables/iptables-invalid-forward.log
 </pre></div>
 </div>
 <p>Refer to the image below for a high-level view,</p>
 <a class=""
-               data-lightbox="group-73b0ceac-a1be-449f-a796-7f9e64daf22c"
+               data-lightbox="group-f86571c9-d6de-4a19-8c78-3f065ba62249"
                href="../../_images/iptables-firewall-management-31.png"
                title=""
                data-title=""
