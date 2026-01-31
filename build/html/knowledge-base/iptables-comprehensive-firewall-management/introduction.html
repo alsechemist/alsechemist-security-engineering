@@ -86,7 +86,11 @@
 <li class="toctree-l2"><a class="reference internal" href="#saving-iptables-rules">Saving IPTables Rules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#checking-iptables-rules-list">Checking IPTables Rules List</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#observing-iptables-logs">Observing IPTables Logs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#storing-the-iptables-locally">Storing the IPTables Locally</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#storing-the-iptables-logs-locally">Storing the IPTables Logs Locally</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setting-up-log-rotation-for-iptables-logs">Setting Up Log Rotation for IPTables Logs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#testing-the-log-rotation-configuration">Testing the log rotation configuration</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#conclusion">Conclusion</a></li>
 </ul>
 </li>
@@ -121,14 +125,17 @@
 IPTables rules can be created to filter traffic and secure cloud infrastructure components like virtual machines, containers, load balancers etc.</p>
 <p>Below we are going too see some essential IPTables rules to secure an environment step by step,</p>
 <ul class="simple">
-<li><p>Allow all loopback (lo0) traffic and drop all traffic to 127/8 that doesn’t use lo0</p></li>
+<li><p>Allow all loopback (lo0) traffic</p></li>
 <li><p>Allow established and related incoming connections</p></li>
+<li><p>Allow established and related forwarding traffic</p></li>
 <li><p>Allow incoming SSH</p></li>
 <li><p>Allow incoming HTTP and HTTPS</p></li>
+<li><p>Drop invalid packets</p></li>
 <li><p>Log dropped packets</p></li>
 <li><p>Drop all other incoming traffic</p></li>
 <li><p>Save IPTables rules</p></li>
 <li><p>Make IPTables rules persistent across reboots</p></li>
+<li><p>Setup log rotation for IPTables logs</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -236,7 +243,7 @@ Ensure that all necessary rules are in place before applying this step.</p>
 <p>This command lists all the current IPTables rules in a human-readable format, allowing us to confirm that our rules have been applied correctly.</p>
 <p>Refer to the image below for a high-level view,</p>
 <a class=""
-               data-lightbox="group-94491982-5d11-475c-9a3c-6f7b817bc524"
+               data-lightbox="group-9ee885f1-6b10-40ae-9441-64ff22436efe"
                href="../../_images/iptables-firewall-management-11.png"
                title=""
                data-title=""
@@ -260,7 +267,7 @@ Ensure that all necessary rules are in place before applying this step.</p>
 <p>This command will display real-time logs related to IPTables, allowing you to monitor dropped packets and other firewall activities.</p>
 <p>Refer to the image below for a high-level view,</p>
 <a class=""
-               data-lightbox="group-2b4f1bad-0a64-471e-86f2-106639ed7e65"
+               data-lightbox="group-b8937c81-6029-482d-b447-d13723bf6801"
                href="../../_images/iptables-firewall-management-21.png"
                title=""
                data-title=""
@@ -273,8 +280,8 @@ Ensure that all necessary rules are in place before applying this step.</p>
                 </a><div style="height:25px;"></div><p>A ping test was conducted from an external source to the server, which is not allowed by the IPTables rules we have set up.
 The logs above confirm that the ping requests were successfully dropped by the firewall, as indicated by the “IPTABLES INBOUND DROP” log entries.</p>
 </section>
-<section id="storing-the-iptables-locally">
-<h2>Storing the IPTables Locally<a class="headerlink" href="#storing-the-iptables-locally" title="Link to this heading"></a></h2>
+<section id="storing-the-iptables-logs-locally">
+<h2>Storing the IPTables Logs Locally<a class="headerlink" href="#storing-the-iptables-logs-locally" title="Link to this heading"></a></h2>
 <p>By default, iptables are not saved locally as logs only keep appearing in the runtime kernel. To save the IPTables logs for future reference and analysis,
 we can configure rsyslog to capture and store these logs in a dedicated file.</p>
 <p>Install rsyslog if it’s not already installed:</p>
@@ -325,7 +332,7 @@ tail<span class="w"> </span>-f<span class="w"> </span>/var/log/iptables/iptables
 </div>
 <p>Refer to the image below for a high-level view,</p>
 <a class=""
-               data-lightbox="group-bac8941f-9d17-49b4-9536-45a3c0f740e7"
+               data-lightbox="group-73b0ceac-a1be-449f-a796-7f9e64daf22c"
                href="../../_images/iptables-firewall-management-31.png"
                title=""
                data-title=""
@@ -336,6 +343,47 @@ tail<span class="w"> </span>-f<span class="w"> </span>/var/log/iptables/iptables
                      height="auto"
                      alt="IPTables Logs Stored Locally"/>
                 </a><div style="height:25px;"></div></section>
+<section id="setting-up-log-rotation-for-iptables-logs">
+<h2>Setting Up Log Rotation for IPTables Logs<a class="headerlink" href="#setting-up-log-rotation-for-iptables-logs" title="Link to this heading"></a></h2>
+<p>To prevent IPTables log files from growing indefinitely and consuming excessive disk space, we can set up log rotation using logrotate.</p>
+<p>Create a new logrotate configuration file for IPTables logs:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nano<span class="w"> </span>/etc/logrotate.d/iptables
+</pre></div>
+</div>
+<p>Add the following configuration to the file:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">/var/log/iptables/*.log {</span>
+<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">daily</span>
+<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">rotate 180</span>
+<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">missingok</span>
+<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">notifempty</span>
+<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">compress</span>
+<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">delaycompress</span>
+<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">dateext</span>
+<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">dateformat -%Y-%m-%d</span>
+<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">create 0640 syslog adm</span>
+<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">sharedscripts</span>
+<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">postrotate</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">systemctl restart rsyslog &gt;/dev/null 2&gt;&amp;1 || true</span>
+<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">endscript</span>
+<span class="l l-Scalar l-Scalar-Plain">}</span>
+</pre></div>
+</div>
+<p>This configuration will rotate the IPTables logs daily, keep 180 days of logs, compress old logs, and restart the rsyslog service after rotation.</p>
+<p>Save and close the file.</p>
+<p>Now, logrotate will manage the IPTables log files, ensuring they do not consume excessive disk space over time.</p>
+<section id="testing-the-log-rotation-configuration">
+<h3>Testing the log rotation configuration<a class="headerlink" href="#testing-the-log-rotation-configuration" title="Link to this heading"></a></h3>
+<p>Check by dry running it:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>logrotate<span class="w"> </span>-d<span class="w"> </span>/etc/logrotate.d/iptables
+</pre></div>
+</div>
+<p>Force log rotation:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>logrotate<span class="w"> </span>-vf<span class="w"> </span>/etc/logrotate.d/iptables
+</pre></div>
+</div>
+<p>You should see output indicating that the log files have been rotated successfully.</p>
+</section>
+</section>
 <section id="conclusion">
 <h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading"></a></h2>
 <p>In this guide, we have covered the essential IPTables rules to secure a Linux system effectively.

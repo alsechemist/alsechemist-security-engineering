@@ -6,14 +6,17 @@ IPTables rules can be created to filter traffic and secure cloud infrastructure 
 
 Below we are going too see some essential IPTables rules to secure an environment step by step,
 
-- Allow all loopback (lo0) traffic and drop all traffic to 127/8 that doesn't use lo0
+- Allow all loopback (lo0) traffic
 - Allow established and related incoming connections
+- Allow established and related forwarding traffic
 - Allow incoming SSH
 - Allow incoming HTTP and HTTPS
+- Drop invalid packets
 - Log dropped packets
 - Drop all other incoming traffic
 - Save IPTables rules
 - Make IPTables rules persistent across reboots
+- Setup log rotation for IPTables logs
 
 .. note::
 
@@ -190,8 +193,8 @@ Refer to the image below for a high-level view,
 A ping test was conducted from an external source to the server, which is not allowed by the IPTables rules we have set up. 
 The logs above confirm that the ping requests were successfully dropped by the firewall, as indicated by the "IPTABLES INBOUND DROP" log entries.
 
-Storing the IPTables Locally
-----------------------------
+Storing the IPTables Logs Locally
+---------------------------------
 
 By default, iptables are not saved locally as logs only keep appearing in the runtime kernel. To save the IPTables logs for future reference and analysis, 
 we can configure rsyslog to capture and store these logs in a dedicated file.
@@ -269,6 +272,60 @@ Refer to the image below for a high-level view,
 .. raw:: html
 
    <div style="height:25px;"></div>
+
+Setting Up Log Rotation for IPTables Logs
+-----------------------------------------
+
+To prevent IPTables log files from growing indefinitely and consuming excessive disk space, we can set up log rotation using logrotate.
+
+Create a new logrotate configuration file for IPTables logs:
+
+.. code-block:: bash
+
+   nano /etc/logrotate.d/iptables
+
+Add the following configuration to the file:
+
+.. code-block:: yaml
+
+   /var/log/iptables/*.log {
+      daily
+      rotate 180
+      missingok
+      notifempty
+      compress
+      delaycompress
+      dateext
+      dateformat -%Y-%m-%d
+      create 0640 syslog adm
+      sharedscripts
+      postrotate
+         systemctl restart rsyslog >/dev/null 2>&1 || true
+      endscript
+   }
+
+This configuration will rotate the IPTables logs daily, keep 180 days of logs, compress old logs, and restart the rsyslog service after rotation.
+
+Save and close the file.
+
+Now, logrotate will manage the IPTables log files, ensuring they do not consume excessive disk space over time.
+
+Testing the log rotation configuration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Check by dry running it:
+
+.. code-block:: bash
+
+   logrotate -d /etc/logrotate.d/iptables
+
+Force log rotation:
+
+.. code-block:: bash
+
+   logrotate -vf /etc/logrotate.d/iptables
+
+You should see output indicating that the log files have been rotated successfully.
 
 Conclusion
 ----------
