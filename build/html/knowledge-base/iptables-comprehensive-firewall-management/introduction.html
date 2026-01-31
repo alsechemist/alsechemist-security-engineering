@@ -76,8 +76,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../understand-manipulate-json-decoders-wazuh/understand-manipulate-json-decoders-wazuh.html">Understanding &amp; Manipulating Wazuh JSON Decoders</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">IPTables - Comprehensive Firewall Management</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#allowing-loopback-traffic">Allowing Loopback Traffic</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#allowing-established-and-related-incoming-connections">Allowing Established and Related Incoming Connections</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#allowing-established-and-related-forwarding-traffic">Allowing Established and Related Forwarding Traffic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#allowing-established-and-related-connections">Allowing Established and Related Connections</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#allowing-incoming-ssh-traffic">Allowing Incoming SSH Traffic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#allowing-incoming-http-and-https-traffic">Allowing Incoming HTTP and HTTPS Traffic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#dropping-invalid-packets">Dropping Invalid Packets</a></li>
@@ -91,6 +90,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#testing-the-log-rotation-configuration">Testing the log rotation configuration</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#essentials">Essentials</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#conclusion">Conclusion</a></li>
 </ul>
 </li>
@@ -150,21 +150,14 @@ iptables<span class="w"> </span>-A<span class="w"> </span>OUTPUT<span class="w">
 </pre></div>
 </div>
 </section>
-<section id="allowing-established-and-related-incoming-connections">
-<h2>Allowing Established and Related Incoming Connections<a class="headerlink" href="#allowing-established-and-related-incoming-connections" title="Link to this heading"></a></h2>
-<p>To maintain existing connections and allow related traffic, we need to accept established and related incoming connections.</p>
+<section id="allowing-established-and-related-connections">
+<h2>Allowing Established and Related Connections<a class="headerlink" href="#allowing-established-and-related-connections" title="Link to this heading"></a></h2>
+<p>To maintain existing connections and allow related traffic, we need to accept established and related incoming and forwarding connections.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>iptables<span class="w"> </span>-A<span class="w"> </span>INPUT<span class="w"> </span>-m<span class="w"> </span>conntrack<span class="w"> </span>--ctstate<span class="w"> </span>ESTABLISHED,RELATED<span class="w"> </span>-j<span class="w"> </span>ACCEPT
+iptables<span class="w"> </span>-A<span class="w"> </span>FORWARD<span class="w"> </span>-m<span class="w"> </span>conntrack<span class="w"> </span>--ctstate<span class="w"> </span>ESTABLISHED,RELATED<span class="w"> </span>-j<span class="w"> </span>ACCEPT
 </pre></div>
 </div>
-<p>This rule ensures that any incoming traffic that is part of an established connection or related to it is accepted by the firewall.</p>
-</section>
-<section id="allowing-established-and-related-forwarding-traffic">
-<h2>Allowing Established and Related Forwarding Traffic<a class="headerlink" href="#allowing-established-and-related-forwarding-traffic" title="Link to this heading"></a></h2>
-<p>To allow established and related forwarding traffic, we can add the following rule:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>iptables<span class="w"> </span>-A<span class="w"> </span>FORWARD<span class="w"> </span>-m<span class="w"> </span>conntrack<span class="w"> </span>--ctstate<span class="w"> </span>ESTABLISHED,RELATED<span class="w"> </span>-j<span class="w"> </span>ACCEPT
-</pre></div>
-</div>
-<p>This rule ensures that any forwarding traffic that is part of an established connection or related to it is accepted by the firewall.</p>
+<p>This rule ensures that any incoming and forwarding traffic that is part of an established connection or related to it is accepted by the firewall.</p>
 </section>
 <section id="allowing-incoming-ssh-traffic">
 <h2>Allowing Incoming SSH Traffic<a class="headerlink" href="#allowing-incoming-ssh-traffic" title="Link to this heading"></a></h2>
@@ -243,7 +236,7 @@ Ensure that all necessary rules are in place before applying this step.</p>
 <p>This command lists all the current IPTables rules in a human-readable format, allowing us to confirm that our rules have been applied correctly.</p>
 <p>Refer to the image below for a high-level view,</p>
 <a class=""
-               data-lightbox="group-7d35bfab-3ec2-411c-8f7f-fe06609fb7dc"
+               data-lightbox="group-0166a2e0-06c9-4bff-93ce-7a5fea92f8b8"
                href="../../_images/iptables-firewall-management-11.png"
                title=""
                data-title=""
@@ -267,7 +260,7 @@ Ensure that all necessary rules are in place before applying this step.</p>
 <p>This command will display real-time logs related to IPTables, allowing you to monitor every packet and other firewall activities.</p>
 <p>Refer to the image below for a high-level view,</p>
 <a class=""
-               data-lightbox="group-b520bbbf-5b03-4dac-8aaf-ec4c24e63753"
+               data-lightbox="group-cd300b27-1449-4c59-8cd4-f61c40515c31"
                href="../../_images/iptables-firewall-management-21.png"
                title=""
                data-title=""
@@ -297,17 +290,17 @@ we can configure rsyslog to capture and store these logs in a dedicated file.</p
 </pre></div>
 </div>
 <p>Add the following line to the configuration file to direct IPTables logs to a specific file:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">:msg, contains, &quot;IPTABLES INBOUND EVENT</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;</span><span class="nv"> </span><span class="s">-/var/log/iptables/iptables-input.log</span>
-<span class="s">&amp;</span><span class="nv"> </span><span class="s">stop</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>:msg,<span class="w"> </span>contains,<span class="w"> </span><span class="s2">&quot;IPTABLES INBOUND EVENT: &quot;</span><span class="w"> </span>-/var/log/iptables/iptables-input.log
+<span class="p">&amp;</span><span class="w"> </span>stop
 
-<span class="s">:msg,</span><span class="nv"> </span><span class="s">contains,</span><span class="nv"> </span><span class="s">&quot;</span><span class="nt">IPTABLES FORWARD EVENT</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="nv"> </span><span class="s">-/var/log/iptables/iptables-forward.log</span>
-<span class="s">&amp;</span><span class="nv"> </span><span class="s">stop</span>
+:msg,<span class="w"> </span>contains,<span class="w"> </span><span class="s2">&quot;IPTABLES FORWARD EVENT: &quot;</span><span class="w"> </span>-/var/log/iptables/iptables-forward.log
+<span class="p">&amp;</span><span class="w"> </span>stop
 
-<span class="s">:msg,</span><span class="nv"> </span><span class="s">contains,</span><span class="nv"> </span><span class="s">&quot;</span><span class="nt">IPTABLES INVALID INBOUND EVENT</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="nv"> </span><span class="s">-/var/log/iptables/iptables-invalid-input.log</span>
-<span class="s">&amp;</span><span class="nv"> </span><span class="s">stop</span>
+:msg,<span class="w"> </span>contains,<span class="w"> </span><span class="s2">&quot;IPTABLES INVALID INBOUND EVENT: &quot;</span><span class="w"> </span>-/var/log/iptables/iptables-invalid-input.log
+<span class="p">&amp;</span><span class="w"> </span>stop
 
-<span class="s">:msg,</span><span class="nv"> </span><span class="s">contains,</span><span class="nv"> </span><span class="s">&quot;</span><span class="nt">IPTABLES INVALID FORWARD EVENT</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="nv"> </span><span class="s">-/var/log/iptables/iptables-invalid-forward.log</span>
-<span class="s">&amp;</span><span class="nv"> </span><span class="s">stop</span>
+:msg,<span class="w"> </span>contains,<span class="w"> </span><span class="s2">&quot;IPTABLES INVALID FORWARD EVENT: &quot;</span><span class="w"> </span>-/var/log/iptables/iptables-invalid-forward.log
+<span class="p">&amp;</span><span class="w"> </span>stop
 </pre></div>
 </div>
 <p>Save and close the file.</p>
@@ -346,7 +339,7 @@ tail<span class="w"> </span>-f<span class="w"> </span>/var/log/iptables/iptables
 </div>
 <p>Refer to the image below for a high-level view,</p>
 <a class=""
-               data-lightbox="group-f86571c9-d6de-4a19-8c78-3f065ba62249"
+               data-lightbox="group-9dbcfc82-d78a-435f-8c7b-da107f560791"
                href="../../_images/iptables-firewall-management-31.png"
                title=""
                data-title=""
@@ -365,21 +358,21 @@ tail<span class="w"> </span>-f<span class="w"> </span>/var/log/iptables/iptables
 </pre></div>
 </div>
 <p>Add the following configuration to the file:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">/var/log/iptables/*.log {</span>
-<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">daily</span>
-<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">rotate 180</span>
-<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">missingok</span>
-<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">notifempty</span>
-<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">compress</span>
-<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">delaycompress</span>
-<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">dateext</span>
-<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">dateformat -%Y-%m-%d</span>
-<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">create 0640 syslog adm</span>
-<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">sharedscripts</span>
-<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">postrotate</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">systemctl restart rsyslog &gt;/dev/null 2&gt;&amp;1 || true</span>
-<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">endscript</span>
-<span class="l l-Scalar l-Scalar-Plain">}</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>/var/log/iptables/*.log<span class="w"> </span><span class="o">{</span>
+<span class="w">   </span>daily
+<span class="w">   </span>rotate<span class="w"> </span><span class="m">180</span>
+<span class="w">   </span>missingok
+<span class="w">   </span>notifempty
+<span class="w">   </span>compress
+<span class="w">   </span>delaycompress
+<span class="w">   </span>dateext
+<span class="w">   </span>dateformat<span class="w"> </span>-%Y-%m-%d
+<span class="w">   </span>create<span class="w"> </span><span class="m">0640</span><span class="w"> </span>syslog<span class="w"> </span>adm
+<span class="w">   </span>sharedscripts
+<span class="w">   </span>postrotate
+<span class="w">      </span>systemctl<span class="w"> </span>restart<span class="w"> </span>rsyslog<span class="w"> </span>&gt;/dev/null<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">true</span>
+<span class="w">   </span>endscript
+<span class="o">}</span>
 </pre></div>
 </div>
 <p>This configuration will rotate the IPTables logs daily, keep 180 days of logs, compress old logs, and restart the rsyslog service after rotation.</p>
@@ -398,11 +391,29 @@ tail<span class="w"> </span>-f<span class="w"> </span>/var/log/iptables/iptables
 <p>You should see output indicating that the log files have been rotated successfully.</p>
 </section>
 </section>
+<section id="essentials">
+<h2>Essentials<a class="headerlink" href="#essentials" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Always back up your current IPTables configuration before making changes</p></li>
+<li><p>Test new rules in a safe environment before applying them to production systems</p></li>
+<li><p>Regularly review and update your IPTables rules to adapt to changing security requirements</p></li>
+</ul>
+<p>To delete all existing IPTables rules and start fresh, you can use the following commands:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>iptables<span class="w"> </span>-P<span class="w"> </span>INPUT<span class="w"> </span>ACCEPT
+iptables<span class="w"> </span>-P<span class="w"> </span>FORWARD<span class="w"> </span>ACCEPT
+iptables<span class="w"> </span>-P<span class="w"> </span>OUTPUT<span class="w"> </span>ACCEPT
+iptables<span class="w"> </span>-F
+iptables<span class="w"> </span>-X
+</pre></div>
+</div>
+<p>This will set the default policies to ACCEPT and flush all existing rules and custom chains.</p>
+</section>
 <section id="conclusion">
 <h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading"></a></h2>
 <p>In this guide, we have covered the essential IPTables rules to secure a Linux system effectively.
 By allowing necessary traffic, dropping unwanted packets, logging activities, and ensuring persistence across reboots,
 you can enhance the security of your server and protect it from potential threats by applying more iptables rules as per your requirements.</p>
+<p>To learn more about IPTables and advanced configurations, refer to the official documentation and other reliable resources.</p>
 </section>
 </section>
 

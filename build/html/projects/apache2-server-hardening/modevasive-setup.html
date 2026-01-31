@@ -135,7 +135,7 @@ If we want to receive email regarding the alerts, it will create a postfix serve
 This is not recommended in a production environment, as this will create unnecessary services, if the instance is not dedicated for handling email services.
 For now, we will go with <code class="docutils literal notranslate"><span class="pre">No</span> <span class="pre">Connection</span></code></p>
 <a class=""
-               data-lightbox="group-c0452091-9f38-4b33-852a-fa6d9a67e504"
+               data-lightbox="group-058812f7-428f-4972-9e82-3b538f5424f5"
                href="../../_images/apache2-server-hardening-img-31.png"
                title=""
                data-title=""
@@ -150,7 +150,7 @@ For now, we will go with <code class="docutils literal notranslate"><span class=
 <h2>Configuring the Evasive Module<a class="headerlink" href="#configuring-the-evasive-module" title="Link to this heading"></a></h2>
 <p>Head over to the <code class="docutils literal notranslate"><span class="pre">/etc/apache2/mods-available/</span></code> directory and open <code class="docutils literal notranslate"><span class="pre">evasive.conf</span></code> file using your preferred text editor. I will be using vim.</p>
 <a class=""
-               data-lightbox="group-9c7103dd-6c48-4056-b0dc-1765e6d30739"
+               data-lightbox="group-9059f18d-64ea-43fc-9a9d-a3156611c53c"
                href="../../_images/apache2-server-hardening-img-41.png"
                title=""
                data-title=""
@@ -207,7 +207,7 @@ Otherwise, the logs will also not be generated. If such a problem arises, you ca
 <h2>Testing the Module<a class="headerlink" href="#testing-the-module" title="Link to this heading"></a></h2>
 <p>You will usually see a default apache2 page after sending an http request to your server/instance, with your server’s IP.</p>
 <a class=""
-               data-lightbox="group-ee284f37-ee90-4a20-8d78-0f4b44289c1c"
+               data-lightbox="group-b327927a-d855-41cc-ab80-27aa803e9977"
                href="../../_images/apache2-server-hardening-img-51.png"
                title=""
                data-title=""
@@ -225,7 +225,7 @@ After 20 requests within the 10 seconds time frame, it should forbid us from acc
 Besides, the number of requests might vary due to the value of the <code class="docutils literal notranslate"><span class="pre">hashtable</span></code> sometimes.</p>
 </div>
 <a class=""
-               data-lightbox="group-14d83398-1f24-45c8-a619-1ecd4d1cbf2a"
+               data-lightbox="group-e5b1a4fa-d071-4aa8-a55b-dda95f4b905b"
                href="../../_images/apache2-server-hardening-img-61.png"
                title=""
                data-title=""
@@ -242,7 +242,7 @@ Besides, the number of requests might vary due to the value of the <code class="
 <p>If an attack gets detected, a log should be generated in the specified directory. For us the directory is <code class="docutils literal notranslate"><span class="pre">/var/log/mod_evasive</span></code>.
 Head over there, and you will find the IP of the attacker, which means the module is blocking requests coming from this particular IP.</p>
 <a class=""
-               data-lightbox="group-33078992-1df2-452a-beaa-a263e4dec756"
+               data-lightbox="group-acbc6aa0-a4ba-483e-9e58-bd688b3fbc5e"
                href="../../_images/apache2-server-hardening-img-71.png"
                title=""
                data-title=""
@@ -255,7 +255,7 @@ Head over there, and you will find the IP of the attacker, which means the modul
                 </a><div style="height:25px;"></div><p>Inside the file you find a process <code class="docutils literal notranslate"><span class="pre">id</span></code> or a unique number.</p>
 <p>Besides, you can also head over to check the syslog to investigate the event.</p>
 <a class=""
-               data-lightbox="group-632f09ee-0727-424c-95f6-153c2152d944"
+               data-lightbox="group-99f16b19-1374-4029-9707-6c3ace755e00"
                href="../../_images/apache2-server-hardening-img-81.png"
                title=""
                data-title=""
