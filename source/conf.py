@@ -6,10 +6,16 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'Security Engineering'
-copyright = '2025, Alsechemist'
-author = 'Alsechemist'
-release = '1.0'
+import os
+from datetime import datetime
+
+version = os.environ.get("READTHEDOCS_VERSION", "local")
+
+project = "Alsechemist's Security Engineering"
+author = "Alsechemist"
+current_year = datetime.now().year
+copyright = f"{current_year}, {author}"
+release = version
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
