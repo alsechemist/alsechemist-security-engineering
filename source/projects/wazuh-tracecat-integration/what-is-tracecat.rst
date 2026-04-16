@@ -9,6 +9,12 @@ enrich threat intelligence, and execute complex response procedures without huma
 Tracecat's strength lies in its ability to standardize and streamline security operations, 
 reducing the mean time to response and ensuring consistent handling of security incidents.
 
+One special thing about Tracecat that it lets your integrate with almost anything out there in the wild.
+Whether it's a SIEM, EDR, XDR, threat intelligence platform, or even custom scripts, Tracecat can seamlessly connect and automate interactions between these tools.
+This flexibility allows security teams to leverage their existing investments while enhancing their overall security posture with advanced automation capabilities.
+
+In other words, if anything has an API, Tracecat can handle the rest.
+
 .. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-logo.svg
    :alt: Tracecat Logo
    :align: center
