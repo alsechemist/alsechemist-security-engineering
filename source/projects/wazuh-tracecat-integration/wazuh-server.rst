@@ -55,11 +55,12 @@ Go the Wazuh manager configuration file, which is typically located at ``/var/os
 
 .. note::
 
-    The script is designed to handle mutiple workflow triggers, so you can add multiple integration configurations in the same way with different webhook URLs and API keys if needed.
+    - The script is designed to handle mutiple workflow triggers, so you can add multiple ``<integration>`` blocks in the same way with different webhook URLs and API keys if needed.
+    - You can also adjust the ``<level>`` tag to specify the minimum alert level that should trigger the integration script.
+    - You can also use ``<rule_id>`` tag instead of ``<level>`` tag, if you want to trigger the integration based on specific rule IDs rather than alert levels. Multiple rule IDs are also supported as well by separating them with commas (e.g., ``<rule_id>1001,1002,1003</rule_id>``).
 
 Make sure to replace ``[tracecat-workflow-webhook-url]`` with the actual webhook URL of your Tracecat workflow, 
 and if your workflow requires an API key for authentication, replace ``[tracecat-workflow-api-key]`` with the actual API key.
-You can also adjust the ``<level>`` parameter to specify the minimum alert level that should trigger the integration script.
 
 The script is desined for both cases where the Tracecat workflow requires an API key for authentication and where it does not. Either way it will work just fine.
 

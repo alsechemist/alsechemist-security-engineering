@@ -19,5 +19,5 @@ you can just have your ``Quick Start`` by referring to the :doc:`configuration-o
    ../../projects/wazuh-tracecat-integration/what-we-will-learn
    ../../projects/wazuh-tracecat-integration/scope-of-engagement
    ../../projects/wazuh-tracecat-integration/configuration-of-servers
-   ../../projects/wazuh-tracecat-integration/proof-of-concept
+   ../../projects/wazuh-tracecat-integration/use-cases
    ../../projects/wazuh-tracecat-integration/conclusion
