@@ -1,14 +1,30 @@
 What We'll Learn?
 =================
 
-Through this comprehensive guide, you'll master the essential skills needed to create a seamless integration between Wazuh and Tracecat. 
-This tutorial will take you through each step of building automated security responses, from basic connections to advanced threat mitigation.
+In this project, we will learn how to integrate Wazuh with Tracecat to automate security responses. The key learning outcomes include:
 
-- **Leveraging the Integration Script:** Understand how to use the provided script to connect Wazuh and Tracecat, enabling you to automate security workflows effectively.
-- **Fetching the JWT Token:** Learn how to retrieve the JWT token from Wazuh, which is crucial for authenticating and authorizing API requests to access security data.
-- **Creating and Understanding Tracecat Workflows:** Gain insights into designing and implementing Tracecat workflows that can process the alerts sent from Wazuh, allowing you to automate responses based on specific security fields.
-- **Utilize Wazuh's Active Response:** Configure and trigger automated protective actions through Tracecat workflows when threats are detected
-- **Block SSH Brute Force Attack using Wazuh's Active Response:** Implement a complete automated defense against brute force attacks as a practical demonstration
+- **Deploy Integration Scripts**: Place custom-tracecat.py and its wrapper into Wazuh's integration directory—then unlock the bridge
+- **Configure ossec.conf for Automation**: Wire up webhook URLs, API keys, and alert triggers to make Wazuh talk to Tracecat
+- **Master Tracecat Secrets**: Safely store and reference wazuh-wui credentials and other API keys across your workflows
+- **Understand the Trigger Component**: The gatekeeper—how alerts flow in and workflows ignite
+- **Reshape Alert JSON**: Transform raw Wazuh alerts into readable, navigable data structures using core.transform.reshape
+- **Harness HTTP Requests as Actions**: Execute API calls from Tracecat back to Wazuh—and any other system with an endpoint
+- **Write Powerful Expressions**: Access and manipulate alert fields using ${{ TRIGGER }} and ${{ ACTIONS }} syntax
+- **Conditionally Execute with "Run If"**: Prevent false positives—only trigger actions when the threat is real
+- **Test End-to-End**: Send dummy alerts through the pipeline and watch your workflow run in real time
+- **Monitor Logs & Workflow Runs**: Troubleshoot integration issues with tracecat.log and Tracecat's execution UI
+- **Block SSH Brute Force (Linux, Windows, macOS)**: Implement a real-world use case with platform-specific firewall rules
+- **Validate Active Response**: Verify blocked IPs in iptables, netsh, and pf — proof that automation works
 
-By the end of this guide, you'll have the knowledge and practical skills to create sophisticated security automation workflows that leverage the strengths of both platforms, 
-ultimately building a more resilient and responsive security infrastructure.
+By the end, you'll have a production-ready security pipeline.
+
+.. attention::
+
+    The motive of the project is to unlock bridge between Wazuh and Tracecat, and pave the way for its limitless possibilities. 
+    So, we will not be going into too many details about the individual components of Wazuh and Tracecat, 
+    but rather focus on how to leverage the integration between them to automate security orchestration effectively.
+
+    The uses cases that will be demontrated on this project only serves as examples to show how the integration can be used,
+    and also create curiosities to explore more about the integration and its capabilities. 
+    You can always create your own use cases based on your needs and requirements, and also 
+    share them with the community as well to inspire others to explore more about the integration and its capabilities.
