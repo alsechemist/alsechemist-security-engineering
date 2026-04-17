@@ -71,21 +71,3 @@ After adding this configuration, save the file and restart the Wazuh manager to 
 
 This will ensure that the Wazuh server is now configured to execute the ``custom-tracecat`` integration script whenever an alert with 
 the specified level or higher is generated, allowing you to automate your incident response workflows using Tracecat.
-
-Checking the Integration Logs
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The script is also designed to log its activities, which can be helpful for troubleshooting and ensuring that the integration is working as expected.
-You can check the logs for the integration script in the ``/var/ossec/logs/`` directory, specifically in the ``tracecat.log`` file.
-
-You can use the following command to view the logs:
-
-.. code-block:: bash
-    
-    tail -f /var/ossec/logs/tracecat.log
-
-This command will display the latest entries in the ``tracecat.log`` file in real-time, allowing you to monitor the integration's activities and identify any potential issues.
-
-With the Wazuh server configured to execute the integration script, 
-you can now proceed to the prerequisite steps for setting up the Tracecat server and 
-ensuring that it can receive the alerts from Wazuh and trigger the corresponding workflows.

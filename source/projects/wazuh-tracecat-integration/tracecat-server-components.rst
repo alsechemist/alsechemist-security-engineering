@@ -28,9 +28,97 @@ Follow the image below for a high level view of how the Reshape component is con
 
 All you need to do is, in the **Inputs** section, set the value to ``${{ TRIGGER }}``. 
 This will allow the Reshape component to recive the json field from the wazuh alerts.
-You will be able to see all the field in the results section. Like the image below,
+
+Testing the Integration
+-----------------------
+
+To test the integration, copy and paste this dummy alert and save it as test-alert.json into the Wazuh manager to 
+see if it triggers the Tracecat workflow as expected, you can use the following command to create the test alert:
+
+.. code-block:: bash
+
+    cat > /opt/test-alert.json << 'EOF'
+    {
+        "id": "1234567890",
+        "timestamp": "2026-04-14T10:00:00.000+0000",
+        "rule": {
+            "id": "5503",
+            "level": 7,
+            "description": "User login failed",
+            "groups": ["authentication_failed", "pam"],
+            "mitre": {
+            "id": ["T1110"],
+            "tactic": ["Credential Access"],
+            "technique": ["Brute Force"]
+            }
+        },
+        "agent": {
+            "id": "001",
+            "name": "web-server-01",
+            "ip": "192.168.1.50"
+        },
+        "manager": {
+            "name": "wazuh-manager"
+        },
+        "full_log": "Failed password for invalid user admin from 192.168.1.100 port 22 ssh2"
+    }
+    EOF
+
+This command creates a test alert in the Wazuh manager with the specified details.
+
+Now, you can use the following command to run the script manually with the test alert to see if it triggers the Tracecat workflow as expected:
+
+.. code-block:: bash
+    
+    bash /var/ossec/integrations/custom-tracecat \
+        /opt/test.json \
+        "[tracecat-workflow-api-key]" \
+        "[tracecat-webhook-url]" \
+        debug
+
+Make sure to replace ``[tracecat-workflow-api-key]`` with the actual API key of your Tracecat workflow if it requires one, 
+and replace ``[tracecat-webhook-url]`` with the actual webhook URL of your Tracecat workflow.
+
+.. note::
+    
+    If your Tracecat workflow does not require an API key for authentication, you can simply omit the API key parameter when running the script:
+
+    .. code-block:: bash
+        
+        bash /var/ossec/integrations/custom-tracecat \
+            /opt/test.json \
+            "" \
+            "[tracecat-webhook-url]" \
+            debug
+
+This will allow you to test the integration and ensure that the Wazuh server is able to successfully send alerts to 
+Tracecat and trigger the corresponding workflows based on the test alert you created.
+
+If everything is set up correctly, you should see following script output indicating that the alert was sent to Tracecat successfully,
+
+.. code-block:: bash
+    
+    # Tracecat responded [200]: {"message":"Workflow execution started","wf_id":"[WF_ID]","wf_exec_id":"[WF_EXEC_ID]"}
+
+You can also check the Tracecat Workflow run section, where the workflow executions are listed and 
+see if the workflow was triggered and executed successfully based on the test alert you created.
+Refer to the image below to see where the workflow execution will appear in Tracecat,
 
 .. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-server-workflow-contifiguration-2.png
+   :alt: Testing Tracecat Workflow Run
+   :align: center
+
+.. raw:: html
+    
+    <div style="height:25px;"></div>
+
+This where the workflow execution will automatically appear once the alert is sent from Wazuh to Tracecat, 
+and you can click on it to see the details of the execution and the steps that were executed in the workflow.
+You will be able to see all the field in the results tab. 
+
+As for an real alert you will see something with more details and fields based on the actual alert that is sent from Wazuh to Tracecat,
+
+.. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-server-workflow-contifiguration-3.png
     :alt: Tracecat Server, Reshape Component Showing the Incoming Json Data from Wazuh Alerts
     :align: center
 
@@ -39,6 +127,24 @@ You will be able to see all the field in the results section. Like the image bel
     <div style="height:25px;"></div>
 
 This way, you can easily identify the relevant fields and their corresponding json paths that are required to be used in your workflow components.
+
+Checking the Integration Logs
+-----------------------------
+
+The script is also designed to log its activities, which can be helpful for troubleshooting and ensuring that the integration is working as expected.
+You can check the logs for the integration script in the ``/var/ossec/logs/`` directory, specifically in the ``tracecat.log`` file.
+
+You can use the following command to view the logs:
+
+.. code-block:: bash
+    
+    tail -f /var/ossec/logs/tracecat.log
+
+This command will display the latest entries in the ``tracecat.log`` file in real-time, allowing you to monitor the integration's activities and identify any potential issues.
+
+With the Wazuh server configured to execute the integration script, 
+you can now proceed to the prerequisite steps for setting up the Tracecat server and 
+ensuring that it can receive the alerts from Wazuh and trigger the corresponding workflows.
 
 Component - core.http_request
 -----------------------------
@@ -68,7 +174,7 @@ automatically filled based on the YAML configuration, but you can always edit th
 
 Follow the image below for a high level view of how the Http Request component is configured in the workflow,
 
-.. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-server-workflow-contifiguration-3.png
+.. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-server-workflow-contifiguration-4.png
     :alt: Tracecat Server, Configuration of Http Request Component in the Workflow
     :align: center
 
@@ -93,7 +199,7 @@ replace it in the expression syntax like this: ``${{ rule.id }}``
 
 Follow the image below for a high level view of how to use expressions to access the fields from the incoming json data from Wazuh alerts,
 
-.. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-server-workflow-contifiguration-4.png
+.. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-server-workflow-contifiguration-5.png
     :alt: Tracecat Server, Using Expressions to Access the Fields from the Incoming Json Data from Wazuh Alerts
     :align: center
 
