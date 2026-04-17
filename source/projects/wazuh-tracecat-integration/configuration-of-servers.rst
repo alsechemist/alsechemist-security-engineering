@@ -1,7 +1,8 @@
 Configurations of Servers
 ==========================
 
-Now let's get started with the main work. We will be working with **2 servers** and **1 specific agent**.  
+Now let's get started with the main work. We will be working with **2 servers**.
+
 They are as follows:
 
 - **Tracecat Server**

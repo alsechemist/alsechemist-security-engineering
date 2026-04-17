@@ -184,6 +184,22 @@ Follow the image below for a high level view of how the Http Request component i
 
 This way, you can easily configure the Http Request component to send the necessary API requests to Wazuh's API or any other third-party system as needed.
 
+You will be able to see the JWT token in the results tab of the Http Request component once the workflow is executed, 
+and you can use it in the other components that require it by using the expression ``${{ ACTIONS.[component_name].result.data }}`` to access it.
+
+Refer to the image below to see how the JWT token can be accessed in the other components using expressions,
+
+.. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-server-workflow-contifiguration-5.png
+    :alt: Tracecat Server, Accessing the JWT Token in Other Components Using Expressions
+    :align: center
+
+.. raw:: html
+    
+    <div style="height:25px;"></div>
+
+All you have to do is to copy the json path of the JWT token from the results tab of the Http Request component and 
+place it in the expression syntax to be able to access it in the other components that require it.
+
 Expressions
 -----------
 
@@ -199,7 +215,7 @@ replace it in the expression syntax like this: ``${{ rule.id }}``
 
 Follow the image below for a high level view of how to use expressions to access the fields from the incoming json data from Wazuh alerts,
 
-.. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-server-workflow-contifiguration-5.png
+.. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-server-workflow-contifiguration-6.png
     :alt: Tracecat Server, Using Expressions to Access the Fields from the Incoming Json Data from Wazuh Alerts
     :align: center
 
