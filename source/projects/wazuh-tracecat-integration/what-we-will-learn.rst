@@ -9,7 +9,7 @@ In this project, we will learn how to integrate Wazuh with Tracecat to automate 
 - **Understand the Trigger Component**: The gatekeeper—how alerts flow in and workflows ignite
 - **Reshape Alert JSON**: Transform raw Wazuh alerts into readable, navigable data structures using core.transform.reshape
 - **Harness HTTP Requests as Actions**: Execute API calls from Tracecat back to Wazuh—and any other system with an endpoint
-- **Write Powerful Expressions**: Access and manipulate alert fields using ${{ TRIGGER }} and ${{ ACTIONS }} syntax
+- **Write Powerful Expressions**: Access and manipulate alert fields using ``${{ }}`` syntax to create dynamic payloads and conditions
 - **Conditionally Execute with "Run If"**: Prevent false positives—only trigger actions when the threat is real
 - **Test End-to-End**: Send dummy alerts through the pipeline and watch your workflow run in real time
 - **Monitor Logs & Workflow Runs**: Troubleshoot integration issues with tracecat.log and Tracecat's execution UI
