@@ -72,3 +72,104 @@ After adding this configuration, save the file and restart the Wazuh manager to 
 
 This will ensure that the Wazuh server is now configured to execute the ``custom-tracecat`` integration script whenever an alert with 
 the specified level or higher is generated, allowing you to automate your incident response workflows using Tracecat.
+
+Creating Custom Decoder
+-----------------------
+
+I personally thought that Wazuh should have a more specific decoder for Tracecat related events, 
+it believe it is essential to have it to be able to easily track and filter Tracecat related events in Wazuh,
+specially when it can come handy in case where incident responders want to track the history of playbook executions and 
+the triggered alerts that led to these playbook executions while reporting.
+
+Create a custom decoder naming it ``0001-tracecat-decoder.xml`` from the Wazuh Dashboard and add the following content to it,
+
+.. code-block:: xml
+    
+    <decoder name="tracecat_decoder">
+        <prematch>^{"integration": "tracecat"</prematch>
+        <plugin_decoder>JSON_Decoder</plugin_decoder>
+        <use_own_name>true</use_own_name>
+    </decoder>
+
+Hit save and reload to apply the changes.
+
+.. note::
+
+    The naming convention for the custom decoders, specifically the JSON decoders matters here.
+    Refer to the :doc:`Understanding & Manipulating JSON Decoders <../../knowledge-base/understand-manipulate-json-decoders-wazuh/understand-manipulate-json-decoders-wazuh>`
+    page for more details about the importance of naming convention and the order of JSON decoders in Wazuh.
+
+Creating Custom Rules
+---------------------
+
+After creating the custom decoder, it's time to create custom rules to generate alerts based on the decoded events.
+
+Create a custom rule file naming it ``tracecat-rules.xml`` in the wazuh dasboard and add the following content to it,
+
+.. code-block:: xml
+    
+    <group name="tracecat,soar,">
+
+        <!-- Tracecat Event Handler -->
+
+        <rule id="200000" level="0">
+            <decoded_as>tracecat_decoder</decoded_as>
+            <field name="integration">tracecat</field>
+            <description>Tracecat Event Generated</description>
+            <group>tracecat_event,soar_event,integration_event,</group>
+        </rule>
+
+        <!-- Webhook Unauthorised Access -->
+
+        <rule id="200001" level="7">
+            <if_sid>200000</if_sid>
+            <field name="http_status">401</field>
+            <description>Tracecat: $(tracecat_response.detail)</description>
+            <group>authentication_failed,api_error,unauthorized_access,attack,soar_alert,pci_dss_6.5,</group>
+        </rule>
+        
+        <!-- Webhook Connection Successful -->
+        
+        <rule id="200002" level="5">
+            <if_sid>200000</if_sid>
+            <field name="event">alert_sent</field>
+            <description>Alert Successfully Sent to Tracecat | $(tracecat_response.message) concering Rule ID: $(rule_id)</description>
+            <group>tracecat_event,soar_event,api_success,integration_success,notification_sent,</group>
+        </rule>
+        
+    </group>
+
+Hit save and reload to apply the changes.
+
+In the above rules, we have created a base rule with ID 200000 that matches any event decoded by our custom decoder.
+Then, we have created two child rules with IDs 200001 and 200002 that trigger based on specific conditions related to 
+the HTTP status of the response from Tracecat and the event type.
+
+There aren't many rules here, as the logging of Tracecat related event basically depends on the response we get from 
+Tracecat and the responses are pretty straight forward, related to webhook connections mostly. 
+But, these rules will be enough to achieve what we want, which is to be able to track the history of 
+playbook executions and the triggered alerts that led to these playbook executions while reporting.
+
+Testing the Decoder and Rules
+-----------------------------
+
+Copy and paste the following sample log in the Rules Testing Tool in the Wazuh Dashboard to see if the decoder and rules are working as expected,
+
+.. code-block:: json
+
+    {"integration": "tracecat", "timestamp": "2026-04-18T03:58:12.784052+00:00", "level": "INFO", "event": "alert_sent", "rule_id": "5503", "alert_id": "1234567890", "agent": "web-server-01", "webhook": "http://192.168.250.12/api/webhooks/wf_2e3a8e073j5Cdh5VR2DVO3/f8ce95ec3b745311bb5710d46f2507b47cc1f4e478d3ade0876a04a1be23e9d4", "http_status": 200, "tc_workflow_id": "N/A", "tc_execution_id": "N/A", "tc_status": "N/A", "tc_message": "Workflow execution started", "tracecat_response": {"message": "Workflow execution started", "wf_id": "4928f871-2a41-4c86-950d-83ec3bf6080b", "wf_exec_id": "wf_2e3a8e073j5Cdh5VR2DVO3/exec_4c52lt3RVVrJJ7jHtpebrZ"}}
+
+You should see that the log is successfully decoded by our custom decoder and the appropriate rules are triggered based on the content of the log.
+
+Follow the image below for a high level overview of the testing process,
+
+.. image:: ../../assets/images/projects/wazuh-tracecat-integration/wazuh-server-configurations-1.png
+   :alt: Testing Tracecat's Custom Decoder and Rules
+   :align: center
+
+.. raw:: html
+    
+    <div style="height:25px;"></div>
+
+This confirms that our custom decoder and rules are working as expected, and we should now be able to track Tracecat related events in Wazuh based on the defined rules.
+
