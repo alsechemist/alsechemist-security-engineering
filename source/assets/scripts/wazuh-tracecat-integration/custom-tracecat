@@ -1,0 +1,79 @@
+#!/bin/sh
+# Wazuh to Tracecat SOAR Integration - Wrapper Script
+# Copyright (C) 2026, Wazuh Inc.
+# Created by Alsechemist, A.K.A Syed Golam Abid
+# Adapted for Tracecat SOAR integration.
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License (version 2) as
+# published by the FSF - Free Software Foundation.
+
+# ---------------------------------------------------------------------------
+# This wrapper script is called directly by Wazuh when an alert is triggered.
+# Its only job is to:
+#   1. Locate the Wazuh Python binary
+#   2. Resolve the path to the actual Python integration script
+#   3. Execute it, passing all arguments Wazuh provided
+#
+# Wazuh expects the integration entry point to be a shell script (no
+# extension) placed at /var/ossec/integrations/custom-tracecat.
+# The actual logic lives in custom-tracecat.py in the same directory.
+# ---------------------------------------------------------------------------
+
+# Path to the Wazuh bundled Python 3 binary (relative to WAZUH_PATH)
+WPYTHON_BIN="framework/python/bin/python3"
+
+# Resolve the full path and name of this wrapper script
+SCRIPT_PATH_NAME="$0"
+DIR_NAME="$(cd $(dirname ${SCRIPT_PATH_NAME}); pwd -P)"
+SCRIPT_NAME="$(basename ${SCRIPT_PATH_NAME})"
+
+# ---------------------------------------------------------------------------
+# Determine WAZUH_PATH and PYTHON_SCRIPT based on where this script lives.
+# Wazuh integrations always live in */integrations so the third case below
+# is the one that applies. The other two cases are kept for consistency
+# with the standard Wazuh wrapper pattern.
+# ---------------------------------------------------------------------------
+
+case ${DIR_NAME} in
+
+    # Active response scripts and wodles
+
+    */active-response/bin | */wodles*)
+        if [ -z "${WAZUH_PATH}" ]; then
+            WAZUH_PATH="$(cd ${DIR_NAME}/../..; pwd)"
+        fi
+        PYTHON_SCRIPT="${DIR_NAME}/${SCRIPT_NAME}.py"
+    ;;
+
+    # Scripts in the main Wazuh bin directory
+    */bin)
+        if [ -z "${WAZUH_PATH}" ]; then
+            WAZUH_PATH="$(cd ${DIR_NAME}/..; pwd)"
+        fi
+        PYTHON_SCRIPT="${WAZUH_PATH}/framework/scripts/$(echo ${SCRIPT_NAME} | sed 's/\-/_/g').py"
+    ;;
+
+    # Integration scripts — this is where custom-tracecat lives
+    # DIR_NAME = /var/ossec/integrations
+    # WAZUH_PATH = /var/ossec
+    # PYTHON_SCRIPT = /var/ossec/integrations/custom-tracecat.py
+    */integrations)
+        if [ -z "${WAZUH_PATH}" ]; then
+            WAZUH_PATH="$(cd ${DIR_NAME}/..; pwd)"
+        fi
+        PYTHON_SCRIPT="${DIR_NAME}/${SCRIPT_NAME}.py"
+    ;;
+esac
+
+# ---------------------------------------------------------------------------
+# Execute the Python integration script using Wazuh's bundled Python binary.
+# "$@" passes all arguments Wazuh gave to this wrapper straight through to
+# the Python script unchanged:
+#   $1 = path to alert JSON file
+#   $2 = api key
+#   $3 = hook_url from ossec.conf
+#   $4 = 'debug' (optional)
+#   $5 = options file path (optional)
+# ---------------------------------------------------------------------------
+
+exec ${WAZUH_PATH}/${WPYTHON_BIN} ${PYTHON_SCRIPT} "$@"

@@ -1,250 +1,246 @@
 Tracecat Server Components
 ==========================
 
-Now let's begin configuring the previously mentioned Tracecat components. Rather deep diving into it, 
-I will try to simply explain what we are trying to achieve through these components. By selecting each component you will notice an 
-input tab asking you to fill up the given required fields. So instead of explaining each field, I will directly focus on its `YAML` configuration to 
-explain what we are trying to achieve by setting the parameters.
+In this section, we will explore the bare minimum components that we need to have on our Tracecat Server in order 
+to be able to receive the alerts from Wazuh and trigger the corresponding playbooks.
 
-tools.wazuh.get_access_token (Wazuh API)
-----------------------------------------
+Component - core.transform.reshape
+----------------------------------
 
-Go to the ``YAML`` tab. Copy and paste the below code block:
+This is the component that is reponsible for showing the incoming json field from the Wazuh alerts in a more readable format. 
+It is a built-in component that is available in Tracecat by default, so you don't need to create it from scratch. 
+You can simply add it to your workflow and configure it to reshape the incoming json data as needed.
 
-.. code-block:: yaml
+Basically, if the script is working right, then all the field from the json alert will directly be handled by the Trigger componnent. 
+But you won't be able to see it and also the the relevant json path required to be used as expressions. 
+So, you can use the Reshape component to have a more readable format of the incoming json data and also to be able 
+to easily identify the relevant fields and their corresponding json paths that you can use in your workflow components.
 
-    url: https://[Wazuh_Server_IP]:55000
-    verify_ssl: false
-
-The below code just sends a https request to the Wazuh Server API. At backend, the component does its job to fetch the JWT Token.
+Follow the image below for a high level view of how the Reshape component is configured in the workflow,
 
 .. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-server-workflow-contifiguration-1.png
-    :alt: Tracecat Server, Wazuh JWT Token Configuration
+    :alt: Tracecat Server, Configuration of Reshape Component in the Workflow
     :align: center
 
 .. raw:: html
+    
+    <div style="height:25px;"></div>
 
-   <div style="height:25px;"></div>
+All you need to do is, in the **Inputs** section, set the value to ``${{ TRIGGER }}``. 
+This will allow the Reshape component to recive the json field from the wazuh alerts.
 
-core.http_request (Wazuh_Indexer_Logs)
---------------------------------------
+Testing the Integration
+-----------------------
 
-Go to the YAML tab. Copy and paste the below code block:
+To test the integration, copy and paste this dummy alert and save it as test-alert.json into the Wazuh manager to 
+see if it triggers the Tracecat workflow as expected, you can use the following command to create the test alert:
 
-.. code-block:: yaml
+.. code-block:: bash
 
-    url: https://[Wazuh_Sever_IP]:9200/wazuh-alerts-4.x-*/_search
-    method: GET
-    headers:
-        Authorization: Bearer ${{ ACTIONS.wazuh_api.result }}
-        Content-Type: application/json
-    verify_ssl: false
-    auth:
-        username: ${{ SECRETS.wazuh_indexer.WAZUH_INDEXER_USERNAME }}
-        password: ${{ SECRETS.wazuh_indexer.WAZUH_INDEXER_PASSWORD }}
-    payload:
-        query:
-            bool:
-                must:
-                - terms:
-                    rule.id: # must be an array argument
-                    - "5763"
-                    - "60204"
-                    - "5712"
-                - range:
-                    "@timestamp":
-                        gte: now-1m
-                        lte: now
-        sort:
-            - "@timestamp":
-                order: desc
-        size: 10
+    cat > /opt/test-alert.json << 'EOF'
+    {
+        "id": "1234567890",
+        "timestamp": "2026-04-14T10:00:00.000+0000",
+        "rule": {
+            "id": "5503",
+            "level": 7,
+            "description": "User login failed",
+            "groups": ["authentication_failed", "pam"],
+            "mitre": {
+            "id": ["T1110"],
+            "tactic": ["Credential Access"],
+            "technique": ["Brute Force"]
+            }
+        },
+        "agent": {
+            "id": "001",
+            "name": "web-server-01",
+            "ip": "192.168.1.50"
+        },
+        "manager": {
+            "name": "wazuh-manager"
+        },
+        "full_log": "Failed password for invalid user admin from 192.168.1.100 port 22 ssh2"
+    }
+    EOF
 
-The above code contacts the Wazuh Indexer API Server with the required Wazuh Indexer credentials that we have set earlier and 
-sends a search request to provide data or logs based on ``rule.id 5763, 60204, 5712`` from the last 1 minute. 
-And, It will so up to 10 unique sets of data if available. You can set the time, and size according to your convenience.
+This command creates a test alert in the Wazuh manager with the specified details.
+
+Now, you can use the following command to run the script manually with the test alert to see if it triggers the Tracecat workflow as expected:
+
+.. code-block:: bash
+    
+    bash /var/ossec/integrations/custom-tracecat \
+        /opt/test.json \
+        "[tracecat-workflow-api-key]" \
+        "[tracecat-webhook-url]" \
+        debug
+
+Make sure to replace ``[tracecat-workflow-api-key]`` with the actual API key of your Tracecat workflow if it requires one, 
+and replace ``[tracecat-webhook-url]`` with the actual webhook URL of your Tracecat workflow.
+
+.. note::
+    
+    If your Tracecat workflow does not require an API key for authentication, you can simply omit the API key parameter when running the script:
+
+    .. code-block:: bash
+        
+        bash /var/ossec/integrations/custom-tracecat \
+            /opt/test.json \
+            "" \
+            "[tracecat-webhook-url]" \
+            debug
+
+This will allow you to test the integration and ensure that the Wazuh server is able to successfully send alerts to 
+Tracecat and trigger the corresponding workflows based on the test alert you created.
+
+If everything is set up correctly, you should see following script output indicating that the alert was sent to Tracecat successfully,
+
+.. code-block:: bash
+    
+    # Tracecat responded [200]: {"message":"Workflow execution started","wf_id":"[WF_ID]","wf_exec_id":"[WF_EXEC_ID]"}
+
+You can also check the Tracecat Workflow run section, where the workflow executions are listed and 
+see if the workflow was triggered and executed successfully based on the test alert you created.
+Refer to the image below to see where the workflow execution will appear in Tracecat,
 
 .. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-server-workflow-contifiguration-2.png
-    :alt: Tracecat Server, Wazuh Indexer Configuration
-    :align: center
+   :alt: Testing Tracecat Workflow Run
+   :align: center
 
 .. raw:: html
+    
+    <div style="height:25px;"></div>
 
-   <div style="height:25px;"></div>
+This where the workflow execution will automatically appear once the alert is sent from Wazuh to Tracecat, 
+and you can click on it to see the details of the execution and the steps that were executed in the workflow.
+You will be able to see all the field in the results tab. 
 
-core.http_request (Wazuh_Server_Logs)
--------------------------------------
-
-This is an **optional** component in this workflow kept,
-    to demonstrate the possibilities you can leverage by accessing the Wazuh Server API. 
-    You can visit Wazuh's `Server API Reference <https://documentation.wazuh.com/current/user-manual/api/reference.html>`_
-    to know how you can utilize it to the fullest. Go to the ``YAML`` tab. Copy and paste the below code block:
-
-.. code-block:: yaml
-
-    url: https://[Wazuh_Sever_IP]:55000/agents
-    method: GET
-    verify_ssl: false
-    headers:
-        Authorization: Bearer ${{ ACTIONS.wazuh_api.result }}
-        Content-Type: application/json
-
-The above code contacts the **Wazuh Server API** with collected JWT Token for fetching the list of available agent data on your wazuh server.
+As for an real alert you will see something with more details and fields based on the actual alert that is sent from Wazuh to Tracecat,
 
 .. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-server-workflow-contifiguration-3.png
-    :alt: Tracecat Server, Wazuh Server API Configuration
+    :alt: Tracecat Server, Reshape Component Showing the Incoming Json Data from Wazuh Alerts
     :align: center
 
 .. raw:: html
+    
+    <div style="height:25px;"></div>
 
-   <div style="height:25px;"></div>
+This way, you can easily identify the relevant fields and their corresponding json paths that are required to be used in your workflow components.
 
-core.http_request (Active Response for Linux)
----------------------------------------------
+Checking the Integration Logs
+-----------------------------
 
-Go to the YAML tab. Copy and paste the below code block:
+The script is also designed to log its activities, which can be helpful for troubleshooting and ensuring that the integration is working as expected.
+You can check the logs for the integration script in the ``/var/ossec/logs/`` directory, specifically in the ``tracecat.log`` file.
 
-.. code-block:: yaml
+You can use the following command to view the logs:
 
-    url: https://[Wazuh_Sever_IP]:55000/active-response
-    method: PUT
-    verify_ssl: false
-    headers:
-        Authorization: Bearer ${{ ACTIONS.wazuh_api.result }}
-        Content-Type: application/json
-    payload:
-        arguments: # # must be an array argument
-            - add
-        command: "!firewall-drop"
-        alert:
-            data:
-                srcip: ${{ ACTIONS.wazuh_indexer_logs.result.data.hits.hits[0]._source.data.srcip }}
-            rule:
-                id: 5763
-                level: 10
-    params:
-        agents_list: # must be an array argument
-            - "001"
-            - "002"
+.. code-block:: bash
+    
+    tail -f /var/ossec/logs/tracecat.log
 
-The above code contacts the **Wazuh Server API** with collected JWT Token to initiate its active response module to run the ``firewall-drop`` script on 
-linux agents. The script has additional arguments such as ``- add, - delete, - [time]`` for blocking the malicious IP for a specific time and more, 
-based on the ``rule.id 5763`` and its level of severity. You can also set the list of Linux agents you want the script to run on dynamically or 
-statically based on the ``agent.id`` found on your wazuh server.
+This command will display the latest entries in the ``tracecat.log`` file in real-time, allowing you to monitor the integration's activities and identify any potential issues.
+
+Besides, with the custom rules that we configuired earlier, you should also be able to see Wazuh Event Logs like the image below,
 
 .. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-server-workflow-contifiguration-4.png
-    :alt: Tracecat Server, Wazuh Active Response Configuration for Linux Agents
+    :alt: Tracecat Server, Reshape Component Showing the Incoming Json Data from Wazuh Alerts
     :align: center
 
 .. raw:: html
+    
+    <div style="height:25px;"></div>
 
-   <div style="height:25px;"></div>
+With the Wazuh server configured to execute the integration script, 
+you can now proceed to the prerequisite steps for setting up the Tracecat server and 
+ensuring that it can receive the alerts from Wazuh and trigger the corresponding workflows.
 
+Component - core.http_request
+-----------------------------
 
-core.http_request (Active Response for Windows)
------------------------------------------------
+This one the main components that we need in order to contact with any API of a third-party system, including Wazuh's API itself.
+It is also a built-in component that is available in Tracecat by default, so you don't need to create it from scratch.
+You can simply add it to your workflow and configure it to send the necessary API requests to Wazuh's API or any other third-party system as needed.
 
-Go to the YAML tab. Copy and paste the below code block:
+In almost every case of Wazuh related workflows, we will be needing to retrivge the Wazuh JWT token in order to be able to send authenticated API requests to Wazuh's API.
+So, now we will be seeing how can we configure the Http Request component to send a POST request to Wazuh's API to retrive the JWT token.
+
+Copy the configuration below and place it in the **YAML** tab of the **Inputs** section of the Http Request component,
 
 .. code-block:: yaml
 
-    url: https://[Wazuh_Sever_IP]:55000/active-response
-    method: PUT
+    url: https://[wazuh-server-ip-address]:55000/security/user/authenticate?raw=true
+    method: POST
+    auth:
+        password: ${{ SECRETS.wazuh_wui.WAZUH_WUI_PASSWORD }}
+        username: ${{ SECRETS.wazuh_wui.WAZUH_WUI_USERNAME }}
     verify_ssl: false
-    headers:
-        Authorization: Bearer ${{ ACTIONS.wazuh_api.result }}
-        Content-Type: application/json
-    payload:
-        arguments: # must be an array argument
-            - add
-        command: "!netsh"
-        alert:
-            data:
-                srcip: ${{ ACTIONS.wazuh_indexer_logs.result.data.hits.hits[0]._source.data.win.eventdata.ipAddress }}
-            rule:
-                id: 60204
-                level: 10
-    params:
-        agents_list: # must be an array argument
-            - "003"
 
-The above code contacts the **Wazuh Server API** with collected JWT Token to initiate its active response module to run
-the ``netsh`` script on ``windows`` agents. The script has additional arguments such as ``- add, - delete, - [time]`` for
-blocking the malicious IP for a specific time and more based on the ``rule.id 60204`` and its level of severity.
-You can also set the list of windows agents you want the script to run on dynamically or statically based on the ``agent.id`` found on your wazuh server.
+Make sure to replace ``[wazuh-server-ip-address]`` with the actual IP address of your Wazuh server.
+
+The YAML tab allows you to place your configurations more freely than the Form tab. You will also see in the form tab that the fields are 
+automatically filled based on the YAML configuration, but you can always edit the YAML configuration as needed.
+
+Follow the image below for a high level view of how the Http Request component is configured in the workflow,
 
 .. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-server-workflow-contifiguration-5.png
-    :alt: Tracecat Server, Wazuh Active Response Configuration for Windows Agents
+    :alt: Tracecat Server, Configuration of Http Request Component in the Workflow
     :align: center
 
 .. raw:: html
+    
+    <div style="height:25px;"></div>
 
-   <div style="height:25px;"></div>
+This way, you can easily configure the Http Request component to send the necessary API requests to Wazuh's API or any other third-party system as needed.
 
-core.http_request (Active Response for macOS)
----------------------------------------------
+You will be able to see the JWT token in the results tab of the Http Request component once the workflow is executed, 
+and you can use it in the other components that require it by using the expression ``${{ ACTIONS.[component_name].result.data }}`` to access it.
 
-Go to the YAML tab. Copy and paste the below code block:
-
-.. code-block:: yaml
-
-    url: https://[Wazuh_Sever_IP]:55000/active-response
-    method: PUT
-    verify_ssl: false
-    headers:
-        Authorization: Bearer ${{ ACTIONS.wazuh_api.result }}
-        Content-Type: application/json
-    payload:
-        arguments: # must be an array argument
-            - add
-        command: "!pf"
-        alert:
-            data:
-                srcip: ${{ ACTIONS.wazuh_indexer_logs.result.data.hits.hits[0]._source.data.srcip }}
-            rule:
-                id: 5712
-                level: 10
-    params:
-    agents_list: # must be an array argument
-        - "007"
-
-The above code contacts the **Wazuh Server API** with collected JWT Token to initiate its active response module to run
-the ``pf`` script on ``macOS`` agents. The script has additional arguments such as ``- add, - delete, - [time]`` for 
-blocking the malicious IP for a specific time and more based on the ``rule.id 5712`` and
-its level of severity. You can also set the list of macOS agents you want the script to 
-run on dynamically or statically based on the ``agent.id`` found on your wazuh server.
+Refer to the image below to see how the JWT token can be accessed in the other components using expressions,
 
 .. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-server-workflow-contifiguration-6.png
-    :alt: Tracecat Server, Wazuh Active Response Configuration for macOS Agents
+    :alt: Tracecat Server, Accessing the JWT Token in Other Components Using Expressions
     :align: center
 
 .. raw:: html
+    
+    <div style="height:25px;"></div>
 
-   <div style="height:25px;"></div>
+All you have to do is to copy the json path of the JWT token from the results tab of the Http Request component and 
+place it in the expression syntax to be able to access it in the other components that require it.
+
+Expressions
+-----------
+
+Expressions are a powerful feature in Tracecat that allow you to dynamically access and manipulate data within your workflow components.
+
+So, How can we use the expressions to access the fields from the incoming json data from Wazuh alerts?
+
+You can use the following syntax to access the fields from the incoming json data: ``${{ [expression.field_name] }}``
+
+Replace ``[expression.field_name]`` with the json path of the field that you want to access. 
+For example, if you want to access the ``rule.id`` field from the incoming json data, you can just copy and 
+replace it in the expression syntax like this: ``${{ rule.id }}``
+
+Follow the image below for a high level view of how to use expressions to access the fields from the incoming json data from Wazuh alerts,
+
+.. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-server-workflow-contifiguration-7.png
+    :alt: Tracecat Server, Using Expressions to Access the Fields from the Incoming Json Data from Wazuh Alerts
+    :align: center
+
+.. raw:: html
+    
+    <div style="height:25px;"></div>
 
 .. tip::
     
-    Replace the ``[Wazuh_Sever_IP]`` with your actual Wazuh Sever IP. The default port for the Wazuh Server API is 55000 and the default port for the Wazuh Indexer API is 9200.
+    Make sure to use the correct json path for the field that you want to access. 
+    Best, if you just copy and paste it into the expression syntax to avoid any typos or mistakes.
+    Follow Tracecat's `Expression Guideline and Concept <https://docs.tracecat.com/automations/core-concepts/expressions>`_ for more details about expressions and how to use them effectively in your workflows.
 
-.. note::
-    Inside the above code blocks you will notice some variables/expressions under ``${{ [JSON_PATH] }}``. 
-    hese are basically **JSON_PATHS** found under the **Results** section of your workflow. 
-    Just copy the data or parameter value you need and paste it user ``${{ [JSON_PATH] }}`` replacing ``[JSON_PATH]``. 
-    This is helpful if you want the parameters of your ``YAML`` configuration to be defined dynamically. 
-    An image has been attached for your reference.
+So far, this basically concludes the Integration of Wazuh with Tracecat, and the configuration of the main components that 
+are required on the Tracecat server in order to be able to receive the alerts from Wazuh and trigger the corresponding playbooks.
 
-    .. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-server-workflow-contifiguration-7.png
-        :alt: Tracecat Server JSON Path Reference
-        :align: center
-
-.. warning::
-    The JSON paths in the above code blocks are just like variables named after the naming convention of the Title given to each component. 
-    For example, **ACTIONS.** ``wazuh_indexer_logs`` **.result.data.hits.hits[0]._source.rule.id**, the quoted red colored area is 
-    exactly as the Title set the to the Wazuh_Indexer_Logs core.http_response component.
-    
-    Blindly copying and pasting the above code blocks might result in workflow execution ``errors``.
-    Viewers are advised to work with the comfort oftheir local environmental setup.
-    
-    The above code blocks are given only for representation purposes. The JSON path might be different from what has been showcased here. 
-    That is why images have been given to follow it as a reference.
-
+Now we can always look for some uses cases and scenarios to further extend the explorations and possibilities of the integration, 
+and to see how we can leverage the integration to automate various security operations and incident response workflows.
