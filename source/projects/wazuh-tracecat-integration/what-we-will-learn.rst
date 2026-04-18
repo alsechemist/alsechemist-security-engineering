@@ -4,6 +4,7 @@ What We'll Learn?
 In this project, we will learn how to integrate Wazuh with Tracecat to automate security responses. The key learning outcomes include:
 
 - **Deploy Integration Scripts**: Place custom-tracecat.py and its wrapper into Wazuh's integration directory—then unlock the bridge
+- **Create Custom Rules**: Create custom rules for Tracecat related events.
 - **Configure ossec.conf for Automation**: Wire up webhook URLs, API keys, and alert triggers to make Wazuh talk to Tracecat
 - **Master Tracecat Secrets**: Safely store and reference wazuh-wui credentials and other API keys across your workflows
 - **Understand the Trigger Component**: The gatekeeper—how alerts flow in and workflows ignite

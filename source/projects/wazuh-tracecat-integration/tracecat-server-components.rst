@@ -142,6 +142,16 @@ You can use the following command to view the logs:
 
 This command will display the latest entries in the ``tracecat.log`` file in real-time, allowing you to monitor the integration's activities and identify any potential issues.
 
+Besides, with the custom rules that we configuired earlier, you should also be able to see Wazuh Event Logs like the image below,
+
+.. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-server-workflow-contifiguration-4.png
+    :alt: Tracecat Server, Reshape Component Showing the Incoming Json Data from Wazuh Alerts
+    :align: center
+
+.. raw:: html
+    
+    <div style="height:25px;"></div>
+
 With the Wazuh server configured to execute the integration script, 
 you can now proceed to the prerequisite steps for setting up the Tracecat server and 
 ensuring that it can receive the alerts from Wazuh and trigger the corresponding workflows.
@@ -174,7 +184,7 @@ automatically filled based on the YAML configuration, but you can always edit th
 
 Follow the image below for a high level view of how the Http Request component is configured in the workflow,
 
-.. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-server-workflow-contifiguration-4.png
+.. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-server-workflow-contifiguration-5.png
     :alt: Tracecat Server, Configuration of Http Request Component in the Workflow
     :align: center
 
@@ -189,7 +199,7 @@ and you can use it in the other components that require it by using the expressi
 
 Refer to the image below to see how the JWT token can be accessed in the other components using expressions,
 
-.. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-server-workflow-contifiguration-5.png
+.. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-server-workflow-contifiguration-6.png
     :alt: Tracecat Server, Accessing the JWT Token in Other Components Using Expressions
     :align: center
 
@@ -215,7 +225,7 @@ replace it in the expression syntax like this: ``${{ rule.id }}``
 
 Follow the image below for a high level view of how to use expressions to access the fields from the incoming json data from Wazuh alerts,
 
-.. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-server-workflow-contifiguration-6.png
+.. image:: ../../assets/images/projects/wazuh-tracecat-integration/tracecat-server-workflow-contifiguration-7.png
     :alt: Tracecat Server, Using Expressions to Access the Fields from the Incoming Json Data from Wazuh Alerts
     :align: center
 
