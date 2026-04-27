@@ -210,6 +210,14 @@ Refer to the image below to see how the JWT token can be accessed in the other c
 All you have to do is to copy the json path of the JWT token from the results tab of the Http Request component and 
 place it in the expression syntax to be able to access it in the other components that require it.
 
+.. attention::
+
+    Make sure to save and **Publish** the workflow everytime you make changes and this even applies for setting up everything for the first time. 
+    For external webhook connectivity, workflows are required to be published, since everything is automated here, rather manually running the workflows.
+    So workflows state will only get updated, if it is published, otherwise webook connectivity will follow the previous version of workflows.
+
+    You will find the **Publish** button right next the Run button. 
+
 Expressions
 -----------
 
