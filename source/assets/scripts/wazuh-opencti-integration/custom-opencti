@@ -1,0 +1,332 @@
+#!/bin/sh
+# ============================================================================
+# custom-opencti — Wazuh integrator wrapper
+# ============================================================================
+#
+# WHAT THIS IS
+# ------------
+# This is the file Wazuh's integrator daemon calls directly. It's a thin shell
+# wrapper whose only job is to locate a Python interpreter, enforce a hard
+# timeout, optionally log the invocation, print friendly status when run
+# interactively, and hand control to the Python script that does the real
+# enrichment work.
+#
+# There is NO integration logic in this file. IOC extraction, GraphQL queries,
+# and log writing all live in the Python script at:
+#     /var/ossec/integrations/custom-opencti.py
+#
+# HOW WAZUH INVOKES THIS
+# ----------------------
+# Per ossec.conf <integration> block:
+#     <integration>
+#         <n>custom-opencti</n>
+#         <hook_url>http://YOUR_OPENCTI_IP:8080/graphql</hook_url>
+#         <api_key>YOUR_OPENCTI_ADMIN_TOKEN</api_key>
+#         <group>...</group>
+#         <level>5</level>
+#         <alert_format>json</alert_format>
+#     </integration>
+#
+# Wazuh calls:
+#     /var/ossec/integrations/custom-opencti \
+#         <alert_file> <api_key> <hook_url> [<options>]
+#
+# DRY-RUN FROM CLI
+# ----------------
+# You can invoke this script manually for troubleshooting. Pass --debug
+# anywhere in the argument list to get short status messages on stderr so
+# you can see exactly what's happening. Example:
+#
+#     sudo /var/ossec/integrations/custom-opencti \
+#         /tmp/sample-alert.json \
+#         "YOUR_OPENCTI_TOKEN" \
+#         "http://opencti.local:8080/graphql" \
+#         --debug
+#
+# Without --debug the wrapper is completely silent on success. Errors (bad
+# args, missing Python, wrong paths) still surface because they're critical.
+#
+# Wazuh NEVER passes --debug, so in production the wrapper stays quiet and
+# Wazuh's integrations.log only sees real errors — no noise.
+#
+# INSTALL
+# -------
+#     sudo cp custom-opencti     /var/ossec/integrations/custom-opencti
+#     sudo cp custom-opencti.py  /var/ossec/integrations/custom-opencti.py
+#     sudo chown root:wazuh      /var/ossec/integrations/custom-opencti*
+#     sudo chmod 750             /var/ossec/integrations/custom-opencti*
+#
+# FILES
+# -----
+#     /var/ossec/integrations/custom-opencti      — this wrapper (mode 750)
+#     /var/ossec/integrations/custom-opencti.py   — the Python integration
+#     /var/ossec/logs/opencti.log                 — enrichment events (mode 640)
+#     /var/ossec/logs/opencti-wrapper.log         — wrapper log (optional, mode 640)
+#     /var/ossec/logs/integrations.log            — Wazuh's own integrator log
+#
+# EXIT CODES
+# ----------
+#     0  — Python completed (regardless of whether it found IOC hits)
+#     1  — argument error (Wazuh passed wrong number of args)
+#     2  — no working Python interpreter found
+#     124 — Python execution timed out (from `timeout`)
+#     Anything else — whatever Python exited with
+#
+# ============================================================================
+
+set -u   # error on unset variables (catches typos)
+# NOTE: we deliberately do NOT set -e. If a non-critical step fails (like a
+# log write), we still want to proceed to calling Python — losing an
+# enrichment because we couldn't write a debug log line would be bad.
+
+# ============================================================================
+# USER CONFIGURATION
+# ============================================================================
+
+# ── Wrapper logging ─────────────────────────────────────────────────────────
+# When enabled, each invocation appends a timestamped line to WRAPPER_LOG:
+# what Python binary was used, what script, what alert file, what hook URL,
+# and the final exit code. Useful for troubleshooting but NOT needed for
+# normal operation — the Python script's own opencti.log has the real events.
+#
+# Default: disabled (0). Flip to 1 when debugging, then flip back.
+# The Python integration's own log at /var/ossec/logs/opencti.log is
+# unaffected by this setting — it's always written.
+WRAPPER_LOG_ENABLED=0
+
+# Where the wrapper log goes when enabled.
+WRAPPER_LOG="/var/ossec/logs/opencti-wrapper.log"
+
+# ── Execution behavior ──────────────────────────────────────────────────────
+# Hard timeout in seconds. If Python is still running after this, it gets
+# killed. Must be comfortably longer than the Python script's own network
+# timeout (5s per IOC, with one retry) — 60s leaves headroom for alerts
+# with many IOCs to query in sequence.
+EXECUTION_TIMEOUT=60
+
+# Candidate Python interpreters in priority order. First one that exists and
+# is executable wins. Wazuh's bundled Python is preferred because the Python
+# script is written/tested against it and ships with `requests` out of the box.
+PYTHON_CANDIDATES="
+/var/ossec/framework/python/bin/python3
+/usr/bin/python3
+/usr/local/bin/python3
+"
+
+# The Python script that does the real work. Expected to sit alongside this
+# wrapper in /var/ossec/integrations/.
+SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
+PYTHON_SCRIPT="${SCRIPT_DIR}/custom-opencti.py"
+
+# ============================================================================
+# INTERNAL — detect --debug flag
+# ============================================================================
+# If the user passes --debug anywhere in the argument list, we print short
+# status messages to stderr so dry-runs are self-explanatory. Without the
+# flag, the wrapper stays completely silent aside from error-path messages
+# that need to surface regardless (missing args, missing Python, etc.).
+#
+# Wazuh NEVER passes --debug — it sticks to the fixed positional args:
+#     <alert_file> <api_key> <hook_url> [<options>]
+# So in production this stays off by default with no config needed.
+#
+# The flag is filtered out of $@ before we pass args through to Python, so
+# Python never sees it even if you put it in the argument list.
+DEBUG=0
+
+# Rebuild positional args without --debug. The standard POSIX trick is:
+# save current args, clear $@, then re-append everything that isn't our flag.
+# Using `set --` with no args clears, then `set -- "$@" "$arg"` appends.
+saved_args_count=$#
+i=0
+while [ "$i" -lt "$saved_args_count" ]; do
+    i=$((i + 1))
+    # Peek at the first arg, then shift it off
+    arg="$1"
+    shift
+    if [ "$arg" = "--debug" ]; then
+        DEBUG=1
+    else
+        # Re-append to the end of the positional args. By the time the loop
+        # finishes, all original args (minus --debug) are back in $@ in order.
+        set -- "$@" "$arg"
+    fi
+done
+
+# ============================================================================
+# HELPERS
+# ============================================================================
+
+# _say — user-facing status message (only when --debug was passed).
+# Prefixed with a marker so output is visually distinct from Python errors
+# or Wazuh messages, which also land on stderr.
+_say() {
+    [ "$DEBUG" = "1" ] && printf '[opencti-wrapper] %s\n' "$*" >&2
+}
+
+# _log — append one timestamped line to the wrapper log, ONLY if logging is
+# enabled. Silently tolerates write failures so a log-fs-full condition
+# doesn't kill the integration. The outer subshell + stderr-redirect is
+# necessary to suppress shell-level "cannot create" errors when the log
+# directory doesn't exist, which would otherwise leak into integrations.log.
+_log() {
+    [ "$WRAPPER_LOG_ENABLED" = "1" ] || return 0
+    ts=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+    ( printf '[%s] [pid:%d] %s\n' "$ts" "$$" "$*" >> "$WRAPPER_LOG" ) 2>/dev/null || true
+}
+
+# _find_python — iterate the candidate list, return the first usable one.
+# Prints nothing and returns 1 if nothing is usable.
+_find_python() {
+    for py in $PYTHON_CANDIDATES; do
+        if [ -x "$py" ]; then
+            # Quick sanity check: does `-V` succeed? Catches permission issues
+            # and the rare case where the file exists but is broken.
+            if "$py" -V >/dev/null 2>&1; then
+                printf '%s' "$py"
+                return 0
+            fi
+        fi
+    done
+    return 1
+}
+
+# _find_timeout — locate the `timeout` command. Present on essentially every
+# modern Linux, but we don't want to hard-fail if it's missing — better to
+# run without the timeout than not run at all.
+_find_timeout() {
+    for t in /usr/bin/timeout /bin/timeout; do
+        if [ -x "$t" ]; then
+            printf '%s' "$t"
+            return 0
+        fi
+    done
+    # Fallback: search PATH for non-standard installs
+    if command -v timeout >/dev/null 2>&1; then
+        command -v timeout
+        return 0
+    fi
+    return 1
+}
+
+# ============================================================================
+# MAIN
+# ============================================================================
+
+# ── Validate arguments ──────────────────────────────────────────────────────
+# Wazuh always passes at least 3 positional args: <alert_file> <api_key> <hook_url>.
+# A 4th arg (options) may or may not be present — we forward whatever we get.
+if [ "$#" -lt 3 ]; then
+    _log "ERROR: expected >=3 args, got $#. Is ossec.conf <integration> block complete?"
+    _say "ERROR: missing arguments"
+    _say "usage: $0 <alert_file> <api_key> <hook_url> [<options>]"
+    _say "       (Wazuh calls this automatically per ossec.conf integration block)"
+    # Also echo to stderr so the message surfaces in integrations.log regardless
+    echo "custom-opencti: expected >=3 args (alert_file api_key hook_url), got $#" >&2
+    exit 1
+fi
+
+ALERT_FILE="$1"
+
+# Sanity check that the alert file exists and is readable. If it doesn't, the
+# Python script will just fail with a less informative error — catch it here.
+if [ ! -r "$ALERT_FILE" ]; then
+    _log "ERROR: alert file not readable: $ALERT_FILE"
+    _say "ERROR: alert file not readable: $ALERT_FILE"
+    echo "custom-opencti: alert file not readable: $ALERT_FILE" >&2
+    exit 1
+fi
+
+# ── Locate Python ───────────────────────────────────────────────────────────
+PYTHON_BIN=$(_find_python) || {
+    _log "ERROR: no working Python interpreter found. Tried: $PYTHON_CANDIDATES"
+    _say "ERROR: no working Python interpreter found"
+    _say "       Tried: $(echo $PYTHON_CANDIDATES | tr '\n' ' ')"
+    echo "custom-opencti: no working Python interpreter found" >&2
+    exit 2
+}
+
+# ── Verify the Python script is there ──────────────────────────────────────
+if [ ! -f "$PYTHON_SCRIPT" ]; then
+    _log "ERROR: Python script not found at $PYTHON_SCRIPT"
+    _say "ERROR: Python script not found at $PYTHON_SCRIPT"
+    echo "custom-opencti: Python script not found at $PYTHON_SCRIPT" >&2
+    exit 2
+fi
+
+# ── Locate timeout (optional) ───────────────────────────────────────────────
+TIMEOUT_BIN=$(_find_timeout) || TIMEOUT_BIN=""
+
+# ── Announce what we're about to do ─────────────────────────────────────────
+# The interactive messages give a dry-run user a clear picture without needing
+# to tail a log file. The log line captures the same info for later auditing.
+#
+# We deliberately do NOT log or print the api_key (arg 2) — it's sensitive.
+# We DO log the hook URL because it's not a secret and you need it to verify
+# the integration is pointing at the right OpenCTI instance.
+_say "Python:      $PYTHON_BIN"
+_say "Script:      $PYTHON_SCRIPT"
+_say "Alert file:  $ALERT_FILE"
+_say "Hook URL:    $3"
+_say "Timeout:     ${EXECUTION_TIMEOUT}s"
+if [ -z "$TIMEOUT_BIN" ]; then
+    _say "Note:        'timeout' command not found — running without hard timeout"
+fi
+if [ "$WRAPPER_LOG_ENABLED" = "1" ]; then
+    _say "Wrapper log: $WRAPPER_LOG (enabled)"
+else
+    _say "Wrapper log: disabled (set WRAPPER_LOG_ENABLED=1 to enable)"
+fi
+_say "Running Python integration..."
+
+_log "invoke python=$PYTHON_BIN script=$PYTHON_SCRIPT alert=$ALERT_FILE hook_url=$3 timeout=${EXECUTION_TIMEOUT}s"
+
+# ── Execute the Python script ───────────────────────────────────────────────
+# We pass every argument Wazuh gave us straight through. The Python script
+# reads them positionally:
+#     argv[1] = alert file
+#     argv[2] = api key
+#     argv[3] = hook url
+#     argv[4+] = anything else (currently unused by the Python side)
+#
+# If `timeout` is available, we wrap the call with it. Otherwise we run raw
+# and rely on network timeouts inside the Python script itself.
+if [ -n "$TIMEOUT_BIN" ]; then
+    # --kill-after ensures SIGKILL if SIGTERM alone doesn't stop Python
+    # within 5 seconds of the initial timeout. Belt-and-suspenders protection
+    # against a wedged requests call that ignores SIGTERM.
+    "$TIMEOUT_BIN" --kill-after=5 "$EXECUTION_TIMEOUT" \
+        "$PYTHON_BIN" "$PYTHON_SCRIPT" "$@"
+    RC=$?
+else
+    "$PYTHON_BIN" "$PYTHON_SCRIPT" "$@"
+    RC=$?
+fi
+
+# ── Report result ───────────────────────────────────────────────────────────
+# Translate well-known exit codes into human-readable messages for easier
+# debugging. Both the interactive user (via _say) and the log (via _log)
+# get the same information.
+case "$RC" in
+    0)
+        _log "success rc=0"
+        _say "Done. Python exited normally (rc=0)."
+        _say "Check /var/ossec/logs/opencti.log for enrichment events."
+        ;;
+    124)
+        _log "TIMEOUT after ${EXECUTION_TIMEOUT}s — Python did not return in time"
+        _say "TIMEOUT — Python did not return within ${EXECUTION_TIMEOUT}s."
+        _say "Consider raising EXECUTION_TIMEOUT or check OpenCTI responsiveness."
+        ;;
+    137)
+        _log "KILLED — Python was force-killed (likely exceeded timeout grace period)"
+        _say "KILLED — Python was force-killed after the grace period."
+        ;;
+    *)
+        _log "Python exited with rc=$RC"
+        _say "Python exited with rc=$RC."
+        _say "Check /var/ossec/logs/integrations.log for the Python stderr output."
+        ;;
+esac
+
+exit "$RC"
