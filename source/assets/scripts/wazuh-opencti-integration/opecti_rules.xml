@@ -1,0 +1,817 @@
+<group name="opencti,threat_intel,">
+
+  <!-- =========================================================
+       BASE: every opencti enrichment event lands here first
+       ========================================================= -->
+  <rule id="300000" level="0">
+    <decoded_as>json</decoded_as>
+    <field name="integration">opencti</field>
+    <description>OpenCTI enrichment event (base)</description>
+  </rule>
+  
+  <!-- =========================================================
+       OPENCTI PLATFORM LOGS — auth, API errors, audit
+       ========================================================= -->
+  
+  <rule id="300001" level="3">
+    <if_sid>300000</if_sid>
+    <field name="match_type">error</field>
+    <description>OpenCTI: $(error_message)</description>
+    <group>opencti_match_error,</group>
+  </rule>
+  
+  <!-- AUTH_REQUIRED — token invalid, expired, revoked, or missing.
+       This is operationally critical: TI pipeline is BLIND until fixed.
+       The script will keep retrying every alert, so this is also self-amplifying. -->
+       
+
+  <!-- Base: any enrichment lookup that failed at the platform layer -->
+       
+  <rule id="300002" level="10">
+    <if_sid>300001</if_sid>
+    <field name="error_message" type="pcre2">"code":\s*"AUTH_REQUIRED"</field>
+    <description>OpenCTI: AUTH FAILURE - API token rejected (HTTP 401). System - Threat intel enrichment is offline.</description>
+    <group>authentication_failed,opencti_auth_failure,opencti_pipeline_down,</group>
+  </rule>
+  
+    <!-- Persistant auth failure → escalate to incident-level.
+       Three failures in 5 minutes means it's not a transient blip. -->
+       
+  <rule id="300003" level="10" frequency="3" timeframe="300">
+    <if_matched_sid>300002</if_matched_sid>
+    <description>OpenCTI: PERSISTENT AUTH FAILURE - threat intel pipeline DOWN, immediate action required</description>
+    <group>opencti_pipeline_down,incident,</group>
+  </rule>
+  
+    <!-- FORBIDDEN — token valid but lacks permission for the operation.
+       Often means RBAC misconfiguration after a role change. -->
+       
+  <rule id="300004" level="7">
+    <if_sid>300000</if_sid>
+    <field name="error_message" type="pcre2">"(code|http_status)":\s*("FORBIDDEN"|403)</field>
+    <description>OpenCTI: PERMISSION DENIED - token lacks rights to query indicators/observables (HTTP 403)</description>
+    <group>opencti_permission_denied,</group>
+  </rule>
+
+  <!-- Rate limiting / quota — if your script gets throttled, you're flying blind -->
+  
+  <rule id="300005" level="7">
+    <if_sid>300004</if_sid>
+    <field name="error_message" type="pcre2">"http_status":\s*429|rate.?limit|too many requests</field>
+    <description>OpenCTI: RATE LIMITED (HTTP 429) - lookups for $(ioc.value) being throttled</description>
+    <group>opencti_rate_limited,</group>
+  </rule>
+  
+  <!-- 5xx — platform is broken or overloaded -->
+  
+  <rule id="300006" level="10">
+    <if_sid>300000</if_sid>
+    <field name="error_message" type="pcre2">"http_status":\s*5\d{2}|"genre":\s*"TECHNICAL".*("INTERNAL|TIMEOUT|UNAVAILABLE")</field>
+    <description>OpenCTI: PLATFORM ERROR (5xx) - server-side fault during lookup</description>
+    <group>opencti_platform_5xx,</group>
+  </rule>
+
+  <!-- Sustained 5xx → platform outage -->
+  
+  <rule id="300007" level="12" frequency="5" timeframe="600">
+    <if_matched_sid>300006</if_matched_sid>
+    <description>OpenCTI: PLATFORM OUTAGE - sustained server errors, threat intel unavailable</description>
+    <group>opencti_pipeline_down,incident,</group>
+  </rule>
+  
+    <!-- Connection / network failures (script couldn't reach platform at all).
+       Pattern matches errors that don't carry an http_status — usually DNS, TCP, TLS, timeout. -->
+       
+  <rule id="300008" level="10">
+    <if_sid>300000</if_sid>
+    <field name="error_message" type="pcre2">(?i)(connection refused|timed out|name or service not known|ssl|tls|unreachable|connection reset)</field>
+    <description>OpenCTI: NETWORK FAILURE reaching platform - $(error_message)</description>
+    <group>opencti_network_error,</group>
+  </rule>
+
+  <!-- Catch-all for anything else returning match_type=error -->
+  <!-- Inherits level 7 from 110260; this child just adds an audit trail group -->
+  
+  <rule id="300009" level="7">
+    <if_sid>300000</if_sid>
+    <field name="error_message" type="pcre2">.+</field>
+    <description>OpenCTI: LOOKUP ERROR - (uncategorized) - $(error_message)</description>
+    <group>opencti_error_other,</group>
+  </rule>
+  
+    <!-- =========================================================
+       NON-MATCH TIER (informational / noise floor)
+       ========================================================= -->
+
+  <!-- IOC checked but not in OpenCTI — useful for visibility, low level -->
+  
+  <rule id="300010" level="3">
+    <if_sid>300000</if_sid>
+    <field name="match_type">no_match</field>
+    <description>OpenCTI: No intel match for $(ioc.type) $(ioc.value)</description>
+    <group>opencti_no_match,</group>
+  </rule>
+  
+   <!-- =========================================================
+       MATCH TIER — indicator_hit_valid
+       Structure: IOC-type is primary axis, score tiers nested under each.
+       Each event walks ONE path: parent -> type branch -> score sub-tier.
+       Sequential rule IDs 300011 onwards, four tiers per type:
+         baseline (catches anything not matching score regexes)
+         LOW    score 0-49
+         MEDIUM score 50-79
+         HIGH   score 80-100
+       ========================================================= -->
+
+  <!-- 300011 — PARENT: any valid indicator hit. Baseline level 15
+       ensures unknown IOC types still critical alert. All branches chain off this. -->
+       
+  <rule id="300011" level="15">
+    <if_sid>300000</if_sid>
+    <field name="match_type">indicator_hit_valid</field>
+    <description>OpenCTI: Threat intel matched INDICATORS on $(ioc.type) $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match,opencti_indicator_match</group>
+  </rule>
+
+  <!-- =========================================================
+       FILE HASH BRANCH — sha256, sha1, md5
+       Most actionable: a hash hit means THAT EXACT FILE is on the host
+       ========================================================= -->
+
+  <!-- 300012 — file hash baseline -->
+  
+  <rule id="300012" level="15">
+    <if_sid>300011</if_sid>
+    <field name="ioc.type" type="pcre2">^(sha256|sha1|md5)$</field>
+    <description>OpenCTI: malicious FILE HASH matched INDICATORS on $(source_agent) - $(ioc.type)=$(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_hash,</group>
+  </rule>
+
+  <!-- 300013 — file hash, LOW confidence (0-49) -->
+  
+  <rule id="300013" level="15">
+    <if_sid>300012</if_sid>
+    <field name="severity_score" type="pcre2">^([0-9]|[1-4][0-9])$</field>
+    <description>OpenCTI: LOW-confidence FILE HASH matched INDICATORS on $(source_agent) - $(ioc.type)=$(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_hash,opencti_match_low,</group>
+  </rule>
+
+  <!-- 300014 — file hash, MEDIUM confidence (50-79) -->
+  
+  <rule id="300014" level="15">
+    <if_sid>300012</if_sid>
+    <field name="severity_score" type="pcre2">^([5-7][0-9])$</field>
+    <description>OpenCTI: MEDIUM-confidence FILE HASH matched INDICATORS on $(source_agent) - $(ioc.type)=$(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_hash,opencti_match_medium,</group>
+  </rule>
+
+  <!-- 300015 — file hash, HIGH confidence (80-100) -->
+  
+  <rule id="300015" level="15">
+    <if_sid>300012</if_sid>
+    <field name="severity_score" type="pcre2">^(8[0-9]|9[0-9]|100)$</field>
+    <description>OpenCTI: HIGH-confidence FILE HASH matched INDICATORS on $(source_agent) - $(ioc.type)=$(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_hash,opencti_match_high,</group>
+  </rule>
+
+
+  <!-- =========================================================
+       DOMAIN BRANCH — domain-name
+       Strong signal: C2, phishing, malware distribution
+       ========================================================= -->
+
+  <!-- 300016 — domain baseline -->
+  
+  <rule id="300016" level="15">
+    <if_sid>300011</if_sid>
+    <field name="ioc.type">domain-name</field>
+    <description>OpenCTI: malicious DOMAIN contacted by $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_domain,</group>
+  </rule>
+
+  <!-- 300017 — domain, LOW confidence (0-49) -->
+  
+  <rule id="300017" level="15">
+    <if_sid>300016</if_sid>
+    <field name="severity_score" type="pcre2">^([0-9]|[1-4][0-9])$</field>
+    <description>OpenCTI: LOW-confidence DOMAIN matched INDICATORS on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_domain,opencti_match_low,</group>
+  </rule>
+
+  <!-- 300018 — domain, MEDIUM confidence (50-79) -->
+  
+  <rule id="300018" level="15">
+    <if_sid>300016</if_sid>
+    <field name="severity_score" type="pcre2">^([5-7][0-9])$</field>
+    <description>OpenCTI: MEDIUM-confidence DOMAIN matched INDICATORS on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_domain,opencti_match_medium,</group>
+  </rule>
+
+  <!-- 300019 — domain, HIGH confidence (80-100) -->
+  
+  <rule id="300019" level="15">
+    <if_sid>300016</if_sid>
+    <field name="severity_score" type="pcre2">^(8[0-9]|9[0-9]|100)$</field>
+    <description>OpenCTI: HIGH-confidence DOMAIN matched INDICATORS on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_domain,opencti_match_high,</group>
+  </rule>
+
+  <!-- =========================================================
+       URL BRANCH — url
+       Full URL match: precise C2/phish endpoint
+       ========================================================= -->
+
+  <!-- 300020 — URL baseline -->
+  
+  <rule id="300020" level="15">
+    <if_sid>300011</if_sid>
+    <field name="ioc.type">url</field>
+    <description>OpenCTI: malicious URL accessed by $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_url,</group>
+  </rule>
+
+  <!-- 300021 — URL, LOW confidence (0-49) -->
+  
+  <rule id="300021" level="15">
+    <if_sid>300020</if_sid>
+    <field name="severity_score" type="pcre2">^([0-9]|[1-4][0-9])$</field>
+    <description>OpenCTI: LOW-confidence URL matched INDICATORS on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_url,opencti_match_low,</group>
+  </rule>
+
+  <!-- 300022 — URL, MEDIUM confidence (50-79) -->
+  
+  <rule id="300022" level="15">
+    <if_sid>300020</if_sid>
+    <field name="severity_score" type="pcre2">^([5-7][0-9])$</field>
+    <description>OpenCTI: MEDIUM-confidence URL matched INDICATORS on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_url,opencti_match_medium,</group>
+  </rule>
+
+  <!-- 300023 — URL, HIGH confidence (80-100) -->
+  
+  <rule id="300023" level="15">
+    <if_sid>300020</if_sid>
+    <field name="severity_score" type="pcre2">^(8[0-9]|9[0-9]|100)$</field>
+    <description>OpenCTI: HIGH-confidence URL matched INDICATORS on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_url,opencti_match_high,</group>
+  </rule>
+
+  <!-- =========================================================
+       IPv4 BRANCH — ipv4-addr
+       Softer signal: IP ownership changes, shared hosting, CDNs
+       Lower baseline reflects higher false-positive rate
+       ========================================================= -->
+
+  <!-- 300024 — IPv4 baseline -->
+  
+  <rule id="300024" level="15">
+    <if_sid>300011</if_sid>
+    <field name="ioc.type">ipv4-addr</field>
+    <description>OpenCTI: malicious IPv4 contacted by $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_ipv4,</group>
+  </rule>
+
+  <!-- 300025 — IPv4, LOW confidence (0-49) -->
+  
+  <rule id="300025" level="15">
+    <if_sid>300024</if_sid>
+    <field name="severity_score" type="pcre2">^([0-9]|[1-4][0-9])$</field>
+    <description>OpenCTI: LOW-confidence IPv4 matched INDICATORS on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_ipv4,opencti_match_low,</group>
+  </rule>
+
+  <!-- 300026 — IPv4, MEDIUM confidence (50-79) -->
+  
+  <rule id="300026" level="15">
+    <if_sid>300024</if_sid>
+    <field name="severity_score" type="pcre2">^([5-7][0-9])$</field>
+    <description>OpenCTI: MEDIUM-confidence IPv4 matched INDICATORS on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_ipv4,opencti_match_medium,</group>
+  </rule>
+
+  <!-- 300027 — IPv4, HIGH confidence (80-100) -->
+  
+  <rule id="300027" level="15">
+    <if_sid>300024</if_sid>
+    <field name="severity_score" type="pcre2">^(8[0-9]|9[0-9]|100)$</field>
+    <description>OpenCTI: HIGH-confidence IPv4 matched INDICATORS on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_ipv4,opencti_match_high,</group>
+  </rule>
+
+  <!-- =========================================================
+       IPv6 BRANCH — ipv6-addr
+       Same severity model as IPv4
+       ========================================================= -->
+
+  <!-- 300028 — IPv6 baseline -->
+  
+  <rule id="300028" level="15">
+    <if_sid>300011</if_sid>
+    <field name="ioc.type">ipv6-addr</field>
+    <description>OpenCTI: malicious IPv6 contacted by $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_ipv6,</group>
+  </rule>
+
+  <!-- 300029 — IPv6, LOW confidence (0-49) -->
+  
+  <rule id="300029" level="15">
+    <if_sid>300028</if_sid>
+    <field name="severity_score" type="pcre2">^([0-9]|[1-4][0-9])$</field>
+    <description>OpenCTI: LOW-confidence IPv6 matched INDICATORS on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_ipv6,opencti_match_low,</group>
+  </rule>
+
+  <!-- 300030 — IPv6, MEDIUM confidence (50-79) -->
+  
+  <rule id="300030" level="15">
+    <if_sid>300028</if_sid>
+    <field name="severity_score" type="pcre2">^([5-7][0-9])$</field>
+    <description>OpenCTI: MEDIUM-confidence IPv6 matched INDICATORS on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_ipv6,opencti_match_medium,</group>
+  </rule>
+
+  <!-- 300031 — IPv6, HIGH confidence (80-100) -->
+  
+  <rule id="300031" level="15">
+    <if_sid>300028</if_sid>
+    <field name="severity_score" type="pcre2">^(8[0-9]|9[0-9]|100)$</field>
+    <description>OpenCTI: HIGH-confidence IPv6 matched INDICATORS on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_ipv6,opencti_match_high,</group>
+  </rule>
+
+ <!-- =========================================================
+       EMAIL BRANCH — email-addr
+       Phishing context: sender/recipient seen in known-bad threat intel
+       ========================================================= -->
+
+  <!-- 300032 — email baseline -->
+  
+  <rule id="300032" level="15">
+    <if_sid>300011</if_sid>
+    <field name="ioc.type">email-addr</field>
+    <description>OpenCTI: malicious EMAIL ADDRESS observed INDICATORS on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_email,</group>
+  </rule>
+
+  <!-- 300033 — email, LOW confidence (0-49) -->
+  
+  <rule id="300033" level="15">
+    <if_sid>300032</if_sid>
+    <field name="severity_score" type="pcre2">^([0-9]|[1-4][0-9])$</field>
+    <description>OpenCTI: LOW-confidence EMAIL matched INDICATORS on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_email,opencti_match_low,</group>
+  </rule>
+
+  <!-- 300034 — email, MEDIUM confidence (50-79) -->
+  
+  <rule id="300034" level="15">
+    <if_sid>300032</if_sid>
+    <field name="severity_score" type="pcre2">^([5-7][0-9])$</field>
+    <description>OpenCTI: MEDIUM-confidence EMAIL matched INDICATORS on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_email,opencti_match_medium,</group>
+  </rule>
+
+  <!-- 300035 — email, HIGH confidence (80-100) -->
+  
+  <rule id="300035" level="15">
+    <if_sid>300032</if_sid>
+    <field name="severity_score" type="pcre2">^(8[0-9]|9[0-9]|100)$</field>
+    <description>OpenCTI: HIGH-confidence EMAIL matched INDICATORS on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_email,opencti_match_high,</group>
+  </rule>
+  
+  <!-- =========================================================
+       WINDOWS REGISTRY KEY BRANCH — windows-registry-key
+       Strong host-level signal: persistence, defense evasion
+       Ties back to FIM rules 594/750 we discussed earlier
+       ========================================================= -->
+
+  <!-- 300036 — registry key baseline -->
+  
+  <rule id="300036" level="15">
+    <if_sid>300011</if_sid>
+    <field name="ioc.type">windows-registry-key</field>
+    <description>OpenCTI: malicious REGISTRY KEY on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_registry,</group>
+  </rule>
+
+  <!-- 300037 — registry key, LOW confidence (0-49) -->
+  
+  <rule id="300037" level="15">
+    <if_sid>300036</if_sid>
+    <field name="severity_score" type="pcre2">^([0-9]|[1-4][0-9])$</field>
+    <description>OpenCTI: LOW-confidence REGISTRY KEY matched INDICATORS on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_registry,opencti_match_low,</group>
+  </rule>
+
+  <!-- 300038 — registry key, MEDIUM confidence (50-79) -->
+  <rule id="300038" level="15">
+    <if_sid>300036</if_sid>
+    <field name="severity_score" type="pcre2">^([5-7][0-9])$</field>
+    <description>OpenCTI: MEDIUM-confidence REGISTRY KEY matched INDICATORS on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_registry,opencti_match_medium,</group>
+  </rule>
+
+  <!-- 300039 — registry key, HIGH confidence (80-100) -->
+  <rule id="300039" level="15">
+    <if_sid>300036</if_sid>
+    <field name="severity_score" type="pcre2">^(8[0-9]|9[0-9]|100)$</field>
+    <description>OpenCTI: HIGH-confidence REGISTRY KEY matched INDICATORS on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_registry,opencti_match_high,</group>
+  </rule>
+  
+    <!-- =========================================================
+       USER-AGENT BRANCH — user-agent
+       Behavioral signal: known-bad UA strings (malware, scanners, C2 clients)
+       Medium baseline — UAs are spoofable but a TI-tracked UA is meaningful
+       (Cobalt Strike default, Mimikatz UA, custom malware fingerprints)
+       ========================================================= -->
+
+  <!-- 300040 — user-agent baseline -->
+  
+  <rule id="300040" level="15">
+    <if_sid>300011</if_sid>
+    <field name="ioc.type">user-agent</field>
+    <description>OpenCTI: malicious USER-AGENT observed on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_useragent,</group>
+  </rule>
+
+  <!-- 300041 — user-agent, LOW confidence (0-49) -->
+  
+  <rule id="300041" level="15">
+    <if_sid>300040</if_sid>
+    <field name="severity_score" type="pcre2">^([0-9]|[1-4][0-9])$</field>
+    <description>OpenCTI: LOW-confidence USER-AGENT matched INDICATORS on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_useragent,opencti_match_low,</group>
+  </rule>
+
+  <!-- 300042 — user-agent, MEDIUM confidence (50-79) -->
+  
+  <rule id="300042" level="15">
+    <if_sid>300040</if_sid>
+    <field name="severity_score" type="pcre2">^([5-7][0-9])$</field>
+    <description>OpenCTI: MEDIUM-confidence USER-AGENT matched INDICATORS on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_useragent,opencti_match_medium,</group>
+  </rule>
+
+  <!-- 300043 — user-agent, HIGH confidence (80-100) -->
+  
+  <rule id="300043" level="15">
+    <if_sid>300040</if_sid>
+    <field name="severity_score" type="pcre2">^(8[0-9]|9[0-9]|100)$</field>
+    <description>OpenCTI: HIGH-confidence USER-AGENT matched INDICATORS on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_useragent,opencti_match_high,</group>
+  </rule>
+  
+  <!-- =========================================================
+       OBSERVABLE_ONLY MATCH TIER — match_type=observable_only
+       Same structure as indicator_hit_valid: IOC type primary,
+       score tiers nested. Sequential rule IDs 300044 onwards,
+       four tiers per type:
+         baseline (catches anything not matching score regexes)
+         LOW    score 0-49
+         MEDIUM score 50-79
+         HIGH   score 80-100
+
+       NOTE: observable_only means OpenCTI has the value as a stored
+       observable but no active (non-revoked, non-expired) Indicator
+       backs it. Operationally a tier below indicator_hit_valid - the
+       value was tracked but not currently weaponized as a detection.
+       Group tags include opencti_match_observable for downstream
+       deprioritization if your SIEM/SOAR uses tag-based routing.
+       ========================================================= -->
+
+  <!-- 300044 — PARENT: any observable_only hit. Baseline level 15
+       ensures unknown IOC types still alert. All branches chain off this. -->
+       
+  <rule id="300044" level="15">
+    <if_sid>300000</if_sid>
+    <field name="match_type">observable_only</field>
+    <description>OpenCTI: Threat intel matched OBSERVABLES on $(ioc.type) $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match,opencti_match_observable,</group>
+  </rule>
+
+  <!-- =========================================================
+       FILE HASH BRANCH — sha256, sha1, md5 (observable_only)
+       ========================================================= -->
+
+  <!-- 300045 — file hash baseline -->
+  
+  <rule id="300045" level="15">
+    <if_sid>300044</if_sid>
+    <field name="ioc.type" type="pcre2">^(sha256|sha1|md5)$</field>
+    <description>OpenCTI: file hash matched OBSERVABLES on $(source_agent) - $(ioc.type)=$(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_hash,opencti_match_observable,</group>
+  </rule>
+
+  <!-- 300046 — file hash, LOW confidence (0-49) -->
+  
+  <rule id="300046" level="15">
+    <if_sid>300045</if_sid>
+    <field name="severity_score" type="pcre2">^([0-9]|[1-4][0-9])$</field>
+    <description>OpenCTI: LOW-confidence file hash matched OBSERVABLES on $(source_agent) - $(ioc.type)=$(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_hash,opencti_match_observable,opencti_match_low,</group>
+  </rule>
+
+  <!-- 300047 — file hash, MEDIUM confidence (50-79) -->
+  
+  <rule id="300047" level="15">
+    <if_sid>300045</if_sid>
+    <field name="severity_score" type="pcre2">^([5-7][0-9])$</field>
+    <description>OpenCTI: MEDIUM-confidence file hash matched OBSERVABLES on $(source_agent) - $(ioc.type)=$(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_hash,opencti_match_observable,opencti_match_medium,</group>
+  </rule>
+
+  <!-- 300048 — file hash, HIGH confidence (80-100) -->
+  
+  <rule id="300048" level="15">
+    <if_sid>300045</if_sid>
+    <field name="severity_score" type="pcre2">^(8[0-9]|9[0-9]|100)$</field>
+    <description>OpenCTI: HIGH-confidence file hash matched OBSERVABLES on $(source_agent) - $(ioc.type)=$(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_hash,opencti_match_observable,opencti_match_high,</group>
+  </rule>
+
+  <!-- =========================================================
+       DOMAIN BRANCH — domain-name (observable_only)
+       ========================================================= -->
+
+  <!-- 300049 — domain baseline -->
+  
+  <rule id="300049" level="15">
+    <if_sid>300044</if_sid>
+    <field name="ioc.type">domain-name</field>
+    <description>OpenCTI: domain matched OBSERVABLES on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_domain,opencti_match_observable,</group>
+  </rule>
+
+  <!-- 300050 — domain, LOW confidence (0-49) -->
+  
+  <rule id="300050" level="15">
+    <if_sid>300049</if_sid>
+    <field name="severity_score" type="pcre2">^([0-9]|[1-4][0-9])$</field>
+    <description>OpenCTI: LOW-confidence domain matched OBSERVABLES on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_domain,opencti_match_observable,opencti_match_low,</group>
+  </rule>
+
+  <!-- 300051 — domain, MEDIUM confidence (50-79) -->
+  
+  <rule id="300051" level="15">
+    <if_sid>300049</if_sid>
+    <field name="severity_score" type="pcre2">^([5-7][0-9])$</field>
+    <description>OpenCTI: MEDIUM-confidence domain matched OBSERVABLES on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_domain,opencti_match_observable,opencti_match_medium,</group>
+  </rule>
+
+  <!-- 300052 — domain, HIGH confidence (80-100) -->
+  
+  <rule id="300052" level="15">
+    <if_sid>300049</if_sid>
+    <field name="severity_score" type="pcre2">^(8[0-9]|9[0-9]|100)$</field>
+    <description>OpenCTI: HIGH-confidence domain matched OBSERVABLES on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_domain,opencti_match_observable,opencti_match_high,</group>
+  </rule>
+
+  <!-- =========================================================
+       URL BRANCH — url (observable_only)
+       ========================================================= -->
+
+  <!-- 300053 — URL baseline -->
+  
+  <rule id="300053" level="15">
+    <if_sid>300044</if_sid>
+    <field name="ioc.type">url</field>
+    <description>OpenCTI: URL matched OBSERVABLES on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_url,opencti_match_observable,</group>
+  </rule>
+
+  <!-- 300054 — URL, LOW confidence (0-49) -->
+  
+  <rule id="300054" level="15">
+    <if_sid>300053</if_sid>
+    <field name="severity_score" type="pcre2">^([0-9]|[1-4][0-9])$</field>
+    <description>OpenCTI: LOW-confidence URL matched OBSERVABLES on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_url,opencti_match_observable,opencti_match_low,</group>
+  </rule>
+
+  <!-- 300055 — URL, MEDIUM confidence (50-79) -->
+  
+  <rule id="300055" level="15">
+    <if_sid>300053</if_sid>
+    <field name="severity_score" type="pcre2">^([5-7][0-9])$</field>
+    <description>OpenCTI: MEDIUM-confidence URL matched OBSERVABLES on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_url,opencti_match_observable,opencti_match_medium,</group>
+  </rule>
+
+  <!-- 300056 — URL, HIGH confidence (80-100) -->
+  
+  <rule id="300056" level="15">
+    <if_sid>300053</if_sid>
+    <field name="severity_score" type="pcre2">^(8[0-9]|9[0-9]|100)$</field>
+    <description>OpenCTI: HIGH-confidence URL matched OBSERVABLES on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_url,opencti_match_observable,opencti_match_high,</group>
+  </rule>
+
+  <!-- =========================================================
+       IPv4 BRANCH — ipv4-addr (observable_only)
+       Sample log shows real observable_only hit on 185.242.246.127
+       (FortiGate exploitation IOC, score 60, AlienVault report)
+       ========================================================= -->
+
+  <!-- 300057 — IPv4 baseline -->
+  
+  <rule id="300057" level="15">
+    <if_sid>300044</if_sid>
+    <field name="ioc.type">ipv4-addr</field>
+    <description>OpenCTI: IPv4 matched OBSERVABLES on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_ipv4,opencti_match_observable,</group>
+  </rule>
+
+  <!-- 300058 — IPv4, LOW confidence (0-49) -->
+  
+  <rule id="300058" level="15">
+    <if_sid>300057</if_sid>
+    <field name="severity_score" type="pcre2">^([0-9]|[1-4][0-9])$</field>
+    <description>OpenCTI: LOW-confidence IPv4 matched OBSERVABLES on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_ipv4,opencti_match_observable,opencti_match_low,</group>
+  </rule>
+
+  <!-- 300059 — IPv4, MEDIUM confidence (50-79) -->
+  
+  <rule id="300059" level="15">
+    <if_sid>300057</if_sid>
+    <field name="severity_score" type="pcre2">^([5-7][0-9])$</field>
+    <description>OpenCTI: MEDIUM-confidence IPv4 matched OBSERVABLES on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_ipv4,opencti_match_observable,opencti_match_medium,</group>
+  </rule>
+
+  <!-- 300060 — IPv4, HIGH confidence (80-100) -->
+  
+  <rule id="300060" level="15">
+    <if_sid>300057</if_sid>
+    <field name="severity_score" type="pcre2">^(8[0-9]|9[0-9]|100)$</field>
+    <description>OpenCTI: HIGH-confidence IPv4 matched OBSERVABLES on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_ipv4,opencti_match_observable,opencti_match_high,</group>
+  </rule>
+
+  <!-- =========================================================
+       IPv6 BRANCH — ipv6-addr (observable_only)
+       ========================================================= -->
+
+  <!-- 300061 — IPv6 baseline -->
+  
+  <rule id="300061" level="15">
+    <if_sid>300044</if_sid>
+    <field name="ioc.type">ipv6-addr</field>
+    <description>OpenCTI: IPv6 matched OBSERVABLES on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_ipv6,opencti_match_observable,</group>
+  </rule>
+
+  <!-- 300062 — IPv6, LOW confidence (0-49) -->
+  
+  <rule id="300062" level="15">
+    <if_sid>300061</if_sid>
+    <field name="severity_score" type="pcre2">^([0-9]|[1-4][0-9])$</field>
+    <description>OpenCTI: LOW-confidence IPv6 matched OBSERVABLES on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_ipv6,opencti_match_observable,opencti_match_low,</group>
+  </rule>
+
+  <!-- 300063 — IPv6, MEDIUM confidence (50-79) -->
+  
+  <rule id="300063" level="15">
+    <if_sid>300061</if_sid>
+    <field name="severity_score" type="pcre2">^([5-7][0-9])$</field>
+    <description>OpenCTI: MEDIUM-confidence IPv6 matched OBSERVABLES on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_ipv6,opencti_match_observable,opencti_match_medium,</group>
+  </rule>
+
+  <!-- 300064 — IPv6, HIGH confidence (80-100) -->
+  
+  <rule id="300064" level="15">
+    <if_sid>300061</if_sid>
+    <field name="severity_score" type="pcre2">^(8[0-9]|9[0-9]|100)$</field>
+    <description>OpenCTI: HIGH-confidence IPv6 matched OBSERVABLES on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_ipv6,opencti_match_observable,opencti_match_high,</group>
+  </rule>
+
+  <!-- =========================================================
+       EMAIL BRANCH — email-addr (observable_only)
+       ========================================================= -->
+
+  <!-- 300065 — email baseline -->
+  
+  <rule id="300065" level="15">
+    <if_sid>300044</if_sid>
+    <field name="ioc.type">email-addr</field>
+    <description>OpenCTI: email address matched OBSERVABLES on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_email,opencti_match_observable,</group>
+  </rule>
+
+  <!-- 300066 — email, LOW confidence (0-49) -->
+  
+  <rule id="300066" level="15">
+    <if_sid>300065</if_sid>
+    <field name="severity_score" type="pcre2">^([0-9]|[1-4][0-9])$</field>
+    <description>OpenCTI: LOW-confidence email matched OBSERVABLES on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_email,opencti_match_observable,opencti_match_low,</group>
+  </rule>
+
+  <!-- 300067 — email, MEDIUM confidence (50-79) -->
+  
+  <rule id="300067" level="15">
+    <if_sid>300065</if_sid>
+    <field name="severity_score" type="pcre2">^([5-7][0-9])$</field>
+    <description>OpenCTI: MEDIUM-confidence email matched OBSERVABLES on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_email,opencti_match_observable,opencti_match_medium,</group>
+  </rule>
+
+  <!-- 300068 — email, HIGH confidence (80-100) -->
+  
+  <rule id="300068" level="15">
+    <if_sid>300065</if_sid>
+    <field name="severity_score" type="pcre2">^(8[0-9]|9[0-9]|100)$</field>
+    <description>OpenCTI: HIGH-confidence email matched OBSERVABLES on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_email,opencti_match_observable,opencti_match_high,</group>
+  </rule>
+
+  <!-- =========================================================
+       WINDOWS REGISTRY KEY BRANCH — windows-registry-key (observable_only)
+       ========================================================= -->
+
+  <!-- 300069 — registry key baseline -->
+  
+  <rule id="300069" level="15">
+    <if_sid>300044</if_sid>
+    <field name="ioc.type">windows-registry-key</field>
+    <description>OpenCTI: registry key matched OBSERVABLES on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_registry,opencti_match_observable,</group>
+  </rule>
+
+  <!-- 300070 — registry key, LOW confidence (0-49) -->
+  
+  <rule id="300070" level="15">
+    <if_sid>300069</if_sid>
+    <field name="severity_score" type="pcre2">^([0-9]|[1-4][0-9])$</field>
+    <description>OpenCTI: LOW-confidence registry key matched OBSERVABLES on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_registry,opencti_match_observable,opencti_match_low,</group>
+  </rule>
+
+  <!-- 300071 — registry key, MEDIUM confidence (50-79) -->
+  
+  <rule id="300071" level="15">
+    <if_sid>300069</if_sid>
+    <field name="severity_score" type="pcre2">^([5-7][0-9])$</field>
+    <description>OpenCTI: MEDIUM-confidence registry key matched OBSERVABLES on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_registry,opencti_match_observable,opencti_match_medium,</group>
+  </rule>
+
+  <!-- 300072 — registry key, HIGH confidence (80-100) -->
+  
+  <rule id="300072" level="15">
+    <if_sid>300069</if_sid>
+    <field name="severity_score" type="pcre2">^(8[0-9]|9[0-9]|100)$</field>
+    <description>OpenCTI: HIGH-confidence registry key matched OBSERVABLES on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_registry,opencti_match_observable,opencti_match_high,</group>
+  </rule>
+
+  <!-- =========================================================
+       USER-AGENT BRANCH — user-agent (observable_only)
+       ========================================================= -->
+
+  <!-- 300073 — user-agent baseline -->
+  
+  <rule id="300073" level="15">
+    <if_sid>300044</if_sid>
+    <field name="ioc.type">user-agent</field>
+    <description>OpenCTI: user-agent matched OBSERVABLES on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_useragent,opencti_match_observable,</group>
+  </rule>
+
+  <!-- 300074 — user-agent, LOW confidence (0-49) -->
+  
+  <rule id="300074" level="15">
+    <if_sid>300073</if_sid>
+    <field name="severity_score" type="pcre2">^([0-9]|[1-4][0-9])$</field>
+    <description>OpenCTI: LOW-confidence user-agent matched OBSERVABLES on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_useragent,opencti_match_observable,opencti_match_low,</group>
+  </rule>
+
+  <!-- 300075 — user-agent, MEDIUM confidence (50-79) -->
+  
+  <rule id="300075" level="15">
+    <if_sid>300073</if_sid>
+    <field name="severity_score" type="pcre2">^([5-7][0-9])$</field>
+    <description>OpenCTI: MEDIUM-confidence user-agent matched OBSERVABLES on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_useragent,opencti_match_observable,opencti_match_medium,</group>
+  </rule>
+
+  <!-- 300076 — user-agent, HIGH confidence (80-100) -->
+  
+  <rule id="300076" level="15">
+    <if_sid>300073</if_sid>
+    <field name="severity_score" type="pcre2">^(8[0-9]|9[0-9]|100)$</field>
+    <description>OpenCTI: HIGH-confidence user-agent matched OBSERVABLES on $(source_agent) - $(ioc.value) [score=$(severity_score)]</description>
+    <group>opencti_match_useragent,opencti_match_observable,opencti_match_high,</group>
+  </rule>
+
+</group>

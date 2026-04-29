@@ -111,7 +111,7 @@ EXTRACT_IOC_TYPES = {
 
 # ── Output file ─────────────────────────────────────────────────────────────
 OUTPUT_LOG_PATH  = "/var/ossec/logs/opencti.log"
-OUTPUT_LOG_PERMS = 0o640
+OUTPUT_LOG_PERMS = 0o660
 OUTPUT_LOG_OWNER = ("wazuh", "wazuh")   # (user, group) — used on first creation
 
 # ── Allowlists (IOCs matching these are skipped pre-query) ──────────────────
