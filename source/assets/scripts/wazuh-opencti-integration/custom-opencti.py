@@ -84,12 +84,12 @@ VERIFY_TLS = False
 # pre-filter an IOC (e.g. private IP). Useful for gap analysis ("how often
 # does Wazuh see IOCs that OpenCTI doesn't know?"). Disable if disk space is
 # tight or the log gets too noisy.
-LOG_MISSES = True
+LOG_MISSES = False
 
 # Embed the full raw GraphQL response in each log line under "raw_response".
 # Default ON so analysts have every detail OpenCTI returned. Disable to shrink
 # log lines significantly if you only need the flat summary fields.
-INCLUDE_RAW_RESPONSE = True
+INCLUDE_RAW_RESPONSE = False
 
 # ── IOC types to extract ────────────────────────────────────────────────────
 # Turn off any type you don't want to query. Useful if e.g. FIM alerts generate
@@ -1372,6 +1372,13 @@ def build_event(alert, ioc, summary, gql_response, error=None):
 
     if INCLUDE_RAW_RESPONSE and gql_response is not None:
         event["raw_response"] = gql_response
+
+    # Strip null-valued nested objects that cause OpenSearch dynamic mapping
+    # conflicts. If indicator_summary is None for observable_only matches but
+    # an object for indicator_hit_valid matches, OpenSearch locks the field
+    # type on first ingestion and silently drops conflicting documents.
+    if event.get("indicator_summary") is None:
+        event.pop("indicator_summary", None)
 
     return event
 
