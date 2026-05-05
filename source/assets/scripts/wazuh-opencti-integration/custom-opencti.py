@@ -571,6 +571,20 @@ RE_EMAIL  = re.compile(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b")
 # Numeric severity ranks for level filtering. Higher number = more severe.
 _LOG_LEVELS = {"DEBUG": 10, "INFO": 20, "WARN": 30, "ERROR": 40}
 
+def _now_iso():
+    """ISO 8601 UTC timestamp with millisecond precision, formatted to match
+    Wazuh's exact `alerts.json` convention: `YYYY-MM-DDTHH:MM:SS.mmm+0000`.
+
+    Note the `+0000` (not `Z`) suffix — both are valid ISO 8601 representations
+    of UTC, but every downstream tool treats them as semantically identical.
+    Matching Wazuh's format makes log lines visually consistent and avoids
+    the rare edge case where a strict parser only accepts one form.
+
+    Captures `now` once to avoid sub-millisecond drift between the seconds
+    and milliseconds components."""
+    timenow = datetime.now(timezone.utc)
+    return timenow.strftime("%Y-%m-%dT%H:%M:%S.") + \
+           "{:03d}+0000".format(timenow.microsecond // 1000)
 
 def _log(level, msg):
     """Emit a diagnostic message to stderr with a timestamp and severity
@@ -591,22 +605,6 @@ def _log(level, msg):
 #    """Backwards-compatible shim for the old _stderr() helper. New code
 #    should call _log(level, msg) directly with an explicit severity."""
 #    _log("ERROR", msg)
-
-def _now_iso():
-    """ISO 8601 UTC timestamp with millisecond precision, formatted to match
-    Wazuh's exact `alerts.json` convention: `YYYY-MM-DDTHH:MM:SS.mmm+0000`.
-
-    Note the `+0000` (not `Z`) suffix — both are valid ISO 8601 representations
-    of UTC, but every downstream tool treats them as semantically identical.
-    Matching Wazuh's format makes log lines visually consistent and avoids
-    the rare edge case where a strict parser only accepts one form.
-
-    Captures `now` once to avoid sub-millisecond drift between the seconds
-    and milliseconds components."""
-    timenow = datetime.now(timezone.utc)
-    return timenow.strftime("%Y-%m-%dT%H:%M:%S.") + \
-           "{:03d}+0000".format(timenow.microsecond // 1000)
-
 
 def _get_dotted(obj, path):
     """Read a value from a nested dict using a dotted path string.
@@ -1025,7 +1023,6 @@ def query_opencti(ioc_value, api_key, hook_url):
 
     return None, last_err or "unknown error"
 
-
 # ============================================================================
 # RESPONSE PARSING — flatten GraphQL result into summary fields
 # ============================================================================
@@ -1033,7 +1030,6 @@ def query_opencti(ioc_value, api_key, hook_url):
 # TLP ordering for "most restrictive wins" selection.
 _TLP_RANK = {"CLEAR": 0, "WHITE": 0, "GREEN": 1, "AMBER": 2,
              "AMBER+STRICT": 3, "RED": 4}
-
 
 def _parse_relationships(rel_edges):
     """Walk stixCoreRelationships edges and extract flat arrays by entity type.
@@ -1097,7 +1093,6 @@ def _parse_relationships(rel_edges):
         buckets[k] = deduped
     return buckets
 
-
 def _select_tlp(markings):
     """Pick the most restrictive TLP from a list of objectMarking entries.
     Returns a string like 'CLEAR'/'GREEN'/'AMBER'/'RED' or None."""
@@ -1112,7 +1107,6 @@ def _select_tlp(markings):
             best_rank = rank
             best = label
     return best
-
 
 def _extract_authorship(node):
     """Pull authorship/provenance fields from a GraphQL node (indicator or
@@ -1154,7 +1148,6 @@ def _extract_authorship(node):
 
     return out
 
-
 def _collect_relationship_authors(rel_edges):
     """Walk the relationships and collect distinct STIX authors (`createdBy`)
     attached to each edge. Returns a deduplicated list of author names.
@@ -1171,7 +1164,6 @@ def _collect_relationship_authors(rel_edges):
                 names.append(name)
     return names
 
-
 def _collect_report_authors(report_edges):
     """Walk the reports and collect distinct STIX authors (`createdBy`) on
     each report node. Returns a deduplicated list of author names."""
@@ -1186,7 +1178,6 @@ def _collect_report_authors(report_edges):
                 seen.add(name)
                 names.append(name)
     return names
-
 
 def _merge_authorship(primary, secondary):
     """Merge authorship from a secondary source (e.g. observable) into primary
@@ -1217,7 +1208,6 @@ def _merge_authorship(primary, secondary):
                 merged[key].append(v)
 
     return merged
-
 
 def build_summary(ioc, gql_response):
     """Turn the raw GraphQL response into a flat summary + raw payload.
@@ -1386,6 +1376,32 @@ def build_summary(ioc, gql_response):
 # ============================================================================
 # EVENT ASSEMBLY — the final log line
 # ============================================================================
+def _correlation_id(alert, ioc):
+    """Generate a stable identifier that's the same across every enrichment
+    event for the same <agent, ioc-type, ioc-value> triplet. Lets analysts
+    pivot in the dashboard — "show me everything tied to correlation_id=X"
+    returns the full history of this IOC on this host across time.
+
+    The hash is intentionally short (16 hex chars = 64 bits) — long enough
+    to be effectively unique in any realistic SIEM dataset, short enough to
+    fit comfortably in dashboard columns and URLs.
+
+    Inputs that go into the hash:
+      - agent identity (id preferred, name as fallback)
+      - IOC type (so md5=abc and sha1=abc don't collide)
+      - IOC value (the actual matched indicator)
+
+    Inputs that DO NOT go into the hash:
+      - timestamps (would defeat the purpose)
+      - source_alert_id (every alert is unique; we want grouping ACROSS alerts)
+      - severity_score (changes when OpenCTI is updated)
+    """
+    agent = (_get_dotted(alert, "agent.id")
+             or _get_dotted(alert, "agent.name")
+             or "unknown")
+    seed = "{}|{}|{}".format(agent, ioc["type"], ioc["value"])
+    return hashlib.sha1(seed.encode("utf-8")).hexdigest()[:16]
+
 def _build_context(alert, ioc):
     """Capture per-IOC contextual fields from the original alert that help
     analysts act on a match without going back to alerts.json. The fields
@@ -1490,40 +1506,116 @@ def _build_context(alert, ioc):
                     ctx["dns_resolved_to"] = rdatas[:5]  # cap at 5 to keep size sane
     
     elif ioc["type"] == "url":
-        method = _get_dotted(alert, "data.http.http_method")
-        ua = _get_dotted(alert, "data.http.http_user_agent")
-        status = _get_dotted(alert, "data.http.status")
-        if method: ctx["http_method"] = str(method)
-        if ua: ctx["user_agent"] = str(ua)
-        if status: ctx["http_status"] = str(status)
+        # URL IOCs come from web traffic events. We capture context primarily
+        # from Suricata HTTP events (data.http.*) but fall back to Wazuh-native
+        # web log decoders (Apache, Nginx, IIS — flat data.* fields) so analysts
+        # get useful context regardless of the source.
+        #
+        # When neither path populates, the field is simply omitted — better
+        # than emitting empty strings or nulls (which we know causes OpenSearch
+        # dynamic mapping conflicts down the road).
+
+        # HTTP method (GET, POST, PUT, DELETE, etc.)
+        method = (_get_dotted(alert, "data.http.http_method")     # Suricata
+                  or _get_dotted(alert, "data.method"))            # Wazuh native
+        if method:
+            ctx["http_method"] = str(method).upper()
+
+        # Response status code. Suricata serializes as string; Wazuh decoders
+        # vary. Force string for consistent type-mapping in OpenSearch.
+        status = (_get_dotted(alert, "data.http.status")          # Suricata
+                  or _get_dotted(alert, "data.status")             # some Wazuh decoders
+                  or _get_dotted(alert, "data.id"))                # Apache decoder oddity
+        if status is not None and str(status).strip():
+            # Filter out nonsense — only accept 3-digit HTTP status codes.
+            # data.id can carry non-status values in some decoders, so we
+            # validate the shape rather than blindly trusting it.
+            status_str = str(status).strip()
+            if status_str.isdigit() and len(status_str) == 3:
+                ctx["http_status"] = status_str
+
+        # User-Agent header. Cap at 256 chars — UAs can be obscenely long,
+        # especially when malware fingerprints the runtime in the UA.
+        user_agent = (_get_dotted(alert, "data.http.http_user_agent")
+                      or _get_dotted(alert, "data.user_agent")
+                      or _get_dotted(alert, "data.useragent"))
+        if user_agent:
+            ua_str = str(user_agent)
+            if len(ua_str) > 256:
+                ua_str = ua_str[:256] + "...[truncated]"
+            ctx["user_agent"] = ua_str
+
+        # Host header — what hostname the client claimed to be talking to.
+        # Different from the connection's destination IP (Host can be
+        # spoofed for SNI evasion or for hitting different vhosts).
+        host = (_get_dotted(alert, "data.http.hostname")
+                or _get_dotted(alert, "data.host")
+                or _get_dotted(alert, "data.hostname"))
+        if host:
+            ctx["http_host"] = str(host)
+
+        # URL path. Worth capturing even though it's typically part of the
+        # IOC value itself — Wazuh native decoders sometimes split the
+        # full URL into `host` + `url`, so the path alone is meaningful.
+        url_path = (_get_dotted(alert, "data.http.url")
+                    or _get_dotted(alert, "data.url"))
+        if url_path:
+            url_str = str(url_path)
+            # Cap at 1024 chars to defend against pathologically long URLs.
+            if len(url_str) > 1024:
+                url_str = url_str[:1024] + "...[truncated]"
+            ctx["url_path"] = url_str
+
+        # Response Content-Type — distinguishes downloaded executables from
+        # web pages from JSON API responses. Strong triage signal but only
+        # populated when extended HTTP logging is enabled in Suricata.
+        content_type = (_get_dotted(alert, "data.http.http_content_type")
+                        or _get_dotted(alert, "data.content_type"))
+        if content_type:
+            ctx["http_content_type"] = str(content_type)
+
+        # Response body length / Content-Length. Useful for spotting bulk
+        # payload pulls (large response = file download) versus small C2
+        # beacons (a few hundred bytes).
+        length = (_get_dotted(alert, "data.http.length")
+                  or _get_dotted(alert, "data.bytes")
+                  or _get_dotted(alert, "data.response_size"))
+        if length is not None and str(length).strip():
+            ctx["http_response_size"] = str(length)
+
+        # HTTP protocol version (HTTP/1.0, HTTP/1.1, HTTP/2). Less commonly
+        # useful for triage but helpful when investigating protocol-specific
+        # exploits or unusual TLS-over-HTTP/2 behavior.
+        protocol = (_get_dotted(alert, "data.http.protocol")
+                    or _get_dotted(alert, "data.protocol"))
+        if protocol:
+            ctx["http_protocol"] = str(protocol)
+
+        # Referrer — what page led the client to this URL. Critical for
+        # phishing investigations: reveals the lure page that linked to the
+        # malicious destination.
+        referrer = (_get_dotted(alert, "data.http.http_refer")    # Suricata's typo
+                    or _get_dotted(alert, "data.http.http_referer")
+                    or _get_dotted(alert, "data.referer")          # Wazuh native
+                    or _get_dotted(alert, "data.referrer"))
+        if referrer:
+            ctx["http_referrer"] = str(referrer)
+
+        # Direction — Suricata explicitly tells us which way the traffic
+        # flowed. Wazuh native web logs are usually inbound to the server
+        # (no equivalent field), so this is mostly Suricata-specific.
+        direction = _get_dotted(alert, "data.direction")
+        if direction:
+            ctx["direction"] = str(direction)
+
+        # Suricata flow_id — ties this URL fetch back to the broader connection.
+        # The same flow may have produced TLS handshake events, file transfer
+        # events, or alert events — analysts can pivot on flow_id to see them all.
+        flow_id = _get_dotted(alert, "data.flow_id")
+        if flow_id:
+            ctx["flow_id"] = str(flow_id)
 
     return ctx
-
-def _correlation_id(alert, ioc):
-    """Generate a stable identifier that's the same across every enrichment
-    event for the same <agent, ioc-type, ioc-value> triplet. Lets analysts
-    pivot in the dashboard — "show me everything tied to correlation_id=X"
-    returns the full history of this IOC on this host across time.
-
-    The hash is intentionally short (16 hex chars = 64 bits) — long enough
-    to be effectively unique in any realistic SIEM dataset, short enough to
-    fit comfortably in dashboard columns and URLs.
-
-    Inputs that go into the hash:
-      - agent identity (id preferred, name as fallback)
-      - IOC type (so md5=abc and sha1=abc don't collide)
-      - IOC value (the actual matched indicator)
-
-    Inputs that DO NOT go into the hash:
-      - timestamps (would defeat the purpose)
-      - source_alert_id (every alert is unique; we want grouping ACROSS alerts)
-      - severity_score (changes when OpenCTI is updated)
-    """
-    agent = (_get_dotted(alert, "agent.id")
-             or _get_dotted(alert, "agent.name")
-             or "unknown")
-    seed = "{}|{}|{}".format(agent, ioc["type"], ioc["value"])
-    return hashlib.sha1(seed.encode("utf-8")).hexdigest()[:16]
 
 def build_event(alert, ioc, summary, gql_response, error=None):
     """Compose the single-line JSON event we write to opencti.log.
