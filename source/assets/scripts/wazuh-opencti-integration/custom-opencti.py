@@ -1538,8 +1538,9 @@ def build_event(alert, ioc, summary, gql_response, error=None):
         "source_rule_id":           _get_dotted(alert, "rule.id"),
         "source_rule_description":  _get_dotted(alert, "rule.description"),
         "source_rule_level":        _get_dotted(alert, "rule.level"),
-        "source_agent":             _get_dotted(alert, "agent.name")
-                                       or _get_dotted(alert, "agent.id"),
+        "source_agent_id":          _get_dotted(alert, "agent.id"),
+        "source_agent_name":        _get_dotted(alert, "agent.name"),
+        "source_agent_ip":          _get_dotted(alert, "agent.ip"),
         "source_groups":            _get_dotted(alert, "rule.groups") or [],
         "ioc": {
             "value":             ioc["value"],
@@ -1587,8 +1588,9 @@ def build_skipped_event(alert, skipped):
         "source_rule_id":          _get_dotted(alert, "rule.id"),
         "source_rule_description": _get_dotted(alert, "rule.description"),
         "source_rule_level":       _get_dotted(alert, "rule.level"),
-        "source_agent":            _get_dotted(alert, "agent.name")
-                                      or _get_dotted(alert, "agent.id"),
+        "source_agent_id":         _get_dotted(alert, "agent.id"),
+        "source_agent_name":       _get_dotted(alert, "agent.name"),
+        "source_agent_ip":         _get_dotted(alert, "agent.ip"),
         "source_groups":           _get_dotted(alert, "rule.groups") or [],
         "ioc": {
             "value":             skipped["value"],
