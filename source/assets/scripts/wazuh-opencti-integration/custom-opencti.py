@@ -45,6 +45,7 @@
 #
 # ============================================================================
 
+import hashlib
 import json
 import os
 import re
@@ -1396,17 +1397,126 @@ def _build_context(alert, ioc):
                 or _get_dotted(alert, "data.fileinfo.filename"))
         if path:
             ctx["file_path"] = str(path)
+        
+        # File ownership at time of detection
+        user = _get_dotted(alert, "syscheck.uname_after")
+        group = _get_dotted(alert, "syscheck.gname_after")
+        if user: ctx["file_owner"] = str(user)
+        if group: ctx["file_group"] = str(group)
+        
+        # Process that wrote/modified the file (when audit subsystem provides it)
+        proc_name = _get_dotted(alert, "syscheck.audit.process.name")
+        proc_user = _get_dotted(alert, "syscheck.audit.user.name")
+        if proc_name: ctx["written_by_process"] = str(proc_name)
+        if proc_user: ctx["written_by_user"] = str(proc_user)
+        
+        # File size and modification info — useful for triage
+        size = _get_dotted(alert, "syscheck.size_after")
+        if size: ctx["file_size"] = str(size)
 
     # Network IOCs — capture the flow direction (was this src or dst?)
     # so analysts don't have to figure it out from source_field alone.
     elif ioc["type"] in ("ipv4-addr", "ipv6-addr", "domain-name"):
         sf = ioc.get("source_field", "")
-        if "src" in sf:
-            ctx["direction"] = "source"
-        elif "dest" in sf or "dst" in sf:
-            ctx["direction"] = "destination"
+        
+        # ioc_position tells the analyst where in the connection the matched
+        # IOC appeared — NOT the traffic direction in a security sense.
+        # The IOC could be the source endpoint (likely outbound from peer's
+        # perspective) or destination endpoint (likely inbound to peer).
+        if any(token in sf for token in ("src", "source")):
+            ctx["ioc_position"] = "source"
+            peer_ip = (_get_dotted(alert, "data.dstip")
+                    or _get_dotted(alert, "data.dest_ip")
+                    or _get_dotted(alert, "data.win.eventdata.destinationIp"))
+            peer_port = (_get_dotted(alert, "data.dstport")
+                        or _get_dotted(alert, "data.dest_port")
+                        or _get_dotted(alert, "data.win.eventdata.destinationPort"))
+        elif any(token in sf for token in ("dst", "dest", "destination")):
+            ctx["ioc_position"] = "destination"
+            peer_ip = (_get_dotted(alert, "data.srcip")
+                    or _get_dotted(alert, "data.src_ip")
+                    or _get_dotted(alert, "data.win.eventdata.sourceIp"))
+            peer_port = (_get_dotted(alert, "data.srcport")
+                        or _get_dotted(alert, "data.src_port")
+                        or _get_dotted(alert, "data.win.eventdata.sourcePort"))
+        else:
+            peer_ip = peer_port = None
+
+        if peer_ip:
+            ctx["peer_ip"] = str(peer_ip)
+        if peer_port:
+            ctx["peer_port"] = str(peer_port)
+
+        # Transport protocol (TCP, UDP, ICMP) — try each source's field name.
+        proto = (_get_dotted(alert, "data.proto")
+                or _get_dotted(alert, "data.protocol")
+                or _get_dotted(alert, "data.win.eventdata.protocol"))
+        if proto:
+            ctx["protocol"] = str(proto)
+
+        # Application-layer protocol (HTTP, DNS, TLS, SSH, etc.) — Suricata only.
+        # No equivalent for Wazuh native or Sysmon, so this is best-effort.
+        app_proto = _get_dotted(alert, "data.app_proto")
+        if app_proto:
+            ctx["app_protocol"] = str(app_proto)
+
+        # Suricata flow_id — uniquely identifies a TCP/UDP flow across
+        # multiple log lines (alert + http + tls + dns events for one flow
+        # share the same id). Lets analysts pivot to the full flow context.
+        flow_id = _get_dotted(alert, "data.flow_id")
+        if flow_id:
+            ctx["flow_id"] = str(flow_id)
+
+        # DNS-specific refinement — when a domain IOC matches inside a
+        # Suricata DNS event, the src/dest IPs above represent the DNS
+        # resolver and the client, not malicious infrastructure. The
+        # actually interesting datum is what the domain RESOLVED to, since
+        # OpenCTI may also have intel on those IPs. We capture up to 5
+        # resolved values (rdata) to keep the event size bounded.
+
+        if ioc["type"] == "domain-name":
+            dns_answers = _get_dotted(alert, "data.dns.answers")
+            if isinstance(dns_answers, list) and dns_answers:
+                # answers is a list of {rrname, rrtype, ttl, rdata}
+                rdatas = [a.get("rdata") for a in dns_answers if isinstance(a, dict) and a.get("rdata")]
+                if rdatas:
+                    ctx["dns_resolved_to"] = rdatas[:5]  # cap at 5 to keep size sane
+    
+    elif ioc["type"] == "url":
+        method = _get_dotted(alert, "data.http.http_method")
+        ua = _get_dotted(alert, "data.http.http_user_agent")
+        status = _get_dotted(alert, "data.http.status")
+        if method: ctx["http_method"] = str(method)
+        if ua: ctx["user_agent"] = str(ua)
+        if status: ctx["http_status"] = str(status)
 
     return ctx
+
+def _correlation_id(alert, ioc):
+    """Generate a stable identifier that's the same across every enrichment
+    event for the same <agent, ioc-type, ioc-value> triplet. Lets analysts
+    pivot in the dashboard — "show me everything tied to correlation_id=X"
+    returns the full history of this IOC on this host across time.
+
+    The hash is intentionally short (16 hex chars = 64 bits) — long enough
+    to be effectively unique in any realistic SIEM dataset, short enough to
+    fit comfortably in dashboard columns and URLs.
+
+    Inputs that go into the hash:
+      - agent identity (id preferred, name as fallback)
+      - IOC type (so md5=abc and sha1=abc don't collide)
+      - IOC value (the actual matched indicator)
+
+    Inputs that DO NOT go into the hash:
+      - timestamps (would defeat the purpose)
+      - source_alert_id (every alert is unique; we want grouping ACROSS alerts)
+      - severity_score (changes when OpenCTI is updated)
+    """
+    agent = (_get_dotted(alert, "agent.id")
+             or _get_dotted(alert, "agent.name")
+             or "unknown")
+    seed = "{}|{}|{}".format(agent, ioc["type"], ioc["value"])
+    return hashlib.sha1(seed.encode("utf-8")).hexdigest()[:16]
 
 def build_event(alert, ioc, summary, gql_response, error=None):
     """Compose the single-line JSON event we write to opencti.log.
@@ -1430,6 +1540,7 @@ def build_event(alert, ioc, summary, gql_response, error=None):
             "source_field":      ioc["source_field"],
         },
         "context": _build_context(alert, ioc),
+        "correlation_id":       _correlation_id(alert, ioc),
     }
     # Merge in the summary (match_type, mitre_ids, etc.)
     event.update(summary)
@@ -1449,7 +1560,6 @@ def build_event(alert, ioc, summary, gql_response, error=None):
         event.pop("indicator_summary", None)
 
     return event
-
 
 def build_skipped_event(alert, skipped):
     """Build an event for an IOC that was filtered out pre-query (private IP,
@@ -1477,6 +1587,8 @@ def build_skipped_event(alert, skipped):
             "extraction_method": skipped["extraction_method"],
             "source_field":      skipped["source_field"],
         },
+        "context":         _build_context(alert, skipped),
+        "correlation_id":  _correlation_id(alert, skipped),
         "match_type":              "skipped_allowlist"
                                       if skipped.get("reason") == "allowlisted"
                                       else "skipped_filtered",
