@@ -593,12 +593,19 @@ def _log(level, msg):
 #    _log("ERROR", msg)
 
 def _now_iso():
-    """ISO 8601 UTC timestamp with millisecond precision — matches Wazuh's
-    own timestamp format. Captures `now` once to avoid sub-millisecond drift
-    between the seconds and milliseconds components."""
+    """ISO 8601 UTC timestamp with millisecond precision, formatted to match
+    Wazuh's exact `alerts.json` convention: `YYYY-MM-DDTHH:MM:SS.mmm+0000`.
+
+    Note the `+0000` (not `Z`) suffix — both are valid ISO 8601 representations
+    of UTC, but every downstream tool treats them as semantically identical.
+    Matching Wazuh's format makes log lines visually consistent and avoids
+    the rare edge case where a strict parser only accepts one form.
+
+    Captures `now` once to avoid sub-millisecond drift between the seconds
+    and milliseconds components."""
     timenow = datetime.now(timezone.utc)
     return timenow.strftime("%Y-%m-%dT%H:%M:%S.") + \
-           "{:03d}Z".format(timenow.microsecond // 1000)
+           "{:03d}+0000".format(timenow.microsecond // 1000)
 
 
 def _get_dotted(obj, path):
@@ -1525,6 +1532,7 @@ def build_event(alert, ioc, summary, gql_response, error=None):
     field mechanically — no nested walks required in the decoder/rule layer."""
     event = {
         "timestamp":                _now_iso(),
+        "event_timestamp":          _get_dotted(alert, "timestamp"),
         "integration":              "opencti",
         "source_alert_id":          _get_dotted(alert, "id"),
         "source_rule_id":           _get_dotted(alert, "rule.id"),
@@ -1573,6 +1581,7 @@ def build_skipped_event(alert, skipped):
     The specific reason is always in skip_reason for finer-grained rules."""
     return {
         "timestamp":               _now_iso(),
+        "event_timestamp":         _get_dotted(alert, "timestamp"),
         "integration":             "opencti",
         "source_alert_id":         _get_dotted(alert, "id"),
         "source_rule_id":          _get_dotted(alert, "rule.id"),
