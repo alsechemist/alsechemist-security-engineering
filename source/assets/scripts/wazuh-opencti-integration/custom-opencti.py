@@ -1378,6 +1378,35 @@ def build_summary(ioc, gql_response):
 # ============================================================================
 # EVENT ASSEMBLY — the final log line
 # ============================================================================
+def _build_context(alert, ioc):
+    """Capture per-IOC contextual fields from the original alert that help
+    analysts act on a match without going back to alerts.json. The fields
+    we pull depend on the IOC type — for file hashes we want the file path
+    on disk, for network IOCs we want flow context, etc.
+
+    Returns a dict (possibly empty). Empty dicts are kept rather than
+    omitted so the field shape is consistent across all events — important
+    for OpenSearch dynamic mapping (recall the indicator_summary lesson)."""
+    ctx = {}
+
+    # File hash IOCs — pull the on-disk path so the analyst knows which
+    # file triggered the match. Covers FIM (syscheck) and Suricata fileinfo.
+    if ioc["type"] in ("md5", "sha1", "sha256"):
+        path = (_get_dotted(alert, "syscheck.path")
+                or _get_dotted(alert, "data.fileinfo.filename"))
+        if path:
+            ctx["file_path"] = str(path)
+
+    # Network IOCs — capture the flow direction (was this src or dst?)
+    # so analysts don't have to figure it out from source_field alone.
+    elif ioc["type"] in ("ipv4-addr", "ipv6-addr", "domain-name"):
+        sf = ioc.get("source_field", "")
+        if "src" in sf:
+            ctx["direction"] = "source"
+        elif "dest" in sf or "dst" in sf:
+            ctx["direction"] = "destination"
+
+    return ctx
 
 def build_event(alert, ioc, summary, gql_response, error=None):
     """Compose the single-line JSON event we write to opencti.log.
@@ -1400,6 +1429,7 @@ def build_event(alert, ioc, summary, gql_response, error=None):
             "extraction_method": ioc["extraction_method"],
             "source_field":      ioc["source_field"],
         },
+        "context": _build_context(alert, ioc),
     }
     # Merge in the summary (match_type, mitre_ids, etc.)
     event.update(summary)
