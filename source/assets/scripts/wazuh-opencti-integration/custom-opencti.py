@@ -39,8 +39,8 @@
 #
 # FILES
 # -----
-#   /var/ossec/integrations/custom-opencti          — this script (mode 750, root:wazuh)
-#   /var/ossec/logs/opencti.log                     — output log (mode 640, wazuh:wazuh)
+#   /var/ossec/integrations/custom-opencti          — this script (permissions 750, root:wazuh)
+#   /var/ossec/logs/opencti.log                     — output log (permissions 660, wazuh:wazuh)
 #   /var/ossec/logs/integrations.log                — Wazuh's integrator log (for diagnostics)
 #
 # ============================================================================
@@ -80,6 +80,14 @@ RETRY_BACKOFF_SECONDS = 1
 VERIFY_TLS = False
 
 # ── Logging behavior ────────────────────────────────────────────────────────
+# Diagnostic log level for messages emitted to stderr (which Wazuh captures
+# in /var/ossec/logs/integrations.log). Controls verbosity of the script's
+# own operational messages — NOT the IOC enrichment events written to
+# opencti.log (those are always written regardless of this setting).
+# One of: "DEBUG", "INFO", "WARN", "ERROR". Default INFO is appropriate for
+# production. Set to DEBUG temporarily when troubleshooting.
+LOG_LEVEL = "INFO"
+
 # Write a log line even when OpenCTI has no record of the IOC, and when we
 # pre-filter an IOC (e.g. private IP). Useful for gap analysis ("how often
 # does Wazuh see IOCs that OpenCTI doesn't know?"). Disable if disk space is
@@ -559,18 +567,37 @@ RE_EMAIL  = re.compile(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b")
 # HELPERS — logging, file ops, dotted-path access
 # ============================================================================
 
-def _stderr(msg):
-    """Emit diagnostic messages to stderr. Wazuh captures these in
-    /var/ossec/logs/integrations.log, which is where you look when the
-    integration seems broken."""
-    sys.stderr.write("[custom-opencti] " + msg + "\n")
+# Numeric severity ranks for level filtering. Higher number = more severe.
+_LOG_LEVELS = {"DEBUG": 10, "INFO": 20, "WARN": 30, "ERROR": 40}
 
+
+def _log(level, msg):
+    """Emit a diagnostic message to stderr with a timestamp and severity
+    level. Wazuh captures stderr in /var/ossec/logs/integrations.log.
+
+    Messages below the configured LOG_LEVEL threshold are suppressed, so
+    flipping LOG_LEVEL to DEBUG temporarily reveals everything without
+    requiring code changes.
+
+    Format: <iso_timestamp> [custom-opencti] [<LEVEL>] <message>
+    """
+    if _LOG_LEVELS.get(level, 100) < _LOG_LEVELS.get(LOG_LEVEL, 20):
+        return
+    sys.stderr.write("{} [custom-opencti] [{}] {}\n".format(
+        _now_iso(), level, msg))
+
+#def _stderr(msg):
+#    """Backwards-compatible shim for the old _stderr() helper. New code
+#    should call _log(level, msg) directly with an explicit severity."""
+#    _log("ERROR", msg)
 
 def _now_iso():
     """ISO 8601 UTC timestamp with millisecond precision — matches Wazuh's
-    own timestamp format."""
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.") + \
-           "{:03d}Z".format(datetime.now(timezone.utc).microsecond // 1000)
+    own timestamp format. Captures `now` once to avoid sub-millisecond drift
+    between the seconds and milliseconds components."""
+    timenow = datetime.now(timezone.utc)
+    return timenow.strftime("%Y-%m-%dT%H:%M:%S.") + \
+           "{:03d}Z".format(timenow.microsecond // 1000)
 
 
 def _get_dotted(obj, path):
@@ -624,23 +651,34 @@ def _ensure_log_file():
                 gid = grp.getgrnam(OUTPUT_LOG_OWNER[1]).gr_gid
                 os.chown(OUTPUT_LOG_PATH, uid, gid)
             except Exception as e:
-                _stderr("could not chown {} to {}: {}".format(
+                _log("WARN", "could not chown {} to {}: {}".format(
                     OUTPUT_LOG_PATH, OUTPUT_LOG_OWNER, e))
             os.chmod(OUTPUT_LOG_PATH, OUTPUT_LOG_PERMS)
     except Exception as e:
-        _stderr("could not create {}: {}".format(OUTPUT_LOG_PATH, e))
+        _log("ERROR", "could not create {}: {}".format(OUTPUT_LOG_PATH, e))
 
 
 def _write_log_line(event):
-    """Append a single-line JSON record to the output log. Each call produces
-    exactly one line — no pretty-printing, no embedded newlines — which is
-    what Wazuh's JSON log reader expects."""
     try:
         line = json.dumps(event, separators=(",", ":"), ensure_ascii=False)
         with open(OUTPUT_LOG_PATH, "a") as f:
             f.write(line + "\n")
     except Exception as e:
-        _stderr("failed to write to {}: {}".format(OUTPUT_LOG_PATH, e))
+        # Include current file state in the error so operators can diagnose
+        # without needing a separate ls -la. If the stat itself fails we
+        # fall back to the bare error.
+        details = ""
+        try:
+            st = os.stat(OUTPUT_LOG_PATH)
+            import pwd, grp
+            owner = pwd.getpwuid(st.st_uid).pw_name
+            group = grp.getgrgid(st.st_gid).gr_name
+            permissions = oct(st.st_mode & 0o777)
+            details = " (current: owner={}:{}, permissions={})".format(owner, group, permissions)
+        except Exception:
+            pass
+        _log("ERROR", "failed to write to {}{}: {}".format(
+            OUTPUT_LOG_PATH, details, e))
 
 
 # ============================================================================
@@ -1425,7 +1463,7 @@ def main(argv):
     # Wazuh passes: sys.argv[1]=alert_file, [2]=api_key, [3]=hook_url
     # Any additional args are optional flags we don't use here.
     if len(argv) < 4:
-        _stderr("usage: custom-opencti <alert_file> <api_key> <hook_url>")
+        _log("ERROR", "usage: custom-opencti <alert_file> <api_key> <hook_url>")
         return 1
 
     alert_file = argv[1]
@@ -1437,7 +1475,7 @@ def main(argv):
         with open(alert_file, "r") as f:
             alert = json.load(f)
     except Exception as e:
-        _stderr("could not read alert file {}: {}".format(alert_file, e))
+        _log("ERROR", "could not read alert file {}: {}".format(alert_file, e))
         return 1
 
     _ensure_log_file()
@@ -1446,7 +1484,7 @@ def main(argv):
     try:
         iocs, skipped = extract_iocs(alert)
     except Exception as e:
-        _stderr("IOC extraction failed: {}\n{}".format(e, traceback.format_exc()))
+        _log("ERROR", "IOC extraction failed: {}\n{}".format(e, traceback.format_exc()))
         return 1
 
     # Optional: log the skips (private IPs, allowlisted, malformed) so you
@@ -1456,7 +1494,7 @@ def main(argv):
             try:
                 _write_log_line(build_skipped_event(alert, sk))
             except Exception as e:
-                _stderr("failed to log skipped ioc: {}".format(e))
+                _log("WARN", "failed to log skipped ioc: {}".format(e))
 
     if not iocs:
         # No candidate IOCs survived extraction + filtering. We don't write
@@ -1487,7 +1525,7 @@ def main(argv):
 
         except Exception as e:
             # Truly unexpected failure on this specific IOC. Log and continue.
-            _stderr("unhandled error processing {}: {}\n{}".format(
+            _log("ERROR", "unhandled error processing {}: {}\n{}".format(
                 ioc.get("value"), e, traceback.format_exc()))
             try:
                 event = build_event(alert, ioc,

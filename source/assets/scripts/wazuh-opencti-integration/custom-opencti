@@ -291,15 +291,16 @@ _log "invoke python=$PYTHON_BIN script=$PYTHON_SCRIPT alert=$ALERT_FILE hook_url
 #
 # If `timeout` is available, we wrap the call with it. Otherwise we run raw
 # and rely on network timeouts inside the Python script itself.
+
 if [ -n "$TIMEOUT_BIN" ]; then
     # --kill-after ensures SIGKILL if SIGTERM alone doesn't stop Python
     # within 5 seconds of the initial timeout. Belt-and-suspenders protection
     # against a wedged requests call that ignores SIGTERM.
     "$TIMEOUT_BIN" --kill-after=5 "$EXECUTION_TIMEOUT" \
-        "$PYTHON_BIN" "$PYTHON_SCRIPT" "$@"
+        "$PYTHON_BIN" "$PYTHON_SCRIPT" "$@" 2>>/var/ossec/logs/integrations.log
     RC=$?
 else
-    "$PYTHON_BIN" "$PYTHON_SCRIPT" "$@"
+    "$PYTHON_BIN" "$PYTHON_SCRIPT" "$@" 2>>/var/ossec/logs/integrations.log
     RC=$?
 fi
 
