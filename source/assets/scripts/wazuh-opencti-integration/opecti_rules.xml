@@ -145,6 +145,9 @@
     <field name="ioc.type" type="pcre2">^(sha256|sha1|md5)$</field>
     <description>OpenCTI: malicious FILE HASH matched INDICATORS on $(source_agent_name) - $(ioc.type)=$(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_hash,</group>
+    <mitre>
+      <id>T1204.002</id>
+    </mitre>
   </rule>
 
   <!-- 300013 — file hash, LOW confidence (0-49) -->
@@ -154,6 +157,9 @@
     <field name="severity_score" type="pcre2">^([0-9]|[1-4][0-9])$</field>
     <description>OpenCTI: LOW-confidence FILE HASH matched INDICATORS on $(source_agent_name) - $(ioc.type)=$(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_hash,opencti_match_low,</group>
+    <mitre>
+      <id>T1204.002</id>
+    </mitre>
   </rule>
 
   <!-- 300014 — file hash, MEDIUM confidence (50-79) -->
@@ -163,6 +169,9 @@
     <field name="severity_score" type="pcre2">^([5-7][0-9])$</field>
     <description>OpenCTI: MEDIUM-confidence FILE HASH matched INDICATORS on $(source_agent_name) - $(ioc.type)=$(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_hash,opencti_match_medium,</group>
+    <mitre>
+      <id>T1204.002</id>
+    </mitre>
   </rule>
 
   <!-- 300015 — file hash, HIGH confidence (80-100) -->
@@ -172,6 +181,9 @@
     <field name="severity_score" type="pcre2">^(8[0-9]|9[0-9]|100)$</field>
     <description>OpenCTI: HIGH-confidence FILE HASH matched INDICATORS on $(source_agent_name) - $(ioc.type)=$(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_hash,opencti_match_high,</group>
+    <mitre>
+      <id>T1204.002</id>
+    </mitre>
   </rule>
 
 
@@ -187,6 +199,10 @@
     <field name="ioc.type">domain-name</field>
     <description>OpenCTI: malicious DOMAIN contacted by $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_domain,</group>
+    <mitre>
+      <id>T1071.001</id>
+      <id>T1071.004</id>
+    </mitre>
   </rule>
 
   <!-- 300017 — domain, LOW confidence (0-49) -->
@@ -196,6 +212,10 @@
     <field name="severity_score" type="pcre2">^([0-9]|[1-4][0-9])$</field>
     <description>OpenCTI: LOW-confidence DOMAIN matched INDICATORS on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_domain,opencti_match_low,</group>
+    <mitre>
+      <id>T1071.001</id>
+      <id>T1071.004</id>
+    </mitre>
   </rule>
 
   <!-- 300018 — domain, MEDIUM confidence (50-79) -->
@@ -205,6 +225,10 @@
     <field name="severity_score" type="pcre2">^([5-7][0-9])$</field>
     <description>OpenCTI: MEDIUM-confidence DOMAIN matched INDICATORS on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_domain,opencti_match_medium,</group>
+    <mitre>
+      <id>T1071.001</id>
+      <id>T1071.004</id>
+    </mitre>
   </rule>
 
   <!-- 300019 — domain, HIGH confidence (80-100) -->
@@ -214,6 +238,10 @@
     <field name="severity_score" type="pcre2">^(8[0-9]|9[0-9]|100)$</field>
     <description>OpenCTI: HIGH-confidence DOMAIN matched INDICATORS on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_domain,opencti_match_high,</group>
+    <mitre>
+      <id>T1071.001</id>
+      <id>T1071.004</id>
+    </mitre>
   </rule>
 
   <!-- =========================================================
@@ -228,6 +256,10 @@
     <field name="ioc.type">url</field>
     <description>OpenCTI: malicious URL accessed by $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_url,</group>
+    <mitre>
+      <id>T1071.001</id>
+      <id>T1566.002</id>
+    </mitre>
   </rule>
 
   <!-- 300021 — URL, LOW confidence (0-49) -->
@@ -237,6 +269,10 @@
     <field name="severity_score" type="pcre2">^([0-9]|[1-4][0-9])$</field>
     <description>OpenCTI: LOW-confidence URL matched INDICATORS on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_url,opencti_match_low,</group>
+    <mitre>
+      <id>T1071.001</id>
+      <id>T1566.002</id>
+    </mitre>
   </rule>
 
   <!-- 300022 — URL, MEDIUM confidence (50-79) -->
@@ -246,6 +282,10 @@
     <field name="severity_score" type="pcre2">^([5-7][0-9])$</field>
     <description>OpenCTI: MEDIUM-confidence URL matched INDICATORS on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_url,opencti_match_medium,</group>
+    <mitre>
+      <id>T1071.001</id>
+      <id>T1566.002</id>
+    </mitre>
   </rule>
 
   <!-- 300023 — URL, HIGH confidence (80-100) -->
@@ -255,6 +295,10 @@
     <field name="severity_score" type="pcre2">^(8[0-9]|9[0-9]|100)$</field>
     <description>OpenCTI: HIGH-confidence URL matched INDICATORS on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_url,opencti_match_high,</group>
+    <mitre>
+      <id>T1071.001</id>
+      <id>T1566.002</id>
+    </mitre>
   </rule>
 
   <!-- =========================================================
@@ -270,6 +314,10 @@
     <field name="ioc.type">ipv4-addr</field>
     <description>OpenCTI: malicious IPv4 contacted by $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_ipv4,</group>
+    <mitre>
+      <id>T1071.001</id>
+      <id>T1090</id>
+    </mitre>
   </rule>
 
   <!-- 300025 — IPv4, LOW confidence (0-49) -->
@@ -279,6 +327,10 @@
     <field name="severity_score" type="pcre2">^([0-9]|[1-4][0-9])$</field>
     <description>OpenCTI: LOW-confidence IPv4 matched INDICATORS on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_ipv4,opencti_match_low,</group>
+    <mitre>
+      <id>T1071.001</id>
+      <id>T1090</id>
+    </mitre>
   </rule>
 
   <!-- 300026 — IPv4, MEDIUM confidence (50-79) -->
@@ -288,6 +340,10 @@
     <field name="severity_score" type="pcre2">^([5-7][0-9])$</field>
     <description>OpenCTI: MEDIUM-confidence IPv4 matched INDICATORS on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_ipv4,opencti_match_medium,</group>
+    <mitre>
+      <id>T1071.001</id>
+      <id>T1090</id>
+    </mitre>
   </rule>
 
   <!-- 300027 — IPv4, HIGH confidence (80-100) -->
@@ -297,6 +353,10 @@
     <field name="severity_score" type="pcre2">^(8[0-9]|9[0-9]|100)$</field>
     <description>OpenCTI: HIGH-confidence IPv4 matched INDICATORS on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_ipv4,opencti_match_high,</group>
+    <mitre>
+      <id>T1071.001</id>
+      <id>T1090</id>
+    </mitre>
   </rule>
 
   <!-- =========================================================
@@ -311,6 +371,10 @@
     <field name="ioc.type">ipv6-addr</field>
     <description>OpenCTI: malicious IPv6 contacted by $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_ipv6,</group>
+    <mitre>
+      <id>T1071.001</id>
+      <id>T1090</id>
+    </mitre>
   </rule>
 
   <!-- 300029 — IPv6, LOW confidence (0-49) -->
@@ -320,6 +384,10 @@
     <field name="severity_score" type="pcre2">^([0-9]|[1-4][0-9])$</field>
     <description>OpenCTI: LOW-confidence IPv6 matched INDICATORS on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_ipv6,opencti_match_low,</group>
+    <mitre>
+      <id>T1071.001</id>
+      <id>T1090</id>
+    </mitre>
   </rule>
 
   <!-- 300030 — IPv6, MEDIUM confidence (50-79) -->
@@ -329,6 +397,10 @@
     <field name="severity_score" type="pcre2">^([5-7][0-9])$</field>
     <description>OpenCTI: MEDIUM-confidence IPv6 matched INDICATORS on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_ipv6,opencti_match_medium,</group>
+    <mitre>
+      <id>T1071.001</id>
+      <id>T1090</id>
+    </mitre>
   </rule>
 
   <!-- 300031 — IPv6, HIGH confidence (80-100) -->
@@ -338,6 +410,10 @@
     <field name="severity_score" type="pcre2">^(8[0-9]|9[0-9]|100)$</field>
     <description>OpenCTI: HIGH-confidence IPv6 matched INDICATORS on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_ipv6,opencti_match_high,</group>
+    <mitre>
+      <id>T1071.001</id>
+      <id>T1090</id>
+    </mitre>
   </rule>
 
  <!-- =========================================================
@@ -352,6 +428,10 @@
     <field name="ioc.type">email-addr</field>
     <description>OpenCTI: malicious EMAIL ADDRESS observed INDICATORS on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_email,</group>
+    <mitre>
+      <id>T1566.001</id>
+      <id>T1566.002</id>
+    </mitre>
   </rule>
 
   <!-- 300033 — email, LOW confidence (0-49) -->
@@ -361,6 +441,10 @@
     <field name="severity_score" type="pcre2">^([0-9]|[1-4][0-9])$</field>
     <description>OpenCTI: LOW-confidence EMAIL matched INDICATORS on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_email,opencti_match_low,</group>
+    <mitre>
+      <id>T1566.001</id>
+      <id>T1566.002</id>
+    </mitre>
   </rule>
 
   <!-- 300034 — email, MEDIUM confidence (50-79) -->
@@ -370,6 +454,10 @@
     <field name="severity_score" type="pcre2">^([5-7][0-9])$</field>
     <description>OpenCTI: MEDIUM-confidence EMAIL matched INDICATORS on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_email,opencti_match_medium,</group>
+    <mitre>
+      <id>T1566.001</id>
+      <id>T1566.002</id>
+    </mitre>
   </rule>
 
   <!-- 300035 — email, HIGH confidence (80-100) -->
@@ -379,6 +467,10 @@
     <field name="severity_score" type="pcre2">^(8[0-9]|9[0-9]|100)$</field>
     <description>OpenCTI: HIGH-confidence EMAIL matched INDICATORS on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_email,opencti_match_high,</group>
+    <mitre>
+      <id>T1566.001</id>
+      <id>T1566.002</id>
+    </mitre>
   </rule>
   
   <!-- =========================================================
@@ -394,6 +486,10 @@
     <field name="ioc.type">windows-registry-key</field>
     <description>OpenCTI: malicious REGISTRY KEY on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_registry,</group>
+    <mitre>
+      <id>T1547.001</id>
+      <id>T1112</id>
+    </mitre>
   </rule>
 
   <!-- 300037 — registry key, LOW confidence (0-49) -->
@@ -403,6 +499,10 @@
     <field name="severity_score" type="pcre2">^([0-9]|[1-4][0-9])$</field>
     <description>OpenCTI: LOW-confidence REGISTRY KEY matched INDICATORS on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_registry,opencti_match_low,</group>
+    <mitre>
+      <id>T1547.001</id>
+      <id>T1112</id>
+    </mitre>
   </rule>
 
   <!-- 300038 — registry key, MEDIUM confidence (50-79) -->
@@ -411,6 +511,10 @@
     <field name="severity_score" type="pcre2">^([5-7][0-9])$</field>
     <description>OpenCTI: MEDIUM-confidence REGISTRY KEY matched INDICATORS on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_registry,opencti_match_medium,</group>
+    <mitre>
+      <id>T1547.001</id>
+      <id>T1112</id>
+    </mitre>
   </rule>
 
   <!-- 300039 — registry key, HIGH confidence (80-100) -->
@@ -419,6 +523,10 @@
     <field name="severity_score" type="pcre2">^(8[0-9]|9[0-9]|100)$</field>
     <description>OpenCTI: HIGH-confidence REGISTRY KEY matched INDICATORS on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_registry,opencti_match_high,</group>
+    <mitre>
+      <id>T1547.001</id>
+      <id>T1112</id>
+    </mitre>
   </rule>
   
     <!-- =========================================================
@@ -435,6 +543,9 @@
     <field name="ioc.type">user-agent</field>
     <description>OpenCTI: malicious USER-AGENT observed on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_useragent,</group>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
   </rule>
 
   <!-- 300041 — user-agent, LOW confidence (0-49) -->
@@ -444,6 +555,9 @@
     <field name="severity_score" type="pcre2">^([0-9]|[1-4][0-9])$</field>
     <description>OpenCTI: LOW-confidence USER-AGENT matched INDICATORS on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_useragent,opencti_match_low,</group>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
   </rule>
 
   <!-- 300042 — user-agent, MEDIUM confidence (50-79) -->
@@ -453,6 +567,9 @@
     <field name="severity_score" type="pcre2">^([5-7][0-9])$</field>
     <description>OpenCTI: MEDIUM-confidence USER-AGENT matched INDICATORS on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_useragent,opencti_match_medium,</group>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
   </rule>
 
   <!-- 300043 — user-agent, HIGH confidence (80-100) -->
@@ -462,6 +579,9 @@
     <field name="severity_score" type="pcre2">^(8[0-9]|9[0-9]|100)$</field>
     <description>OpenCTI: HIGH-confidence USER-AGENT matched INDICATORS on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_useragent,opencti_match_high,</group>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
   </rule>
   
   <!-- =========================================================
@@ -503,6 +623,9 @@
     <field name="ioc.type" type="pcre2">^(sha256|sha1|md5)$</field>
     <description>OpenCTI: file hash matched OBSERVABLES on $(source_agent_name) - $(ioc.type)=$(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_hash,opencti_match_observable,</group>
+    <mitre>
+      <id>T1204.002</id>
+    </mitre>
   </rule>
 
   <!-- 300046 — file hash, LOW confidence (0-49) -->
@@ -512,6 +635,9 @@
     <field name="severity_score" type="pcre2">^([0-9]|[1-4][0-9])$</field>
     <description>OpenCTI: LOW-confidence file hash matched OBSERVABLES on $(source_agent_name) - $(ioc.type)=$(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_hash,opencti_match_observable,opencti_match_low,</group>
+    <mitre>
+      <id>T1204.002</id>
+    </mitre>
   </rule>
 
   <!-- 300047 — file hash, MEDIUM confidence (50-79) -->
@@ -521,6 +647,9 @@
     <field name="severity_score" type="pcre2">^([5-7][0-9])$</field>
     <description>OpenCTI: MEDIUM-confidence file hash matched OBSERVABLES on $(source_agent_name) - $(ioc.type)=$(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_hash,opencti_match_observable,opencti_match_medium,</group>
+    <mitre>
+      <id>T1204.002</id>
+    </mitre>
   </rule>
 
   <!-- 300048 — file hash, HIGH confidence (80-100) -->
@@ -530,6 +659,9 @@
     <field name="severity_score" type="pcre2">^(8[0-9]|9[0-9]|100)$</field>
     <description>OpenCTI: HIGH-confidence file hash matched OBSERVABLES on $(source_agent_name) - $(ioc.type)=$(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_hash,opencti_match_observable,opencti_match_high,</group>
+    <mitre>
+      <id>T1204.002</id>
+    </mitre>
   </rule>
 
   <!-- =========================================================
@@ -543,6 +675,10 @@
     <field name="ioc.type">domain-name</field>
     <description>OpenCTI: domain matched OBSERVABLES on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_domain,opencti_match_observable,</group>
+    <mitre>
+      <id>T1071.001</id>
+      <id>T1071.004</id>
+    </mitre>
   </rule>
 
   <!-- 300050 — domain, LOW confidence (0-49) -->
@@ -552,6 +688,10 @@
     <field name="severity_score" type="pcre2">^([0-9]|[1-4][0-9])$</field>
     <description>OpenCTI: LOW-confidence domain matched OBSERVABLES on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_domain,opencti_match_observable,opencti_match_low,</group>
+    <mitre>
+      <id>T1071.001</id>
+      <id>T1071.004</id>
+    </mitre>
   </rule>
 
   <!-- 300051 — domain, MEDIUM confidence (50-79) -->
@@ -561,6 +701,10 @@
     <field name="severity_score" type="pcre2">^([5-7][0-9])$</field>
     <description>OpenCTI: MEDIUM-confidence domain matched OBSERVABLES on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_domain,opencti_match_observable,opencti_match_medium,</group>
+    <mitre>
+      <id>T1071.001</id>
+      <id>T1071.004</id>
+    </mitre>
   </rule>
 
   <!-- 300052 — domain, HIGH confidence (80-100) -->
@@ -570,6 +714,10 @@
     <field name="severity_score" type="pcre2">^(8[0-9]|9[0-9]|100)$</field>
     <description>OpenCTI: HIGH-confidence domain matched OBSERVABLES on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_domain,opencti_match_observable,opencti_match_high,</group>
+    <mitre>
+      <id>T1071.001</id>
+      <id>T1071.004</id>
+    </mitre>
   </rule>
 
   <!-- =========================================================
@@ -583,6 +731,10 @@
     <field name="ioc.type">url</field>
     <description>OpenCTI: URL matched OBSERVABLES on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_url,opencti_match_observable,</group>
+    <mitre>
+      <id>T1071.001</id>
+      <id>T1566.002</id>
+    </mitre>
   </rule>
 
   <!-- 300054 — URL, LOW confidence (0-49) -->
@@ -592,6 +744,10 @@
     <field name="severity_score" type="pcre2">^([0-9]|[1-4][0-9])$</field>
     <description>OpenCTI: LOW-confidence URL matched OBSERVABLES on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_url,opencti_match_observable,opencti_match_low,</group>
+    <mitre>
+      <id>T1071.001</id>
+      <id>T1566.002</id>
+    </mitre>
   </rule>
 
   <!-- 300055 — URL, MEDIUM confidence (50-79) -->
@@ -601,6 +757,10 @@
     <field name="severity_score" type="pcre2">^([5-7][0-9])$</field>
     <description>OpenCTI: MEDIUM-confidence URL matched OBSERVABLES on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_url,opencti_match_observable,opencti_match_medium,</group>
+    <mitre>
+      <id>T1071.001</id>
+      <id>T1566.002</id>
+    </mitre>
   </rule>
 
   <!-- 300056 — URL, HIGH confidence (80-100) -->
@@ -610,6 +770,10 @@
     <field name="severity_score" type="pcre2">^(8[0-9]|9[0-9]|100)$</field>
     <description>OpenCTI: HIGH-confidence URL matched OBSERVABLES on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_url,opencti_match_observable,opencti_match_high,</group>
+    <mitre>
+      <id>T1071.001</id>
+      <id>T1566.002</id>
+    </mitre>
   </rule>
 
   <!-- =========================================================
@@ -625,6 +789,10 @@
     <field name="ioc.type">ipv4-addr</field>
     <description>OpenCTI: IPv4 matched OBSERVABLES on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_ipv4,opencti_match_observable,</group>
+    <mitre>
+      <id>T1071.001</id>
+      <id>T1090</id>
+    </mitre>
   </rule>
 
   <!-- 300058 — IPv4, LOW confidence (0-49) -->
@@ -634,6 +802,10 @@
     <field name="severity_score" type="pcre2">^([0-9]|[1-4][0-9])$</field>
     <description>OpenCTI: LOW-confidence IPv4 matched OBSERVABLES on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_ipv4,opencti_match_observable,opencti_match_low,</group>
+    <mitre>
+      <id>T1071.001</id>
+      <id>T1090</id>
+    </mitre>
   </rule>
 
   <!-- 300059 — IPv4, MEDIUM confidence (50-79) -->
@@ -643,6 +815,10 @@
     <field name="severity_score" type="pcre2">^([5-7][0-9])$</field>
     <description>OpenCTI: MEDIUM-confidence IPv4 matched OBSERVABLES on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_ipv4,opencti_match_observable,opencti_match_medium,</group>
+    <mitre>
+      <id>T1071.001</id>
+      <id>T1090</id>
+    </mitre>
   </rule>
 
   <!-- 300060 — IPv4, HIGH confidence (80-100) -->
@@ -652,6 +828,10 @@
     <field name="severity_score" type="pcre2">^(8[0-9]|9[0-9]|100)$</field>
     <description>OpenCTI: HIGH-confidence IPv4 matched OBSERVABLES on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_ipv4,opencti_match_observable,opencti_match_high,</group>
+    <mitre>
+      <id>T1071.001</id>
+      <id>T1090</id>
+    </mitre>
   </rule>
 
   <!-- =========================================================
@@ -665,6 +845,10 @@
     <field name="ioc.type">ipv6-addr</field>
     <description>OpenCTI: IPv6 matched OBSERVABLES on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_ipv6,opencti_match_observable,</group>
+    <mitre>
+      <id>T1071.001</id>
+      <id>T1090</id>
+    </mitre>
   </rule>
 
   <!-- 300062 — IPv6, LOW confidence (0-49) -->
@@ -674,6 +858,10 @@
     <field name="severity_score" type="pcre2">^([0-9]|[1-4][0-9])$</field>
     <description>OpenCTI: LOW-confidence IPv6 matched OBSERVABLES on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_ipv6,opencti_match_observable,opencti_match_low,</group>
+    <mitre>
+      <id>T1071.001</id>
+      <id>T1090</id>
+    </mitre>
   </rule>
 
   <!-- 300063 — IPv6, MEDIUM confidence (50-79) -->
@@ -683,6 +871,10 @@
     <field name="severity_score" type="pcre2">^([5-7][0-9])$</field>
     <description>OpenCTI: MEDIUM-confidence IPv6 matched OBSERVABLES on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_ipv6,opencti_match_observable,opencti_match_medium,</group>
+    <mitre>
+      <id>T1071.001</id>
+      <id>T1090</id>
+    </mitre>
   </rule>
 
   <!-- 300064 — IPv6, HIGH confidence (80-100) -->
@@ -692,6 +884,10 @@
     <field name="severity_score" type="pcre2">^(8[0-9]|9[0-9]|100)$</field>
     <description>OpenCTI: HIGH-confidence IPv6 matched OBSERVABLES on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_ipv6,opencti_match_observable,opencti_match_high,</group>
+    <mitre>
+      <id>T1071.001</id>
+      <id>T1090</id>
+    </mitre>
   </rule>
 
   <!-- =========================================================
@@ -705,6 +901,10 @@
     <field name="ioc.type">email-addr</field>
     <description>OpenCTI: email address matched OBSERVABLES on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_email,opencti_match_observable,</group>
+    <mitre>
+      <id>T1566.001</id>
+      <id>T1566.002</id>
+    </mitre>
   </rule>
 
   <!-- 300066 — email, LOW confidence (0-49) -->
@@ -714,6 +914,10 @@
     <field name="severity_score" type="pcre2">^([0-9]|[1-4][0-9])$</field>
     <description>OpenCTI: LOW-confidence email matched OBSERVABLES on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_email,opencti_match_observable,opencti_match_low,</group>
+    <mitre>
+      <id>T1566.001</id>
+      <id>T1566.002</id>
+    </mitre>
   </rule>
 
   <!-- 300067 — email, MEDIUM confidence (50-79) -->
@@ -723,6 +927,10 @@
     <field name="severity_score" type="pcre2">^([5-7][0-9])$</field>
     <description>OpenCTI: MEDIUM-confidence email matched OBSERVABLES on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_email,opencti_match_observable,opencti_match_medium,</group>
+    <mitre>
+      <id>T1566.001</id>
+      <id>T1566.002</id>
+    </mitre>
   </rule>
 
   <!-- 300068 — email, HIGH confidence (80-100) -->
@@ -732,6 +940,10 @@
     <field name="severity_score" type="pcre2">^(8[0-9]|9[0-9]|100)$</field>
     <description>OpenCTI: HIGH-confidence email matched OBSERVABLES on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_email,opencti_match_observable,opencti_match_high,</group>
+    <mitre>
+      <id>T1566.001</id>
+      <id>T1566.002</id>
+    </mitre>
   </rule>
 
   <!-- =========================================================
@@ -745,6 +957,10 @@
     <field name="ioc.type">windows-registry-key</field>
     <description>OpenCTI: registry key matched OBSERVABLES on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_registry,opencti_match_observable,</group>
+    <mitre>
+      <id>T1547.001</id>
+      <id>T1112</id>
+    </mitre>
   </rule>
 
   <!-- 300070 — registry key, LOW confidence (0-49) -->
@@ -754,6 +970,10 @@
     <field name="severity_score" type="pcre2">^([0-9]|[1-4][0-9])$</field>
     <description>OpenCTI: LOW-confidence registry key matched OBSERVABLES on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_registry,opencti_match_observable,opencti_match_low,</group>
+    <mitre>
+      <id>T1547.001</id>
+      <id>T1112</id>
+    </mitre>
   </rule>
 
   <!-- 300071 — registry key, MEDIUM confidence (50-79) -->
@@ -763,6 +983,10 @@
     <field name="severity_score" type="pcre2">^([5-7][0-9])$</field>
     <description>OpenCTI: MEDIUM-confidence registry key matched OBSERVABLES on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_registry,opencti_match_observable,opencti_match_medium,</group>
+    <mitre>
+      <id>T1547.001</id>
+      <id>T1112</id>
+    </mitre>
   </rule>
 
   <!-- 300072 — registry key, HIGH confidence (80-100) -->
@@ -772,6 +996,10 @@
     <field name="severity_score" type="pcre2">^(8[0-9]|9[0-9]|100)$</field>
     <description>OpenCTI: HIGH-confidence registry key matched OBSERVABLES on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_registry,opencti_match_observable,opencti_match_high,</group>
+    <mitre>
+      <id>T1547.001</id>
+      <id>T1112</id>
+    </mitre>
   </rule>
 
   <!-- =========================================================
@@ -785,6 +1013,9 @@
     <field name="ioc.type">user-agent</field>
     <description>OpenCTI: user-agent matched OBSERVABLES on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_useragent,opencti_match_observable,</group>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
   </rule>
 
   <!-- 300074 — user-agent, LOW confidence (0-49) -->
@@ -794,6 +1025,9 @@
     <field name="severity_score" type="pcre2">^([0-9]|[1-4][0-9])$</field>
     <description>OpenCTI: LOW-confidence user-agent matched OBSERVABLES on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_useragent,opencti_match_observable,opencti_match_low,</group>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
   </rule>
 
   <!-- 300075 — user-agent, MEDIUM confidence (50-79) -->
@@ -803,6 +1037,9 @@
     <field name="severity_score" type="pcre2">^([5-7][0-9])$</field>
     <description>OpenCTI: MEDIUM-confidence user-agent matched OBSERVABLES on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_useragent,opencti_match_observable,opencti_match_medium,</group>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
   </rule>
 
   <!-- 300076 — user-agent, HIGH confidence (80-100) -->
@@ -812,6 +1049,9 @@
     <field name="severity_score" type="pcre2">^(8[0-9]|9[0-9]|100)$</field>
     <description>OpenCTI: HIGH-confidence user-agent matched OBSERVABLES on $(source_agent_name) - $(ioc.value) [score=$(severity_score)]</description>
     <group>opencti_match_useragent,opencti_match_observable,opencti_match_high,</group>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
   </rule>
 
 </group>

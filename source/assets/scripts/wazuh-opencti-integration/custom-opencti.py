@@ -567,10 +567,6 @@ RE_EMAIL  = re.compile(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b")
 # ============================================================================
 # HELPERS — logging, file ops, dotted-path access
 # ============================================================================
-
-# Numeric severity ranks for level filtering. Higher number = more severe.
-_LOG_LEVELS = {"DEBUG": 10, "INFO": 20, "WARN": 30, "ERROR": 40}
-
 def _now_iso():
     """ISO 8601 UTC timestamp with millisecond precision, formatted to match
     Wazuh's exact `alerts.json` convention: `YYYY-MM-DDTHH:MM:SS.mmm+0000`.
@@ -585,6 +581,9 @@ def _now_iso():
     timenow = datetime.now(timezone.utc)
     return timenow.strftime("%Y-%m-%dT%H:%M:%S.") + \
            "{:03d}+0000".format(timenow.microsecond // 1000)
+
+# Numeric severity ranks for level filtering. Higher number = more severe.
+_LOG_LEVELS = {"DEBUG": 10, "INFO": 20, "WARN": 30, "ERROR": 40}
 
 def _log(level, msg):
     """Emit a diagnostic message to stderr with a timestamp and severity
