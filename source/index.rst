@@ -47,6 +47,7 @@ This documentation is continuously updated as I explore new areas in cybersecuri
    :hidden:
 
    Wazuh & Tracecat Integration <projects/wazuh-tracecat-integration/introduction>
+   Realtime IOC Detection and Threat Intelligence Enrichment for Wazuh with OpenCTI <projects/wazuh-opencti-integration/introduction>
    Apache2 Server Hardening <projects/apache2-server-hardening/introduction>
    Nginx Server Hardening <projects/nginx-server-hardening/introduction>
 

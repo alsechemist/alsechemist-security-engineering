@@ -8,6 +8,7 @@ Featured Projects
 -----------------
 
 * :doc:`Wazuh & Tracecat Integration </projects/wazuh-tracecat-integration/introduction>` - SIEM and SOAR integration for automated incident response
+* :doc:`Realtime IOC Detection and Threat Intelligence Enrichment for Wazuh with OpenCTI </projects/wazuh-opencti-integration/introduction>` - Automating IOC detection and threat intelligence enrichment for Wazuh
 * :doc:`Apache2 Server Hardening </projects/apache2-server-hardening/introduction>` - Hardening Apache2 Server using ModEvasive, ModGeoIP & ModSecurity v2
 * :doc:`Nginx Server Hardening </projects/nginx-server-hardening/introduction>` - Securing and Strengthening Nginx Server.
 

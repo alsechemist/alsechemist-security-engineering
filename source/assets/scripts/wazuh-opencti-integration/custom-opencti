@@ -3,6 +3,12 @@
 # custom-opencti — Wazuh integrator wrapper
 # ============================================================================
 #
+# AUTHOR
+# --------------------------------------------------------------------------------------------------------
+# Alsechemist (https://alsechemist.com)
+# A.K.A Syed Golam Abid - Open Source Security Advocate & Defensive Security Researcher | Wazuh Ambassador
+# --------------------------------------------------------------------------------------------------------
+#
 # WHAT THIS IS
 # ------------
 # This is the file Wazuh's integrator daemon calls directly. It's a thin shell

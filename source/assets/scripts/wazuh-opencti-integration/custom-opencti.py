@@ -5,6 +5,12 @@
 # custom-opencti — Wazuh ⇄ OpenCTI integration
 # ============================================================================
 #
+# AUTHOR
+# --------------------------------------------------------------------------------------------------------
+# Alsechemist (https://alsechemist.com)
+# A.K.A Syed Golam Abid - Open Source Security Advocate & Defensive Security Researcher | Wazuh Ambassador
+# --------------------------------------------------------------------------------------------------------
+#
 # WHAT THIS DOES
 # --------------
 # Wazuh invokes this script (via the <integration> block in ossec.conf) every
@@ -85,19 +91,23 @@ VERIFY_TLS = False
 # in /var/ossec/logs/integrations.log). Controls verbosity of the script's
 # own operational messages — NOT the IOC enrichment events written to
 # opencti.log (those are always written regardless of this setting).
-# One of: "DEBUG", "INFO", "WARN", "ERROR". Default INFO is appropriate for
+# One of: "DEBUG", "INFO", "WARN", "ERROR". INFO is appropriate for
 # production. Set to DEBUG temporarily when troubleshooting.
+# Default is INFO
 LOG_LEVEL = "INFO"
 
 # Write a log line even when OpenCTI has no record of the IOC, and when we
 # pre-filter an IOC (e.g. private IP). Useful for gap analysis ("how often
 # does Wazuh see IOCs that OpenCTI doesn't know?"). Disable if disk space is
 # tight or the log gets too noisy.
+# Default is False
 LOG_MISSES = False
 
 # Embed the full raw GraphQL response in each log line under "raw_response".
-# Default ON so analysts have every detail OpenCTI returned. Disable to shrink
+# This to obtain every detail OpenCTI returns. The Logs will be very heavy.
+# Useful for case investigation and referencing. Disable to shrink
 # log lines significantly if you only need the flat summary fields.
+# Default is False
 INCLUDE_RAW_RESPONSE = False
 
 # ── IOC types to extract ────────────────────────────────────────────────────
@@ -111,7 +121,7 @@ EXTRACT_IOC_TYPES = {
     "sha256":              True,
     "sha1":                True,
     "md5":                 True,
-    "email-addr":          False,  # enable if your alerts carry email IOCs
+    "email-addr":          True,  # enable if your alerts carry email IOCs
     "windows-registry-key": True,  # enabled by default; set False if you don't
                                     # ingest registry events or find them noisy
     "user-agent":          True,   # enabled; useful for Suricata HTTP events
